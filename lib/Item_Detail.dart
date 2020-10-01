@@ -48,8 +48,10 @@ class _ItemDetailState extends State<ItemDetail> {
   Map<String, dynamic> snapshotitemlist = Map();
 
   List<dynamic> snapshotitemlistattl = List();
+  List<Map<int, bool>> dynamicbools = List();
+  List<dynamic> snaps = List();
 
-  Map<int, bool> values = Map();
+  Map<int, bool> boolvalues = Map();
 
   void onChanged22(bool value) {
     setState(() {
@@ -57,9 +59,17 @@ class _ItemDetailState extends State<ItemDetail> {
     });
   }
 
-  void onChanged(bool value) {
+  void onChanged(bool value, int index, int arrayindex , List<dynamic> list) {
     setState(() {
-      _mySelection = !_mySelection;
+      if (value == true) {
+        value = false;
+      } else {
+        value = true;
+      }
+      print("arraylistchange" + arrayindex.toString());
+      print("optionname" + list[index]["option_label"].toString());
+
+      dynamicbools[arrayindex][index] = value;
     });
   }
 
@@ -69,15 +79,10 @@ class _ItemDetailState extends State<ItemDetail> {
 
   String _mySelection3;
   var back_1 = new AssetImage('assets/images/back_1.png');
-  List<String> _checked = []; //["A", "B"];
 
-  Widget _MyCheckBOXLISTview(
-      BuildContext context, String type, List<dynamic> snapshotitemlist) {
-    print(type);
-
-    for (int i = 0; i < snapshotitemlist.length; i++) {
-      values[i] = false;
-    }
+  Widget _MyCheckBOXLISTview(BuildContext context, String type,
+      List<dynamic> snapshotitemlist, int arrayindex) {
+    print("arraytype" + dynamicbools.toString());
 
     if (type == "2") {
       return ListView.builder(
@@ -100,7 +105,7 @@ class _ItemDetailState extends State<ItemDetail> {
                     width: 20,
                     child: Container(
                       child: Image(
-                          image: values[index]
+                          image: dynamicbools[arrayindex][index]
                               ? AssetImage("assets/images/ellipse_4_copy_4.png")
                               : AssetImage("assets/images/ellipse_4_copy.png")),
                     ),
@@ -122,7 +127,6 @@ class _ItemDetailState extends State<ItemDetail> {
         },
       );
     } else if (type == "1") {
-      print(_mySelection.toString() + "okokokok");
       return ListView.builder(
         shrinkWrap: true,
         padding: EdgeInsets.only(right: 20, left: 20, top: 10, bottom: 10),
@@ -131,7 +135,7 @@ class _ItemDetailState extends State<ItemDetail> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              onChanged(_mySelection);
+              onChanged(dynamicbools[arrayindex][index], index, arrayindex , snapshotitemlist);
             },
             child: Container(
               margin: EdgeInsets.only(top: 5, bottom: 5),
@@ -143,7 +147,7 @@ class _ItemDetailState extends State<ItemDetail> {
                     width: 20,
                     child: Container(
                       child: Image(
-                          image: _mySelection
+                          image: dynamicbools[arrayindex][index]
                               ? AssetImage("assets/images/correct_5_copy_2.png")
                               : AssetImage(
                                   "assets/images/rounded_rectangle_3.png")),
@@ -241,6 +245,15 @@ class _ItemDetailState extends State<ItemDetail> {
       images = snapshotitemlist["prdct_img_arr"];
 
       snapshotitemlistattl = snapshotitemlist["attribute_list"];
+
+      for (int i = 0; i < snapshotitemlistattl.length; i++) {
+        List<dynamic> tempsnap = snapshotitemlistattl[i]["option_list"];
+        Map<int, bool> boolvalues = Map();
+        for (int j = 0; j < tempsnap.length; j++) {
+          boolvalues[j] = false;
+        }
+        dynamicbools.add(boolvalues);
+      }
     });
     return "Success";
   }
@@ -548,7 +561,8 @@ class _ItemDetailState extends State<ItemDetail> {
                                                   snapshotitemlistattl[index]
                                                       ["type"],
                                                   snapshotitemlistattl[index]
-                                                      ["option_list"]),
+                                                      ["option_list"],
+                                                  index),
                                             ],
                                           );
                                         },
