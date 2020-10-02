@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:carousel_slider/carousel_slider.dart';
@@ -8,6 +9,7 @@ import 'package:loading/loading.dart';
 import 'package:peg/RestDatasource.dart';
 import 'package:http/http.dart' as http;
 import 'package:peg/homescreen.dart';
+import 'package:peg/main.dart';
 
 class ItemFull extends StatelessWidget {
   String id;
@@ -41,6 +43,33 @@ class _ItemDetailState extends State<ItemDetail> {
   String name;
   List images = List();
 
+  var userid;
+
+  var ref_seller_id;
+
+  int qty = 0;
+
+  var Custom_Tag;
+
+  var product_image;
+
+  var product_id;
+
+  var price;
+
+  var product_fee;
+
+  var int_fee;
+
+  var product_name;
+
+  int realqty = 0;
+
+  String selvertion;
+  String extraamount;
+
+  Map<String, String> apimap = new Map();
+
   _ItemDetailState(this.id);
 
   int _current = 0;
@@ -53,37 +82,97 @@ class _ItemDetailState extends State<ItemDetail> {
 
   Map<int, bool> boolvalues = Map();
 
-  void onChanged22(bool value) {
-    setState(() {
-      _mySelection2 = !_mySelection2;
-    });
-  }
-
-  void onChanged(bool value, int index, int arrayindex , List<dynamic> list) {
+  void onChanged22(bool value, int index, int arrayindex, List<dynamic> list) {
     setState(() {
       if (value == true) {
         value = false;
       } else {
         value = true;
       }
-      print("arraylistchange" + arrayindex.toString());
-      print("optionname" + list[index]["option_label"].toString());
 
-      dynamicbools[arrayindex][index] = value;
+      for (int i = 0; i < dynamicbools[arrayindex].length; i++) {
+        if (i == index) {
+          dynamicbools[arrayindex][index] = value;
+        } else {
+          dynamicbools[arrayindex][i] = false;
+        }
+      }
+
+      String optionid = list[index]["option_id"];
+
+      selvertion = "sel_variation" + "[" + arrayindex.toString() + "]" + "[0]";
+
+      apimap[selvertion] = optionid;
+
+      String extraamountt = "";
+
+      for (int i = 0; i < list.length; i++) {
+        if (optionid == list[i]["option_id"]) {
+          extraamountt = list[i]["extra_amount"];
+        }
+      }
+
+      extraamount = "extra_amount" +
+          "[" +
+          arrayindex.toString() +
+          "]" +
+          "[" +
+          optionid +
+          "]";
+
+      apimap[extraamount] = extraamountt;
+    });
+  }
+
+  void onChanged(bool value, int index, int arrayindex, List<dynamic> list) {
+    setState(() {
+      if (value == true) {
+        value = false;
+      } else {
+        value = true;
+      }
+
+      for (int i = 0; i < dynamicbools[arrayindex].length; i++) {
+        if (i == index) {
+          dynamicbools[arrayindex][index] = value;
+        } else {
+          dynamicbools[arrayindex][i] = false;
+        }
+      }
+
+      String optionid = list[index]["option_id"];
+
+      selvertion = "sel_variation" + "[" + arrayindex.toString() + "]" + "[0]";
+
+      apimap[selvertion] = optionid;
+
+      String extraamountt = "";
+
+      for (int i = 0; i < list.length; i++) {
+        if (optionid == list[i]["option_id"]) {
+          extraamountt = list[i]["extra_amount"];
+        }
+      }
+
+      extraamount = "extra_amount" +
+          "[" +
+          arrayindex.toString() +
+          "]" +
+          "[" +
+          optionid +
+          "]";
+
+      apimap[extraamount] = extraamountt;
     });
   }
 
   var borderimg = new AssetImage('assets/images/rounded_rectangle_234.png');
-  bool _mySelection = false;
-  bool _mySelection2 = false;
 
   String _mySelection3;
   var back_1 = new AssetImage('assets/images/back_1.png');
 
   Widget _MyCheckBOXLISTview(BuildContext context, String type,
       List<dynamic> snapshotitemlist, int arrayindex) {
-    print("arraytype" + dynamicbools.toString());
-
     if (type == "2") {
       return ListView.builder(
         shrinkWrap: true,
@@ -93,7 +182,8 @@ class _ItemDetailState extends State<ItemDetail> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              onChanged22(_mySelection2);
+              onChanged(dynamicbools[arrayindex][index], index, arrayindex,
+                  snapshotitemlist);
             },
             child: Container(
               margin: EdgeInsets.only(top: 5, bottom: 5),
@@ -135,7 +225,8 @@ class _ItemDetailState extends State<ItemDetail> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              onChanged(dynamicbools[arrayindex][index], index, arrayindex , snapshotitemlist);
+              onChanged(dynamicbools[arrayindex][index], index, arrayindex,
+                  snapshotitemlist);
             },
             child: Container(
               margin: EdgeInsets.only(top: 5, bottom: 5),
@@ -204,6 +295,38 @@ class _ItemDetailState extends State<ItemDetail> {
                               onChanged: (newVal) {
                                 setState(() {
                                   _mySelection3 = newVal;
+                                  selvertion = "sel_variation" +
+                                      "[" +
+                                      arrayindex.toString() +
+                                      "]" +
+                                      "[0]" +
+                                      "[" +
+                                      _mySelection3 +
+                                      "]";
+
+                                  apimap[selvertion] = _mySelection3;
+
+                                  String extraamountt = "";
+
+                                  for (int i = 0;
+                                      i < snapshotitemlist.length;
+                                      i++) {
+                                    if (_mySelection3 ==
+                                        snapshotitemlist[i]["option_id"]) {
+                                      extraamountt =
+                                          snapshotitemlist[i]["extra_amount"];
+                                    }
+                                  }
+
+                                  extraamount = "extra_amount" +
+                                      "[" +
+                                      arrayindex.toString() +
+                                      "]" +
+                                      "[" +
+                                      _mySelection3 +
+                                      "]";
+
+                                  apimap[extraamount] = extraamountt;
                                 });
                               },
                               items: snapshotitemlist.map((item) {
@@ -212,7 +335,7 @@ class _ItemDetailState extends State<ItemDetail> {
                                     item['option_label'],
                                     style: style,
                                   ),
-                                  value: item['option_label'],
+                                  value: item['option_id'],
                                 );
                               }).toList(),
                             ),
@@ -239,10 +362,31 @@ class _ItemDetailState extends State<ItemDetail> {
     var res = await http.get(Uri.encodeFull(RestDatasource.view_product + id),
         headers: {"Accept": "application/json"});
 
+    userid = getStringValuesSF();
+
     setState(() {
       snapshotitemlist.addAll(
           Map<String, dynamic>.from(json.decode(res.body)["product_data"]));
       images = snapshotitemlist["prdct_img_arr"];
+      ref_seller_id = snapshotitemlist["product_detail"]["seller_id"];
+      qty = int.parse(snapshotitemlist["product_detail"]["qty"].toString());
+      Custom_Tag = snapshotitemlist["product_detail"]["customizable_tag"];
+      product_image = snapshotitemlist["product_detail"]["image"];
+      product_id = snapshotitemlist["product_id"];
+      price = snapshotitemlist["product_detail"]["price"];
+      product_fee = snapshotitemlist["product_detail"]["fee"];
+      int_fee = snapshotitemlist["product_detail"]["int_fee"];
+      product_name = snapshotitemlist["product_detail"]["name"];
+
+      apimap["user_id"] = userid.toString();
+      apimap["ref_seller_id"] = ref_seller_id.toString();
+      apimap["Custom_Tag"] = Custom_Tag.toString();
+      apimap["product_image"] = product_image.toString();
+      apimap["product_id"] = product_id.toString();
+      apimap["amount"] = price.toString();
+      apimap["product_fee"] = product_fee.toString();
+      apimap["int_fee"] = int_fee.toString();
+      apimap["product_name"] = product_name.toString();
 
       snapshotitemlistattl = snapshotitemlist["attribute_list"];
 
@@ -435,21 +579,33 @@ class _ItemDetailState extends State<ItemDetail> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            Container(
-                                                height: 30,
-                                                width: 30,
-                                                color: Colors.orange,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(10),
-                                                  child: Image(
-                                                    image: AssetImage(
-                                                        "assets/images/minus.png"),
-                                                    height: 20,
-                                                    width: 20,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                )),
+                                            GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  if (realqty > 0) {
+                                                    realqty--;
+                                                    apimap["qty"] = realqty.toString();
+                                                  }
+
+                                                });
+                                              },
+                                              child: Container(
+                                                  height: 30,
+                                                  width: 30,
+                                                  color: Colors.orange,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            10),
+                                                    child: Image(
+                                                      image: AssetImage(
+                                                          "assets/images/minus.png"),
+                                                      height: 20,
+                                                      width: 20,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  )),
+                                            ),
                                             Container(
                                               width: 60,
                                               height: 30,
@@ -457,7 +613,7 @@ class _ItemDetailState extends State<ItemDetail> {
                                                   right: 5, left: 5),
                                               alignment: Alignment.center,
                                               child: Text(
-                                                "0",
+                                                realqty.toString(),
                                                 style: TextStyle(
                                                     fontFamily: 'Roboto-Bold',
                                                     fontSize: 16.0,
@@ -470,20 +626,31 @@ class _ItemDetailState extends State<ItemDetail> {
                                                       BorderRadius.circular(
                                                           2.0)),
                                             ),
-                                            Container(
-                                                height: 30,
-                                                width: 30,
-                                                color: Colors.orange,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(10),
-                                                  child: Image(
-                                                    image: AssetImage(
-                                                        "assets/images/add.png"),
-                                                    height: 30,
-                                                    width: 30,
-                                                  ),
-                                                )),
+                                            GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  if (realqty < qty) {
+                                                    realqty++;
+                                                    apimap["qty"] = realqty.toString();
+                                                  }
+                                                });
+                                              },
+                                              child: Container(
+                                                  height: 30,
+                                                  width: 30,
+                                                  color: Colors.orange,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            10),
+                                                    child: Image(
+                                                      image: AssetImage(
+                                                          "assets/images/add.png"),
+                                                      height: 30,
+                                                      width: 30,
+                                                    ),
+                                                  )),
+                                            )
                                           ],
                                         ),
                                       ),
@@ -584,15 +751,20 @@ class _ItemDetailState extends State<ItemDetail> {
                                           ),
                                         ),
                                       ),
-                                      Align(
-                                        alignment: Alignment.bottomCenter,
-                                        child: Container(
-                                          margin: EdgeInsets.only(top: 50),
-                                          child: Image(
-                                            image: AssetImage(
-                                                "assets/images/group_2_copy_2.png"),
-                                            width: 200,
-                                            fit: BoxFit.cover,
+                                      GestureDetector(
+                                        onTap: () {
+                                          api.addtocart(apimap);
+                                        },
+                                        child: Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: Container(
+                                            margin: EdgeInsets.only(top: 50),
+                                            child: Image(
+                                              image: AssetImage(
+                                                  "assets/images/group_2_copy_2.png"),
+                                              width: 200,
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
                                       )

@@ -21,9 +21,11 @@ class RestDatasource {
   static final forgot_passwordapi = BASE_URL + "user/forgot_password";
   static final get_all_products = BASE_URL + "product/get_all_products";
   static final get_all_categories = BASE_URL + "category/get_all_categories";
-  static final get_all_subcategories = BASE_URL + "category/get_all_subcategories/";
+  static final get_all_subcategories =
+      BASE_URL + "category/get_all_subcategories/";
   static final get_all_players = BASE_URL + "user/get_all_players";
   static final view_product = BASE_URL + "product/view_product/";
+  static final add_to_cart_product = BASE_URL + "product/add_to_cart_product";
 
   addStringToSF(dynamic data) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -45,6 +47,37 @@ class RestDatasource {
             textColor: Colors.white);
 
         addStringToSF(res["user_data"]);
+      }
+      if (res["status_code"] == 400) {
+        Fluttertoast.showToast(
+            msg: res["error_message"],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 15,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white);
+        throw new Exception(res);
+      }
+      return;
+    });
+  }
+
+  Future<dynamic> addtocart(Map<String, String> map) {
+    return _netUtil
+        .post(add_to_cart_product, body: map)
+        .then((dynamic res) {
+      print(res);
+      if (res["status_code"] == 200) {
+        Fluttertoast.showToast(
+            msg: res["message"],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 15,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white);
+        ;
       }
       if (res["status_code"] == 400) {
         Fluttertoast.showToast(
@@ -159,13 +192,10 @@ class RestDatasource {
     });
   }
 
-
   Future<List<Map<String, dynamic>>> getMainCat() async {
     http.Response response = await http.get(get_all_categories);
     if (response.statusCode != 200) return null;
     return List<Map<String, dynamic>>.from(
         json.decode(response.body)['category_list']);
   }
-
-
 }
