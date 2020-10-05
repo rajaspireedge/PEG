@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
+import 'package:peg/Add_to_cart.dart';
 import 'package:peg/Category.dart';
 import 'package:peg/Item_Detail.dart';
 import 'package:peg/MembbershipInfo.dart';
@@ -460,6 +461,10 @@ class _HomescreenState extends State<Homescreen> {
                                 ),
                               ),
                               InkWell(
+                                onTap: () {
+                                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                      builder: (BuildContext context) => AddtoCARTfull()));
+                                },
                                 child: Container(
                                   child: Image(
                                     image: AssetImage("assets/images/cart.png"),
