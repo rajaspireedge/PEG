@@ -30,6 +30,7 @@ class ItemFull extends StatelessWidget {
 }
 
 class ItemDetail extends StatefulWidget {
+
   String id;
 
   ItemDetail({Key key, @required this.id}) : super(key: key);

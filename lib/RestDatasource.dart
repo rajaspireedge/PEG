@@ -26,6 +26,7 @@ class RestDatasource {
   static final get_all_players = BASE_URL + "user/get_all_players";
   static final view_product = BASE_URL + "product/view_product/";
   static final add_to_cart_product = BASE_URL + "product/add_to_cart_product";
+  static final get_all_cart_products = BASE_URL + "cart/get_all_cart_products/";
 
   addStringToSF(dynamic data) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -106,6 +107,13 @@ class RestDatasource {
     if (response.statusCode != 200) return null;
     return List<Map<String, dynamic>>.from(
         json.decode(response.body)['userslist']);
+  }
+
+  Future<List<Map<String, dynamic>>> fetchCART(String id) async {
+    http.Response response = await http.get(get_all_cart_products + id);
+    if (response.statusCode != 200) return null;
+    return List<Map<String, dynamic>>.from(
+        json.decode(response.body)['cart_list']);
   }
 
   Future<Map<String, dynamic>> fetchItemdetail(String id) async {

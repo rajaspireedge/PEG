@@ -18,6 +18,7 @@ import 'package:peg/ProductResp.dart';
 import 'package:peg/RestDatasource.dart';
 import 'package:peg/Sell_Product_list.dart';
 import 'package:peg/login.dart';
+import 'package:peg/main.dart';
 import 'package:peg/productlist.dart';
 import 'package:http/http.dart' as http;
 import 'package:peg/whishlist.dart';
@@ -463,7 +464,7 @@ class _HomescreenState extends State<Homescreen> {
                               InkWell(
                                 onTap: () {
                                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                      builder: (BuildContext context) => AddtoCARTfull()));
+                                      builder: (BuildContext context) => Addtocart(id: getStringValuesSF().toString(),)));
                                 },
                                 child: Container(
                                   child: Image(
