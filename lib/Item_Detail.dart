@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
+import 'package:peg/Add_to_cart.dart';
 import 'package:peg/RestDatasource.dart';
 import 'package:http/http.dart' as http;
 import 'package:peg/homescreen.dart';
@@ -30,7 +31,6 @@ class ItemFull extends StatelessWidget {
 }
 
 class ItemDetail extends StatefulWidget {
-
   String id;
 
   ItemDetail({Key key, @required this.id}) : super(key: key);
@@ -585,9 +585,9 @@ class _ItemDetailState extends State<ItemDetail> {
                                                 setState(() {
                                                   if (realqty > 0) {
                                                     realqty--;
-                                                    apimap["qty"] = realqty.toString();
+                                                    apimap["qty"] =
+                                                        realqty.toString();
                                                   }
-
                                                 });
                                               },
                                               child: Container(
@@ -632,7 +632,8 @@ class _ItemDetailState extends State<ItemDetail> {
                                                 setState(() {
                                                   if (realqty < qty) {
                                                     realqty++;
-                                                    apimap["qty"] = realqty.toString();
+                                                    apimap["qty"] =
+                                                        realqty.toString();
                                                   }
                                                 });
                                               },
@@ -754,7 +755,17 @@ class _ItemDetailState extends State<ItemDetail> {
                                       ),
                                       GestureDetector(
                                         onTap: () {
-                                          api.addtocart(apimap);
+                                          api.addtocart(apimap).then(
+                                                (value) => Navigator.of(context)
+                                                    .pushReplacement(
+                                                        MaterialPageRoute(
+                                                            builder: (BuildContext
+                                                                    context) =>
+                                                                Addtocart(
+                                                                  id: getStringValuesSF()
+                                                                      .toString(),
+                                                                ))),
+                                              );
                                         },
                                         child: Align(
                                           alignment: Alignment.bottomCenter,

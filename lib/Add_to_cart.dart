@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:peg/Checkout.dart';
 import 'package:peg/RestDatasource.dart';
 import 'package:peg/homescreen.dart';
 import 'package:http/http.dart' as http;
@@ -33,12 +34,14 @@ class AddtoCARTfull extends StatefulWidget {
   _AddtoCARTfullState createState() => _AddtoCARTfullState(id);
 }
 
+int realqty = 0;
+
 class _AddtoCARTfullState extends State<AddtoCARTfull> {
   String id;
+  RestDatasource api = new RestDatasource();
 
   _AddtoCARTfullState(this.id);
 
-  int realqty = 0;
   int qty = 0;
   Color color1 = Color(0xFF06cdff);
   Color color2 = Colors.white;
@@ -159,8 +162,18 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
+                          realqty = int.parse(
+                              snapshotitemlist[index]["qty"].toString());
 
-                          realqty = 0;
+                          String cart_id =
+                              snapshotitemlist[index]["cart_id"].toString();
+                          product_id =
+                              snapshotitemlist[index]["product_id"].toString();
+
+                          String prdct_qty =
+                              snapshotitemlist[index]["qty"].toString();
+
+                          String extra_amount = "0";
 
                           return Container(
                             margin: EdgeInsets.only(
@@ -210,7 +223,10 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                               EdgeInsets.only(
                                                                   left: 30),
                                                           child: Text(
-                                                            snapshotitemlist[index]["product_name"].toString(),
+                                                            snapshotitemlist[
+                                                                        index][
+                                                                    "product_name"]
+                                                                .toString(),
                                                             style: TextStyle(
                                                                 fontFamily:
                                                                     'Roboto-Medium',
@@ -243,10 +259,15 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                                   left: 30,
                                                                   top: 20),
                                                           child: Image(
-                                                              image: NetworkImage(snapshotitemlist[index]["product_image"]),
+                                                              image: NetworkImage(
+                                                                  snapshotitemlist[
+                                                                          index]
+                                                                      [
+                                                                      "product_image"]),
                                                               height: 80,
                                                               width: 80,
-                                                              fit: BoxFit.scaleDown),
+                                                              fit: BoxFit
+                                                                  .scaleDown),
                                                         ),
                                                         Align(
                                                           alignment:
@@ -263,13 +284,23 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                               children: [
                                                                 GestureDetector(
                                                                   onTap: () {
-                                                                    setState(
-                                                                        () {
-                                                                      if (realqty >
-                                                                          0) {
-                                                                        realqty--;
-                                                                      }
-                                                                    });
+
+
+                                                                    apimap["user_id"] =
+                                                                        userid.toString();
+                                                                    apimap["product_id"] =
+                                                                        product_id.toString();
+                                                                    apimap["cart_item_id"] =
+                                                                        cart_id;
+                                                                    apimap["prdct_qty"] =
+                                                                        (realqty -
+                                                                            1)
+                                                                            .toString();
+                                                                    apimap["extra_amount"] =
+                                                                    "0";
+
+                                                                    api.cart_product_qty_updatess(
+                                                                        apimap);
                                                                   },
                                                                   child: Container(
                                                                       height: 30,
@@ -325,12 +356,7 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                                 GestureDetector(
                                                                   onTap: () {
                                                                     setState(
-                                                                        () {
-                                                                      if (realqty <
-                                                                          qty) {
-                                                                        realqty++;
-                                                                      }
-                                                                    });
+                                                                        () {});
                                                                   },
                                                                   child: Container(
                                                                       height: 30,
@@ -451,7 +477,13 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                                   top: 10),
                                                           child: Text(
                                                             new String.fromCharCodes(
-                                                                new Runes('\u0024')) + snapshotitemlist[index]["amount"].toString(),
+                                                                    new Runes(
+                                                                        '\u0024')) +
+                                                                snapshotitemlist[
+                                                                            index]
+                                                                        [
+                                                                        "amount"]
+                                                                    .toString(),
                                                             style: TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
@@ -472,7 +504,13 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                                   top: 10),
                                                           child: Text(
                                                             new String.fromCharCodes(
-                                                                new Runes('\u0024')) + snapshotitemlist[index]["product_fee"].toString(),
+                                                                    new Runes(
+                                                                        '\u0024')) +
+                                                                snapshotitemlist[
+                                                                            index]
+                                                                        [
+                                                                        "product_fee"]
+                                                                    .toString(),
                                                             style: TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
@@ -493,7 +531,13 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                                   top: 10),
                                                           child: Text(
                                                             new String.fromCharCodes(
-                                                                new Runes('\u0024')) + snapshotitemlist[index]["amount"].toString(),
+                                                                    new Runes(
+                                                                        '\u0024')) +
+                                                                snapshotitemlist[
+                                                                            index]
+                                                                        [
+                                                                        "amount"]
+                                                                    .toString(),
                                                             style: TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
@@ -574,20 +618,28 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                     )
                                   ],
                                 ),
-                                Container(
-                                  height: 30,
-                                  margin: EdgeInsets.only(top: 20),
-                                  alignment: Alignment.center,
-                                  decoration:
-                                      BoxDecoration(color: Color(0xFFff5000)),
-                                  child: Text(
-                                    "Proceed to Chcekout",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'Roboto-Bold',
-                                        letterSpacing: 0.03,
-                                        fontSize: 12.0,
-                                        color: Colors.white),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                Checkout()));
+                                  },
+                                  child: Container(
+                                    height: 30,
+                                    margin: EdgeInsets.only(top: 20),
+                                    alignment: Alignment.center,
+                                    decoration:
+                                        BoxDecoration(color: Color(0xFFff5000)),
+                                    child: Text(
+                                      "Proceed to Checkout",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Roboto-Bold',
+                                          letterSpacing: 0.03,
+                                          fontSize: 12.0,
+                                          color: Colors.white),
+                                    ),
                                   ),
                                 )
                               ],

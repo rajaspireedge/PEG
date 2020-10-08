@@ -27,6 +27,8 @@ class RestDatasource {
   static final view_product = BASE_URL + "product/view_product/";
   static final add_to_cart_product = BASE_URL + "product/add_to_cart_product";
   static final get_all_cart_products = BASE_URL + "cart/get_all_cart_products/";
+  static final cart_product_qty_update =
+      BASE_URL + "cart/cart_product_qty_update";
 
   addStringToSF(dynamic data) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -63,11 +65,37 @@ class RestDatasource {
       return;
     });
   }
+  Future<dynamic> cart_product_qty_updatess(Map<String, String> map) {
+    return _netUtil.post(cart_product_qty_update, body: map).then((dynamic res) {
+      print(res);
+      if (res["status_code"] == 200) {
+        Fluttertoast.showToast(
+            msg: res["message"],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 15,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white);
+        ;
+      }
+      if (res["status_code"] == 400) {
+        Fluttertoast.showToast(
+            msg: res["error_message"],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 15,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white);
+        throw new Exception(res);
+      }
+      return;
+    });
+  }
 
   Future<dynamic> addtocart(Map<String, String> map) {
-    return _netUtil
-        .post(add_to_cart_product, body: map)
-        .then((dynamic res) {
+    return _netUtil.post(add_to_cart_product, body: map).then((dynamic res) {
       print(res);
       if (res["status_code"] == 200) {
         Fluttertoast.showToast(
