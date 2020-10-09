@@ -67,10 +67,9 @@ class RestDatasource {
   }
   Future<dynamic> cart_product_qty_updatess(Map<String, String> map) {
     return _netUtil.post(cart_product_qty_update, body: map).then((dynamic res) {
-      print(res);
       if (res["status_code"] == 200) {
         Fluttertoast.showToast(
-            msg: res["message"],
+            msg: res["cart_list"]["data_update"],
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             fontSize: 15,
@@ -90,7 +89,7 @@ class RestDatasource {
             textColor: Colors.white);
         throw new Exception(res);
       }
-      return;
+      return res;
     });
   }
 

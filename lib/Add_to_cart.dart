@@ -47,7 +47,7 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
   Color color2 = Colors.white;
   Color color3 = Color(0xFF6ae7e0);
 
-  var userid;
+  String userid;
 
   var ref_seller_id;
 
@@ -77,7 +77,7 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
         Uri.encodeFull(RestDatasource.get_all_cart_products + id),
         headers: {"Accept": "application/json"});
 
-    userid = getStringValuesSF();
+    userid = getStringValuesSF().toString();
 
     setState(() {
       snapshotitemlist =
@@ -284,23 +284,26 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                               children: [
                                                                 GestureDetector(
                                                                   onTap: () {
-
-
                                                                     apimap["user_id"] =
-                                                                        userid.toString();
+                                                                        userid
+                                                                            .toString();
                                                                     apimap["product_id"] =
-                                                                        product_id.toString();
+                                                                        product_id
+                                                                            .toString();
                                                                     apimap["cart_item_id"] =
                                                                         cart_id;
                                                                     apimap["prdct_qty"] =
                                                                         (realqty -
-                                                                            1)
+                                                                                1)
                                                                             .toString();
                                                                     apimap["extra_amount"] =
-                                                                    "0";
+                                                                        "0";
 
-                                                                    api.cart_product_qty_updatess(
-                                                                        apimap);
+                                                                    api
+                                                                        .cart_product_qty_updatess(
+                                                                            apimap)
+                                                                        .then((value) =>
+                                                                            print(value));
                                                                   },
                                                                   child: Container(
                                                                       height: 30,
@@ -656,6 +659,12 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                 builder: (BuildContext context) => Homescreen()));
           }),
     );
+  }
+
+  onChange() {
+    setState(() {
+      realqty = realqty - 1;
+    });
   }
 }
 
