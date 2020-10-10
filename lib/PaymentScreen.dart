@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:peg/PaypalPayment.dart';
 import 'package:peg/homescreen.dart';
 import 'package:peg/makePayment.dart';
 
@@ -309,8 +310,23 @@ class _PaymentFullState extends State<PaymentFull> {
                                 child: Container(
                                   child: new InkWell(
                                     onTap: () {
-                                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                          builder: (BuildContext context) => makePayment()));
+
+                                      // make PayPal payment
+
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) => PaypalPayment(
+                                            onFinish: (number) async {
+                                              // payment done
+
+                                              print('order id: ' + number);
+
+
+                                            },
+                                          ),
+                                        ),
+                                      );
+
                                     },
                                     child: Stack(
                                       children: <Widget>[

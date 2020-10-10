@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:peg/MyOrder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'PaypalServices.dart';
@@ -87,14 +88,14 @@ class PaypalPaymentState extends State<PaypalPayment> {
     String subTotalAmount = '1.99';
     String shippingCost = '0';
     int shippingDiscountCost = 0;
-    String userFirstName = 'Gulshan';
-    String userLastName = 'Yadav';
-    String addressCity = 'Delhi';
-    String addressStreet = 'Mathura Road';
-    String addressZipCode = '110014';
+    String userFirstName = 'Raj';
+    String userLastName = 'Rajput';
+    String addressCity = 'Ahmedabad';
+    String addressStreet = 'Mehsana';
+    String addressZipCode = '384001';
     String addressCountry = 'India';
-    String addressState = 'Delhi';
-    String addressPhoneNumber = '+919990119091';
+    String addressState = 'Gujarat';
+    String addressPhoneNumber = '+919687296871';
 
     Map<String, dynamic> temp = {
       "intent": "sale",
@@ -169,11 +170,19 @@ class PaypalPaymentState extends State<PaypalPayment> {
                     .then((id) {
                   widget.onFinish(id);
                   Navigator.of(context).pop();
+
+                  print("444");
                 });
               } else {
+                print("111");
                 Navigator.of(context).pop();
               }
-              Navigator.of(context).pop();
+
+              print("222");
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          MyOrder()));
             }
             if (request.url.contains(cancelURL)) {
               Navigator.of(context).pop();
@@ -189,6 +198,8 @@ class PaypalPaymentState extends State<PaypalPayment> {
           leading: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
+
+                print("333");
                 Navigator.of(context).pop();
               }),
           backgroundColor: Colors.black12,

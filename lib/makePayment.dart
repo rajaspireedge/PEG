@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:peg/MyOrder.dart';
 import 'PaypalPayment.dart';
 
 class makePayment extends StatefulWidget {
-
   @override
   _makePaymentState createState() => _makePaymentState();
 }
 
 class _makePaymentState extends State<makePayment> {
-
   TextStyle style = TextStyle(fontFamily: 'Open Sans', fontSize: 15.0);
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +38,7 @@ class _makePaymentState extends State<makePayment> {
               ),
             ),
           ),
-          body:Container(
+          body: Container(
               width: MediaQuery.of(context).size.width,
               child: Container(
                 child: Column(
@@ -48,34 +46,17 @@ class _makePaymentState extends State<makePayment> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     RaisedButton(
-                      onPressed: (){
-
-                        // make PayPal payment
-
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => PaypalPayment(
-                              onFinish: (number) async {
-
-                                // payment done
-                                print('order id: '+number);
-
-                              },
-                            ),
-                          ),
-                        );
-
+                      onPressed: () {
 
                       },
-                      child: Text('Pay with Paypal', textAlign: TextAlign.center,),
+                      child: Text(
+                        'Pay with Paypal',
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-
                   ],
                 ),
-              )
-          ),
-        )
-    );
+              )),
+        ));
   }
-
 }
