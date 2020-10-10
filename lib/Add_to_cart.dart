@@ -192,19 +192,24 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                               fit: BoxFit.fill,
                                               height: 335,
                                             ),
-                                            Align(
-                                              alignment: Alignment.topRight,
-                                              child: Container(
-                                                margin: EdgeInsets.only(
-                                                    right: 10,
-                                                    left: 30,
-                                                    top: 20),
-                                                child: Image(
-                                                    image: AssetImage(
-                                                        "assets/images/icons_8_delete_bin_24.png"),
-                                                    height: 25,
-                                                    width: 20,
-                                                    fit: BoxFit.fill),
+                                            InkWell(
+                                              onTap: () {
+                                                _showMyDialog(context);
+                                              },
+                                              child: Align(
+                                                alignment: Alignment.topRight,
+                                                child: Container(
+                                                  margin: EdgeInsets.only(
+                                                      right: 10,
+                                                      left: 30,
+                                                      top: 20),
+                                                  child: Image(
+                                                      image: AssetImage(
+                                                          "assets/images/icons_8_delete_bin_24.png"),
+                                                      height: 25,
+                                                      width: 20,
+                                                      fit: BoxFit.fill),
+                                                ),
                                               ),
                                             ),
                                             Column(
@@ -648,7 +653,58 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                               ],
                             )),
                       ),
-                    )
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.fromLTRB(40.0, 0.0, 20.0, 0.0),
+                          child: Stack(
+                            children: <Widget>[
+                              Align(
+                                alignment: Alignment.topCenter,
+                                child: Container(
+                                  child: new InkWell(
+                                    onTap: () {},
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Align(
+                                          alignment: Alignment.topCenter,
+                                          child: new Image(
+                                            image: AssetImage(
+                                                'assets/images/group_2_copy_2966.png'),
+                                            height: 150,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        Align(
+                                          child: Container(
+                                            height: 150,
+                                            margin: EdgeInsets.only(top: 60),
+                                            alignment: Alignment.center,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 30, top: 10),
+                      child: Text(
+                        "Clear Cart",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Roboto-Medium',
+                            letterSpacing: 0.03,
+                            fontSize: 15.0,
+                            color: Color(0xFFff5000)),
+                      ),
+                    ),
                   ],
                 )),
               )
@@ -707,4 +763,32 @@ class _GradientPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => oldDelegate != this;
+}
+
+Future<void> _showMyDialog(BuildContext context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('AlertDialog Title'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('This is a demo alert dialog.'),
+              Text('Would you like to approve of this message?'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Approve'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

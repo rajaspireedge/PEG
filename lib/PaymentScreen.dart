@@ -1,31 +1,33 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:peg/PaymentScreen.dart';
 import 'package:peg/homescreen.dart';
+import 'package:peg/makePayment.dart';
 
-class Checkout extends StatelessWidget {
+class Payment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: Scaffold(
-      body: Center(child: CheckoutFull()),
-    ));
+      home: Scaffold(
+        backgroundColor: Colors.black,
+        body: Center(child: PaymentFull()),
+      ),
+    );
   }
 }
 
-class CheckoutFull extends StatefulWidget {
+class PaymentFull extends StatefulWidget {
   @override
-  _CheckoutFullState createState() => _CheckoutFullState();
+  _PaymentFullState createState() => _PaymentFullState();
 }
 
 var back_1 = new AssetImage('assets/images/back_1.png');
 var borderimg2 = new AssetImage('assets/images/rounded_rectangle_234.png');
 var borderimg = new AssetImage('assets/images/borderimg.png');
 
+Color color1 = Color(0xFF06cdff);
+Color color2 = Colors.white;
+Color color3 = Color(0xFF6ae7e0);
 
-final username_controller = TextEditingController();
-
-class _CheckoutFullState extends State<CheckoutFull> {
+class _PaymentFullState extends State<PaymentFull> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,7 +126,7 @@ class _CheckoutFullState extends State<CheckoutFull> {
                       ],
                     ),
                     Container(
-                      margin: EdgeInsets.only(right: 30, left: 30 , top: 20),
+                      margin: EdgeInsets.only(right: 30, left: 30, top: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -154,7 +156,7 @@ class _CheckoutFullState extends State<CheckoutFull> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(right: 30, left: 30 , top: 20),
+                      margin: EdgeInsets.only(right: 30, left: 30, top: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -183,227 +185,117 @@ class _CheckoutFullState extends State<CheckoutFull> {
                         ],
                       ),
                     ),
-                    Stack(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 0.0),
-                          decoration: new BoxDecoration(
-                            image: new DecorationImage(
-                              image: borderimg,
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          child: TextField(
-                            style: style,
-                            controller: username_controller,
-                            decoration: InputDecoration(
-                              contentPadding:
-                                  EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                              hintText: "Email ID",
-                              border: InputBorder.none,
-                              hintStyle: hintstyle,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Stack(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
-                          decoration: new BoxDecoration(
-                            image: new DecorationImage(
-                              image: borderimg,
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          child: TextField(
-                            style: style,
-                            controller: username_controller,
-                            decoration: InputDecoration(
-                              contentPadding:
-                                  EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                              hintText: "Name",
-                              border: InputBorder.none,
-                              hintStyle: hintstyle,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Stack(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
-                          decoration: new BoxDecoration(
-                            image: new DecorationImage(
-                              image: borderimg,
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          child: TextField(
-                            style: style,
-                            controller: username_controller,
-                            decoration: InputDecoration(
-                              contentPadding:
-                                  EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                              hintText: "Address",
-                              border: InputBorder.none,
-                              hintStyle: hintstyle,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Stack(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
-                          decoration: new BoxDecoration(
-                            image: new DecorationImage(
-                              image: borderimg,
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          child: TextField(
-                            style: style,
-                            controller: username_controller,
-                            decoration: InputDecoration(
-                              contentPadding:
-                                  EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                              hintText: "Country",
-                              border: InputBorder.none,
-                              hintStyle: hintstyle,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Stack(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
-                          decoration: new BoxDecoration(
-                            image: new DecorationImage(
-                              image: borderimg,
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          child: TextField(
-                            style: style,
-                            controller: username_controller,
-                            decoration: InputDecoration(
-                              contentPadding:
-                                  EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                              hintText: "State",
-                              border: InputBorder.none,
-                              hintStyle: hintstyle,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Stack(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
-                          decoration: new BoxDecoration(
-                            image: new DecorationImage(
-                              image: borderimg,
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          child: TextField(
-                            style: style,
-                            controller: username_controller,
-                            decoration: InputDecoration(
-                              contentPadding:
-                                  EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                              hintText: "City",
-                              border: InputBorder.none,
-                              hintStyle: hintstyle,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Stack(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
-                          decoration: new BoxDecoration(
-                            image: new DecorationImage(
-                              image: borderimg,
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          child: TextField(
-                            style: style,
-                            controller: username_controller,
-                            decoration: InputDecoration(
-                              contentPadding:
-                                  EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                              hintText: "Zip Code",
-                              border: InputBorder.none,
-                              hintStyle: hintstyle,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Stack(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
-                          decoration: new BoxDecoration(
-                            image: new DecorationImage(
-                              image: borderimg,
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          child: TextField(
-                            style: style,
-                            controller: username_controller,
-                            decoration: InputDecoration(
-                              contentPadding:
-                                  EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                              hintText: "Phone",
-                              border: InputBorder.none,
-                              hintStyle: hintstyle,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-
                     Container(
-                      margin: EdgeInsets.only(right: 30, left: 50 , top: 10),
+                      margin: EdgeInsets.only(right: 30, left: 30, top: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            alignment: Alignment.centerRight,
-                            margin: EdgeInsets.only(left: 20),
-                            child: Image(
-                              image: AssetImage('assets/images/rectangle_4_copy_2345.png'),
-                              height: 20,
-                              width: 20,
-                            ),
-                          ),
-                          Container(
                             alignment: Alignment.centerLeft,
                             margin: EdgeInsets.only(left: 20),
                             child: Text(
-                              "Ship to diffrent address",
+                              "Payment Information",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Roboto-Medium',
                                   letterSpacing: 0.03,
-                                  fontSize: 16.0,
-                                  color: Colors.white),
+                                  fontSize: 18.0,
+                                  color: Color(0xFFff5000)),
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.centerRight,
+                            margin: EdgeInsets.only(right: 20.0),
+                            child: Image(
+                              image: AssetImage('assets/images/bill.png'),
+                              height: 20,
+                              width: 20,
                             ),
                           ),
                         ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 20, right: 30, left: 30, bottom: 20),
+                      child: CustomPaint(
+                        painter: _GradientPainter(
+                          strokeWidth: 1,
+                          radius: 10,
+                          gradient: LinearGradient(
+                            colors: [color2, color3],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
+                        ),
+                        child: Container(
+                            height: 100,
+                            alignment: Alignment.topCenter,
+                            margin:
+                                EdgeInsets.only(right: 30, left: 30, top: 20),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      alignment: Alignment.centerRight,
+                                      child: Image(
+                                        image: AssetImage(
+                                            'assets/images/rectangle_4_copy_2345.png'),
+                                        height: 20,
+                                        width: 20,
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        "From Wallet",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Roboto-Medium',
+                                            letterSpacing: 0.03,
+                                            fontSize: 16.0,
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                    Container(
+                                      child: Text(
+                                        new String.fromCharCodes(
+                                                new Runes('\u0024')) +
+                                            "382",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Roboto-Bold',
+                                            letterSpacing: 0.03,
+                                            fontSize: 16.0,
+                                            color: Colors.white),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                InkWell(
+                                  onTap: () {},
+                                  child: Container(
+                                    height: 30,
+                                    margin: EdgeInsets.only(top: 20),
+                                    alignment: Alignment.center,
+                                    decoration:
+                                        BoxDecoration(color: Color(0xFFff5000)),
+                                    child: Text(
+                                      "Proceed to Checkout",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Roboto-Bold',
+                                          letterSpacing: 0.03,
+                                          fontSize: 12.0,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )),
                       ),
                     ),
                     Column(
@@ -418,14 +310,14 @@ class _CheckoutFullState extends State<CheckoutFull> {
                                   child: new InkWell(
                                     onTap: () {
                                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                          builder: (BuildContext context) => Payment()));
+                                          builder: (BuildContext context) => makePayment()));
                                     },
                                     child: Stack(
                                       children: <Widget>[
                                         Align(
                                           alignment: Alignment.topCenter,
                                           child: new Image(
-                                            image: AssetImage('assets/images/group_2_copy_258.png'),
+                                            image: AssetImage('assets/images/group_2_copy_2966.png'),
                                             height: 150,
                                             fit: BoxFit.cover,
                                           ),
@@ -461,5 +353,43 @@ class _CheckoutFullState extends State<CheckoutFull> {
   }
 }
 
-TextStyle hintstyle =
-    TextStyle(fontFamily: 'Roboto-Bold', fontSize: 14.0, color: Colors.white);
+class _GradientPainter extends CustomPainter {
+  final Paint _paint = Paint();
+  final double radius;
+  final double strokeWidth;
+  final Gradient gradient;
+
+  _GradientPainter(
+      {@required double strokeWidth,
+      @required double radius,
+      @required Gradient gradient})
+      : this.strokeWidth = strokeWidth,
+        this.radius = radius,
+        this.gradient = gradient;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    // create outer rectangle equals size
+    Rect outerRect = Offset.zero & size;
+    var outerRRect =
+        RRect.fromRectAndRadius(outerRect, Radius.circular(radius));
+
+    // create inner rectangle smaller by strokeWidth
+    Rect innerRect = Rect.fromLTWH(strokeWidth, strokeWidth,
+        size.width - strokeWidth * 2, size.height - strokeWidth * 2);
+    var innerRRect = RRect.fromRectAndRadius(
+        innerRect, Radius.circular(radius - strokeWidth));
+
+    // apply gradient shader
+    _paint.shader = gradient.createShader(outerRect);
+
+    // create difference between outer and inner paths and draw it
+    Path path1 = Path()..addRRect(outerRRect);
+    Path path2 = Path()..addRRect(innerRRect);
+    var path = Path.combine(PathOperation.difference, path1, path2);
+    canvas.drawPath(path, _paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => oldDelegate != this;
+}

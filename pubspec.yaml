@@ -35,6 +35,9 @@ dependencies:
   loading: ^1.0.2
   carousel_slider: ^2.2.1
   flutter_statusbarcolor: ^0.2.3
+  http_auth: ^0.3.0
+  webview_flutter: ^1.0.1
+
 
 
 
