@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:peg/MyOrder.dart';
+import 'package:peg/main.dart';
 
 class MyOrderDetail extends StatelessWidget {
   @override
@@ -615,8 +616,9 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
             ],
           ),
           onWillPop: () async {
-            return Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => MyOrderFull()));
+            return getStringValuesSF().then((value) => Navigator.of(context)
+                .pushReplacement(MaterialPageRoute(
+                    builder: (BuildContext context) => MyOrder(value))));
           }),
     );
   }

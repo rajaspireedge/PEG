@@ -77,7 +77,7 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
         Uri.encodeFull(RestDatasource.get_all_cart_products + id),
         headers: {"Accept": "application/json"});
 
-    userid = getStringValuesSF().toString();
+    getStringValuesSF().then((value) => {userid = value, print(value)});
 
     setState(() {
       snapshotitemlist =
@@ -289,9 +289,12 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                               children: [
                                                                 GestureDetector(
                                                                   onTap: () {
-                                                                    apimap["user_id"] =
+                                                                    print("chechuserid" +
                                                                         userid
-                                                                            .toString();
+                                                                            .toString());
+
+                                                                    apimap["user_id"] =
+                                                                        userid;
                                                                     apimap["product_id"] =
                                                                         product_id
                                                                             .toString();

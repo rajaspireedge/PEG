@@ -1,28 +1,76 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loading/indicator/ball_pulse_indicator.dart';
+import 'package:loading/loading.dart';
 import 'package:peg/MyOrderDetail.dart';
+import 'package:peg/RestDatasource.dart';
 import 'package:peg/homescreen.dart';
+import 'package:http/http.dart' as http;
+import 'package:peg/main.dart';
+
 
 class MyOrder extends StatelessWidget {
+
+  String userid;
+
+
+  MyOrder(this.userid);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
       body: Center(
-        child: MyOrderFull(),
+        child: MyOrderFull(userid),
       ),
     ));
   }
 }
 
 class MyOrderFull extends StatefulWidget {
+  String userid;
+
+
+  MyOrderFull(this.userid);
+
   @override
-  _MyOrderFullState createState() => _MyOrderFullState();
+  _MyOrderFullState createState() => _MyOrderFullState(userid);
 }
 
 class _MyOrderFullState extends State<MyOrderFull> {
+
+  List<Map<String, dynamic>> snapshotitemlist = List();
+  String userid;
+  _MyOrderFullState(this.userid);
+
+  Future<String> getSWData(String id) async {
+    var res = await http.get(
+        Uri.encodeFull(RestDatasource.get_my_order + id),
+        headers: {"Accept": "application/json"});
+
+    getStringValuesSF().then((value) => {userid = value});
+
+    setState(() {
+      snapshotitemlist =
+      List<Map<String, dynamic>>.from(json.decode(res.body)['order_list']);
+    });
+    return "Success";
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    this.getSWData(this.userid);
+  }
   @override
   Widget build(BuildContext context) {
+
+
+    Color color3 = Color(0xFF6ae7e0);
+
+
     return Scaffold(
       body: WillPopScope(
           child: Stack(
@@ -80,6 +128,19 @@ class _MyOrderFullState extends State<MyOrderFull> {
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
+
+                        if (snapshotitemlist == null) {
+                          return Container(
+                            color: Colors.lightBlue,
+                            child: Center(
+                              child: Loading(
+                                  indicator: BallPulseIndicator(),
+                                  size: 100.0,
+                                  color: color3),
+                            ),
+                          );
+                        }
+
                         return Container(
                           margin:
                               EdgeInsets.only(right: 30, left: 30, bottom: 10),
@@ -101,7 +162,7 @@ class _MyOrderFullState extends State<MyOrderFull> {
                                               margin: EdgeInsets.only(
                                                   left: 6, top: 6),
                                               child: Text(
-                                                "26",
+                                                snapshotitemlist[index]["id"].toString(),
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontFamily: 'Roboto-Medium',
@@ -117,7 +178,7 @@ class _MyOrderFullState extends State<MyOrderFull> {
                                               margin: EdgeInsets.only(
                                                   right: 6, top: 6),
                                               child: Text(
-                                                "Jan 26, 2020",
+                                                snapshotitemlist[index]["created_at"].toString(),
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontFamily: 'Roboto-Medium',
@@ -177,7 +238,7 @@ class _MyOrderFullState extends State<MyOrderFull> {
                                                 margin: EdgeInsets.only(
                                                     right: 10, top: 25),
                                                 child: Text(
-                                                  "23456767 897645",
+                                                  snapshotitemlist[index]["tracking_id"].toString(),
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -192,7 +253,7 @@ class _MyOrderFullState extends State<MyOrderFull> {
                                                 margin: EdgeInsets.only(
                                                     right: 10, top: 10),
                                                 child: Text(
-                                                  "205.95",
+                                                  snapshotitemlist[index]["grand_total"].toString(),
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -233,7 +294,7 @@ class _MyOrderFullState extends State<MyOrderFull> {
                           ),
                         );
                       },
-                      itemCount: 5,
+                      itemCount: snapshotitemlist.length,
                     ),
                   ],
                 )),

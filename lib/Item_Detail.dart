@@ -44,7 +44,7 @@ class _ItemDetailState extends State<ItemDetail> {
   String name;
   List images = List();
 
-  var userid;
+  String userid;
 
   var ref_seller_id;
 
@@ -363,7 +363,7 @@ class _ItemDetailState extends State<ItemDetail> {
     var res = await http.get(Uri.encodeFull(RestDatasource.view_product + id),
         headers: {"Accept": "application/json"});
 
-    userid = getStringValuesSF();
+    userid = getStringValuesSF().toString();
 
     setState(() {
       snapshotitemlist.addAll(
@@ -756,15 +756,16 @@ class _ItemDetailState extends State<ItemDetail> {
                                       GestureDetector(
                                         onTap: () {
                                           api.addtocart(apimap).then(
-                                                (value) => Navigator.of(context)
-                                                    .pushReplacement(
-                                                        MaterialPageRoute(
-                                                            builder: (BuildContext
-                                                                    context) =>
-                                                                Addtocart(
-                                                                  id: getStringValuesSF()
-                                                                      .toString(),
-                                                                ))),
+                                                (value) => getStringValuesSF()
+                                                    .then((value) => Navigator
+                                                            .of(context)
+                                                        .pushReplacement(
+                                                            MaterialPageRoute(
+                                                                builder: (BuildContext
+                                                                        context) =>
+                                                                    Addtocart(
+                                                                      id: value,
+                                                                    )))),
                                               );
                                         },
                                         child: Align(

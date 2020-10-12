@@ -27,12 +27,19 @@ class RestDatasource {
   static final view_product = BASE_URL + "product/view_product/";
   static final add_to_cart_product = BASE_URL + "product/add_to_cart_product";
   static final get_all_cart_products = BASE_URL + "cart/get_all_cart_products/";
+  static final get_my_order = BASE_URL + "order/get_my_order/";
   static final cart_product_qty_update =
       BASE_URL + "cart/cart_product_qty_update";
 
-  addStringToSF(dynamic data) async {
+  addStringToSF(String id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('userID', data["id"]);
+    prefs.setString('userID', id);
+  }
+
+  Future<String> getStringValuesSF() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //Return
+    return prefs.getString('userID');
   }
 
   Future<User> login(String username, String password, BuildContext context) {
@@ -49,7 +56,9 @@ class RestDatasource {
             backgroundColor: Colors.blue,
             textColor: Colors.white);
 
-        addStringToSF(res["user_data"]);
+        addStringToSF(res["user_data"]["id"].toString());
+
+        getStringValuesSF().then((value) => print(value));
       }
       if (res["status_code"] == 400) {
         Fluttertoast.showToast(
@@ -65,8 +74,11 @@ class RestDatasource {
       return;
     });
   }
+
   Future<dynamic> cart_product_qty_updatess(Map<String, String> map) {
-    return _netUtil.post(cart_product_qty_update, body: map).then((dynamic res) {
+    return _netUtil
+        .post(cart_product_qty_update, body: map)
+        .then((dynamic res) {
       if (res["status_code"] == 200) {
         Fluttertoast.showToast(
             msg: res["cart_list"]["data_update"],
