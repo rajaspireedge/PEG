@@ -474,8 +474,7 @@ class _HomescreenState extends State<Homescreen> {
                                   Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                           builder: (BuildContext context) =>
-                                              Addtocart(id: getStringValuesSF()
-                                                  .toString(),)));
+                                              Addtocart(id: userid,)));
                                 },
                                 child: Container(
                                   child: Image(

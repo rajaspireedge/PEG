@@ -82,6 +82,7 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
     setState(() {
       snapshotitemlist =
           List<Map<String, dynamic>>.from(json.decode(res.body)['cart_list']);
+      print(snapshotitemlist);
     });
     return "Success";
   }
@@ -311,7 +312,9 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                                         .cart_product_qty_updatess(
                                                                             apimap)
                                                                         .then((value) =>
-                                                                            print(value));
+                                                                            {
+                                                                              print(value)
+                                                                            });
                                                                   },
                                                                   child: Container(
                                                                       height: 30,
@@ -580,134 +583,117 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(
-                          top: 20, right: 30, left: 30, bottom: 20),
-                      child: CustomPaint(
-                        painter: _GradientPainter(
-                          strokeWidth: 1,
-                          radius: 10,
-                          gradient: LinearGradient(
-                            colors: [color2, color3],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                          ),
-                        ),
-                        child: Container(
-                            height: 100,
-                            alignment: Alignment.topCenter,
-                            margin:
-                                EdgeInsets.only(right: 30, left: 30, top: 20),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        "CART TOTAL",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'Roboto-Bold',
-                                            letterSpacing: 0.03,
-                                            fontSize: 16.0,
-                                            color: Colors.white),
-                                      ),
-                                    ),
-                                    Container(
-                                      child: Text(
-                                        new String.fromCharCodes(
-                                                new Runes('\u0024')) +
-                                            "382",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'Roboto-Bold',
-                                            letterSpacing: 0.03,
-                                            fontSize: 16.0,
-                                            color: Colors.white),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                Checkout()));
-                                  },
-                                  child: Container(
-                                    height: 30,
-                                    margin: EdgeInsets.only(top: 20),
-                                    alignment: Alignment.center,
-                                    decoration:
-                                        BoxDecoration(color: Color(0xFFff5000)),
-                                    child: Text(
-                                      "Proceed to Checkout",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Roboto-Bold',
-                                          letterSpacing: 0.03,
-                                          fontSize: 12.0,
-                                          color: Colors.white),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            )),
-                      ),
-                    ),
-                    Column(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.fromLTRB(40.0, 0.0, 20.0, 0.0),
-                          child: Stack(
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.topCenter,
-                                child: Container(
-                                  child: new InkWell(
-                                    onTap: () {},
-                                    child: Stack(
-                                      children: <Widget>[
-                                        Align(
-                                          alignment: Alignment.topCenter,
-                                          child: new Image(
-                                            image: AssetImage(
-                                                'assets/images/group_2_copy_2966.png'),
-                                            height: 150,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                        Align(
-                                          child: Container(
-                                            height: 150,
-                                            margin: EdgeInsets.only(top: 60),
-                                            alignment: Alignment.center,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                        padding: const EdgeInsets.only(
+                            top: 20, right: 30, left: 30, bottom: 20),
+                        child: Stack(
+                          children: [
+                            CustomPaint(
+                              painter: _GradientPainter(
+                                strokeWidth: 1,
+                                radius: 10,
+                                gradient: LinearGradient(
+                                  colors: [color2, color3],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 30, top: 10),
-                      child: Text(
-                        "Clear Cart",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Roboto-Medium',
-                            letterSpacing: 0.03,
-                            fontSize: 15.0,
-                            color: Color(0xFFff5000)),
-                      ),
-                    ),
+                              child: Container(
+                                  height: 100,
+                                  alignment: Alignment.topCenter,
+                                  margin: EdgeInsets.only(
+                                      right: 30, left: 30, top: 20),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(
+                                            child: Text(
+                                              "CART TOTAL",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: 'Roboto-Bold',
+                                                  letterSpacing: 0.03,
+                                                  fontSize: 16.0,
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                          Container(
+                                            child: Text(
+                                              new String.fromCharCodes(
+                                                      new Runes('\u0024')) +
+                                                  "0",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: 'Roboto-Bold',
+                                                  letterSpacing: 0.03,
+                                                  fontSize: 16.0,
+                                                  color: Colors.white),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).pushReplacement(
+                                              MaterialPageRoute(
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          Checkout()));
+                                        },
+                                        child: Container(
+                                          height: 30,
+                                          margin: EdgeInsets.only(top: 20),
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                              color: Color(0xFFff5000)),
+                                          child: Text(
+                                            "Proceed to Checkout",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'Roboto-Bold',
+                                                letterSpacing: 0.03,
+                                                fontSize: 12.0,
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                            ),
+                            Column(
+                              children: <Widget>[
+                                Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Container(
+                                      margin: EdgeInsets.only(top: 120),
+                                      child: new Image(
+                                        image: AssetImage(
+                                            'assets/images/group_2_copy_25689.png'),
+                                        height: 120,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    )),
+                                Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Container(
+                                    margin: EdgeInsets.only(bottom: 10),
+                                    child: Text(
+                                      "Clear Cart",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Roboto-Medium',
+                                          letterSpacing: 0.03,
+                                          fontSize: 15.0,
+                                          color: Color(0xFFff5000)),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        )),
                   ],
                 )),
               )
@@ -721,9 +707,7 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
   }
 
   onChange() {
-    setState(() {
-      realqty = realqty - 1;
-    });
+    setState(() {});
   }
 }
 

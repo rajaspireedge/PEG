@@ -334,15 +334,8 @@ class _PaymentFullState extends State<PaymentFull> {
                                           alignment: Alignment.topCenter,
                                           child: new Image(
                                             image: AssetImage('assets/images/group_2_copy_2966.png'),
-                                            height: 150,
+                                            height: 120,
                                             fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                        Align(
-                                          child: Container(
-                                            height: 150,
-                                            margin: EdgeInsets.only(top: 60),
-                                            alignment: Alignment.center,
                                           ),
                                         ),
                                       ],

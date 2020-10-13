@@ -377,7 +377,7 @@ class _CheckoutFullState extends State<CheckoutFull> {
                     ),
 
                     Container(
-                      margin: EdgeInsets.only(right: 30, left: 50 , top: 10),
+                      margin: EdgeInsets.only(right: 30, left: 30 , top: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -392,7 +392,7 @@ class _CheckoutFullState extends State<CheckoutFull> {
                           ),
                           Container(
                             alignment: Alignment.centerLeft,
-                            margin: EdgeInsets.only(left: 20),
+                            margin: EdgeInsets.only(right: 30),
                             child: Text(
                               "Ship to diffrent address",
                               style: TextStyle(
@@ -406,47 +406,26 @@ class _CheckoutFullState extends State<CheckoutFull> {
                         ],
                       ),
                     ),
-                    Column(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.fromLTRB(40.0, 0.0, 20.0, 0.0),
-                          child: Stack(
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.topCenter,
-                                child: Container(
-                                  child: new InkWell(
-                                    onTap: () {
-                                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                          builder: (BuildContext context) => Payment()));
-                                    },
-                                    child: Stack(
-                                      children: <Widget>[
-                                        Align(
-                                          alignment: Alignment.topCenter,
-                                          child: new Image(
-                                            image: AssetImage('assets/images/group_2_copy_258.png'),
-                                            height: 150,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                        Align(
-                                          child: Container(
-                                            height: 150,
-                                            margin: EdgeInsets.only(top: 60),
-                                            alignment: Alignment.center,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                    Container(
+                      child: new InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(
+                              builder: (BuildContext context) => Payment()));
+                        },
+                        child: Stack(
+                          children: <Widget>[
+                            Align(
+                              alignment: Alignment.topCenter,
+                              child: new Image(
+                                image: AssetImage('assets/images/group_2_copy_258.png'),
+                                height: 150,
+                                fit: BoxFit.cover,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    )
+                      ),
+                    ),
 
                   ],
                 )),
