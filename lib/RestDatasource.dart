@@ -28,6 +28,7 @@ class RestDatasource {
   static final add_to_cart_product = BASE_URL + "product/add_to_cart_product";
   static final get_all_cart_products = BASE_URL + "cart/get_all_cart_products/";
   static final get_my_order = BASE_URL + "order/get_my_order/";
+  static final get_player_order = BASE_URL + "order/get_player_order/";
   static final cart_product_qty_update =
       BASE_URL + "cart/cart_product_qty_update";
 
@@ -92,7 +93,7 @@ class RestDatasource {
       }
       if (res["status_code"] == 400) {
         Fluttertoast.showToast(
-            msg: res["error_message"],
+            msg: res["message"],
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             fontSize: 15,

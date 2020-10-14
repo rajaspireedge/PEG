@@ -34,8 +34,6 @@ class AddtoCARTfull extends StatefulWidget {
   _AddtoCARTfullState createState() => _AddtoCARTfullState(id);
 }
 
-int realqty = 0;
-
 class _AddtoCARTfullState extends State<AddtoCARTfull> {
   String id;
   RestDatasource api = new RestDatasource();
@@ -65,12 +63,13 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
 
   var product_name;
 
-  List<Map<String, dynamic>> snapshotitemlist = List();
-
   String selvertion;
   String extraamount;
 
   Map<String, String> apimap = new Map();
+
+  List<double> totallist = List();
+  List<Map<String, dynamic>> snapshotitemlist = List();
 
   Future<String> getSWData(String id) async {
     var res = await http.get(
@@ -85,6 +84,32 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
       print(snapshotitemlist);
     });
     return "Success";
+  }
+
+  Widget gettotal() {
+    double sumtotal = 0.0;
+
+    for (int i = 0; i < snapshotitemlist.length; i++) {
+      double total;
+      total = (double.parse(snapshotitemlist[i]["amount"].toString()) +
+              double.parse(snapshotitemlist[i]["product_fee"].toString())) *
+          double.parse(snapshotitemlist[i]["qty"].toString());
+
+      sumtotal = sumtotal + total;
+    }
+
+    return Container(
+      child: Text(
+        new String.fromCharCodes(new Runes('\u0024')) +
+            sumtotal.toStringAsFixed(2),
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Roboto-Bold',
+            letterSpacing: 0.03,
+            fontSize: 16.0,
+            color: Colors.white),
+      ),
+    );
   }
 
   @override
@@ -163,19 +188,6 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          realqty = int.parse(
-                              snapshotitemlist[index]["qty"].toString());
-
-                          String cart_id =
-                              snapshotitemlist[index]["cart_id"].toString();
-                          product_id =
-                              snapshotitemlist[index]["product_id"].toString();
-
-                          String prdct_qty =
-                              snapshotitemlist[index]["qty"].toString();
-
-                          String extra_amount = "0";
-
                           return Container(
                             margin: EdgeInsets.only(
                                 right: 30, left: 30, bottom: 10),
@@ -294,16 +306,28 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                                         userid
                                                                             .toString());
 
+                                                                    int qtyys = int.parse(
+                                                                        snapshotitemlist[index]
+                                                                            [
+                                                                            "qty"]);
+                                                                    qtyys =
+                                                                        qtyys -
+                                                                            1;
+
                                                                     apimap["user_id"] =
                                                                         userid;
-                                                                    apimap["product_id"] =
-                                                                        product_id
-                                                                            .toString();
-                                                                    apimap["cart_item_id"] =
-                                                                        cart_id;
+                                                                    apimap[
+                                                                        "product_id"] = snapshotitemlist[index]
+                                                                            [
+                                                                            "product_id"]
+                                                                        .toString();
+                                                                    apimap[
+                                                                        "cart_item_id"] = snapshotitemlist[index]
+                                                                            [
+                                                                            "id"]
+                                                                        .toString();
                                                                     apimap["prdct_qty"] =
-                                                                        (realqty -
-                                                                                1)
+                                                                        qtyys
                                                                             .toString();
                                                                     apimap["extra_amount"] =
                                                                         "0";
@@ -313,7 +337,7 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                                             apimap)
                                                                         .then((value) =>
                                                                             {
-                                                                              print(value)
+                                                                              onChange()
                                                                             });
                                                                   },
                                                                   child: Container(
@@ -349,7 +373,9 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                                       Alignment
                                                                           .center,
                                                                   child: Text(
-                                                                    realqty
+                                                                    snapshotitemlist[index]
+                                                                            [
+                                                                            "qty"]
                                                                         .toString(),
                                                                     style: TextStyle(
                                                                         fontFamily:
@@ -369,8 +395,42 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                                 ),
                                                                 GestureDetector(
                                                                   onTap: () {
-                                                                    setState(
-                                                                        () {});
+                                                                    print("chechuserid" +
+                                                                        userid
+                                                                            .toString());
+
+                                                                    int qtyys = int.parse(
+                                                                        snapshotitemlist[index]
+                                                                            [
+                                                                            "qty"]);
+                                                                    qtyys =
+                                                                        qtyys +
+                                                                            1;
+
+                                                                    apimap["user_id"] =
+                                                                        userid;
+                                                                    apimap[
+                                                                        "product_id"] = snapshotitemlist[index]
+                                                                            [
+                                                                            "product_id"]
+                                                                        .toString();
+                                                                    apimap[
+                                                                        "cart_item_id"] = snapshotitemlist[index]
+                                                                            [
+                                                                            "id"]
+                                                                        .toString();
+                                                                    apimap["prdct_qty"] =
+                                                                        qtyys
+                                                                            .toString();
+                                                                    apimap["extra_amount"] =
+                                                                        "0";
+                                                                    api
+                                                                        .cart_product_qty_updatess(
+                                                                            apimap)
+                                                                        .then((value) =>
+                                                                            {
+                                                                              onChange()
+                                                                            });
                                                                   },
                                                                   child: Container(
                                                                       height: 30,
@@ -547,11 +607,19 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                             new String.fromCharCodes(
                                                                     new Runes(
                                                                         '\u0024')) +
-                                                                snapshotitemlist[
-                                                                            index]
-                                                                        [
-                                                                        "amount"]
-                                                                    .toString(),
+                                                                totalamunt(
+                                                                    double.parse(
+                                                                        snapshotitemlist[index]
+                                                                            [
+                                                                            "amount"]),
+                                                                    double.parse(
+                                                                        snapshotitemlist[index]
+                                                                            [
+                                                                            "product_fee"]),
+                                                                    double.parse(
+                                                                        snapshotitemlist[index]
+                                                                            [
+                                                                            "qty"])),
                                                             style: TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
@@ -619,19 +687,7 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                   color: Colors.white),
                                             ),
                                           ),
-                                          Container(
-                                            child: Text(
-                                              new String.fromCharCodes(
-                                                      new Runes('\u0024')) +
-                                                  "0",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontFamily: 'Roboto-Bold',
-                                                  letterSpacing: 0.03,
-                                                  fontSize: 16.0,
-                                                  color: Colors.white),
-                                            ),
-                                          )
+                                          gettotal()
                                         ],
                                       ),
                                       InkWell(
@@ -664,17 +720,25 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                             ),
                             Column(
                               children: <Widget>[
-                                Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: Container(
-                                      margin: EdgeInsets.only(top: 120),
-                                      child: new Image(
-                                        image: AssetImage(
-                                            'assets/images/group_2_copy_25689.png'),
-                                        height: 120,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    )),
+                                InkWell(
+                                  child: Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: Container(
+                                        margin: EdgeInsets.only(top: 120),
+                                        child: new Image(
+                                          image: AssetImage(
+                                              'assets/images/group_2_copy_25689.png'),
+                                          height: 120,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )),
+                                  onTap: () {
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                Homescreen()));
+                                  },
+                                ),
                                 Align(
                                   alignment: Alignment.bottomCenter,
                                   child: Container(
@@ -706,8 +770,18 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
     );
   }
 
+  String totalamunt(double amount, double profee, double qty) {
+    double total;
+    total = (amount + profee) * qty;
+    totallist.add(total);
+
+    return total.toStringAsFixed(2);
+  }
+
   onChange() {
-    setState(() {});
+    setState(() {
+      getSWData(userid);
+    });
   }
 }
 
@@ -776,6 +850,25 @@ Future<void> _showMyDialog(BuildContext context) async {
           ),
         ],
       );
+    },
+  );
+}
+
+showAlertDialog(BuildContext context) {
+  AlertDialog alert = AlertDialog(
+    content: new Row(
+      children: [
+        CircularProgressIndicator(),
+        Container(margin: EdgeInsets.only(left: 10), child: Text("Loading")),
+      ],
+    ),
+  );
+
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
     },
   );
 }

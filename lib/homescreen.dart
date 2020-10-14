@@ -311,7 +311,7 @@ class _HomescreenState extends State<Homescreen> {
 
                   onTap: () {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => PlayerOrderFull(),
+                      builder: (context) => PlayerOrder(userid),
                     ));
                   },
 
@@ -888,7 +888,7 @@ class _HomescreenState extends State<Homescreen> {
                 ListTile(
                   onTap: () {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => PlayerOrderFull(),
+                      builder: (context) => PlayerOrder(userid),
                     ));
                   },
                   leading: Image(

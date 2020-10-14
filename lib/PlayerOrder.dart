@@ -1,25 +1,70 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:peg/MyOrderDetail.dart';
+import 'package:peg/RestDatasource.dart';
 import 'package:peg/homescreen.dart';
+import 'package:peg/main.dart';
+import 'package:http/http.dart' as http;
 
 class PlayerOrder extends StatelessWidget {
+
+  String userid;
+
+
+  PlayerOrder(this.userid);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
       body: Center(
-        child: PlayerOrderFull(),
+        child: PlayerOrderFull(userid),
       ),
     ));
   }
 }
 
 class PlayerOrderFull extends StatefulWidget {
+  String userid;
+
+
+  PlayerOrderFull(this.userid);
+
   @override
-  _PlayerOrderFullState createState() => _PlayerOrderFullState();
+  _PlayerOrderFullState createState() => _PlayerOrderFullState(userid);
 }
 
 class _PlayerOrderFullState extends State<PlayerOrderFull> {
+
+  List<Map<String, dynamic>> snapshotitemlist = List();
+  String userid;
+
+
+  _PlayerOrderFullState(this.userid);
+
+  Future<String> getSWData(String id) async {
+    var res = await http.get(
+        Uri.encodeFull(RestDatasource.get_player_order + id),
+        headers: {"Accept": "application/json"});
+
+    getStringValuesSF().then((value) => {userid = value, print(value)});
+
+    setState(() {
+      snapshotitemlist =
+      List<Map<String, dynamic>>.from(json.decode(res.body)['order_list']);
+      print(snapshotitemlist);
+    });
+    return "Success";
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    this.getSWData(this.userid);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,7 +145,7 @@ class _PlayerOrderFullState extends State<PlayerOrderFull> {
                                               margin: EdgeInsets.only(
                                                   left: 6, top: 6),
                                               child: Text(
-                                                "26",
+                                                (index+1).toString(),
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontFamily: 'Roboto-Medium',
@@ -116,7 +161,7 @@ class _PlayerOrderFullState extends State<PlayerOrderFull> {
                                               margin: EdgeInsets.only(
                                                   right: 6, top: 6),
                                               child: Text(
-                                                "Jan 26, 2020",
+                                                snapshotitemlist[index]["created_at"].toString(),
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontFamily: 'Roboto-Medium',
@@ -182,7 +227,7 @@ class _PlayerOrderFullState extends State<PlayerOrderFull> {
                                                 margin: EdgeInsets.only(
                                                     right: 10, top: 25),
                                                 child: Text(
-                                                  "23456767",
+                                                 snapshotitemlist[index]["transaction_id"].toString(),
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -197,7 +242,7 @@ class _PlayerOrderFullState extends State<PlayerOrderFull> {
                                                 margin: EdgeInsets.only(
                                                     right: 10, top: 10),
                                                 child: Text(
-                                                  "205.95",
+                                                  snapshotitemlist[index]["grand_total"].toString(),
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -279,7 +324,7 @@ class _PlayerOrderFullState extends State<PlayerOrderFull> {
                           ),
                         );
                       },
-                      itemCount: 5,
+                      itemCount: snapshotitemlist.length,
                     ),
                   ],
                 )),
