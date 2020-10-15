@@ -29,6 +29,7 @@ class RestDatasource {
   static final get_all_cart_products = BASE_URL + "cart/get_all_cart_products/";
   static final get_my_order = BASE_URL + "order/get_my_order/";
   static final get_player_order = BASE_URL + "order/get_player_order/";
+  static final cart_product_delete = BASE_URL + "cart/cart_product_delete/";
   static final cart_product_qty_update =
       BASE_URL + "cart/cart_product_qty_update";
 
@@ -107,6 +108,7 @@ class RestDatasource {
   }
 
   Future<dynamic> addtocart(Map<String, String> map) {
+    print(map);
     return _netUtil.post(add_to_cart_product, body: map).then((dynamic res) {
       print(res);
       if (res["status_code"] == 200) {
@@ -161,6 +163,32 @@ class RestDatasource {
     if (response.statusCode != 200) return null;
     return Map<String, dynamic>.from(
         json.decode(response.body)["product_data"]);
+  }
+
+  Future<Map<String, dynamic>> deletecart(String userid , String cartid) async {
+    http.Response res = await http.delete(cart_product_delete + userid + "/" +cartid);
+    if (json.decode(res.body)["status_code"] == 200) {
+      Fluttertoast.showToast(
+          msg: json.decode(res.body)["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          fontSize: 15,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.blue,
+          textColor: Colors.white);
+
+    }
+    if (json.decode(res.body)["status_code"] == 400) {
+      Fluttertoast.showToast(
+          msg: json.decode(res.body)["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          fontSize: 15,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.blue,
+          textColor: Colors.white);
+      throw new Exception(res);
+    }
   }
 
   Future<Universalmodel> signup(

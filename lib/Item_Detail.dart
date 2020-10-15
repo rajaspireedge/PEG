@@ -66,8 +66,8 @@ class _ItemDetailState extends State<ItemDetail> {
 
   int realqty = 0;
 
-  String selvertion;
-  String extraamount;
+  String selvertion = "";
+  String extraamount = "";
 
   Map<String, String> apimap = new Map();
 
@@ -143,6 +143,22 @@ class _ItemDetailState extends State<ItemDetail> {
 
       String optionid = list[index]["option_id"];
 
+      apimap.forEach((key, value) {
+
+        if (key.contains("[") && key.contains("extra_amount")) {
+          print("array11" + key.substring(13, 14));
+          if (key.substring(13, 14) == arrayindex.toString()) {
+          }
+        }
+        if (key.contains("[") && key.contains("sel_variation")) {
+          print("array22" + key.substring(14, 15));
+          if (key.substring(14, 15) == arrayindex.toString()) {
+          }
+        }
+
+
+      });
+
       selvertion = "sel_variation" + "[" + arrayindex.toString() + "]" + "[0]";
 
       apimap[selvertion] = optionid;
@@ -164,6 +180,8 @@ class _ItemDetailState extends State<ItemDetail> {
           "]";
 
       apimap[extraamount] = extraamountt;
+
+      print("afteckick" + apimap.toString());
     });
   }
 
@@ -296,14 +314,12 @@ class _ItemDetailState extends State<ItemDetail> {
                               onChanged: (newVal) {
                                 setState(() {
                                   _mySelection3 = newVal;
+
                                   selvertion = "sel_variation" +
                                       "[" +
                                       arrayindex.toString() +
                                       "]" +
-                                      "[0]" +
-                                      "[" +
-                                      _mySelection3 +
-                                      "]";
+                                      "[0]";
 
                                   apimap[selvertion] = _mySelection3;
 
@@ -363,7 +379,7 @@ class _ItemDetailState extends State<ItemDetail> {
     var res = await http.get(Uri.encodeFull(RestDatasource.view_product + id),
         headers: {"Accept": "application/json"});
 
-    userid = getStringValuesSF().toString();
+    getStringValuesSF().then((value) => userid = value);
 
     setState(() {
       snapshotitemlist.addAll(
@@ -379,15 +395,18 @@ class _ItemDetailState extends State<ItemDetail> {
       int_fee = snapshotitemlist["product_detail"]["int_fee"];
       product_name = snapshotitemlist["product_detail"]["name"];
 
-      apimap["user_id"] = userid.toString();
-      apimap["ref_seller_id"] = ref_seller_id.toString();
-      apimap["Custom_Tag"] = Custom_Tag.toString();
-      apimap["product_image"] = product_image.toString();
-      apimap["product_id"] = product_id.toString();
-      apimap["amount"] = price.toString();
-      apimap["product_fee"] = product_fee.toString();
-      apimap["int_fee"] = int_fee.toString();
-      apimap["product_name"] = product_name.toString();
+      getStringValuesSF().then((value) => {
+            userid = value,
+            apimap["user_id"] = value,
+            apimap["ref_seller_id"] = ref_seller_id.toString(),
+            apimap["Custom_Tag"] = Custom_Tag.toString(),
+            apimap["product_image"] = product_image.toString(),
+            apimap["product_id"] = product_id.toString(),
+            apimap["amount"] = price.toString(),
+            apimap["product_fee"] = product_fee.toString(),
+            apimap["int_fee"] = int_fee.toString(),
+            apimap["product_name"] = product_name.toString(),
+          });
 
       snapshotitemlistattl = snapshotitemlist["attribute_list"];
 
