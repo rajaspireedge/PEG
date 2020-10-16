@@ -240,7 +240,7 @@ class _PaymentFullState extends State<PaymentFull> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Container(
+                                   /* Container(
                                       alignment: Alignment.centerRight,
                                       child: Image(
                                         image: AssetImage(
@@ -248,11 +248,11 @@ class _PaymentFullState extends State<PaymentFull> {
                                         height: 20,
                                         width: 20,
                                       ),
-                                    ),
+                                    ),*/
                                     Container(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        "From Wallet",
+                                        "Pay with Paypal",
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontFamily: 'Roboto-Medium',
@@ -261,102 +261,60 @@ class _PaymentFullState extends State<PaymentFull> {
                                             color: Colors.white),
                                       ),
                                     ),
-                                    Container(
-                                      child: Text(
-                                        new String.fromCharCodes(
-                                                new Runes('\u0024')) +
-                                            "382",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'Roboto-Bold',
-                                            letterSpacing: 0.03,
-                                            fontSize: 16.0,
-                                            color: Colors.white),
-                                      ),
+                                  Container(
+                                      child:Image(image: AssetImage("assets/images/paypal_buttons_peg.png") , width: 80,height: 20,)
                                     )
                                   ],
                                 ),
-                                InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    height: 30,
-                                    margin: EdgeInsets.only(top: 20),
-                                    alignment: Alignment.center,
-                                    decoration:
-                                        BoxDecoration(color: Color(0xFFff5000)),
-                                    child: Text(
-                                      "Proceed to Checkout",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Roboto-Bold',
-                                          letterSpacing: 0.03,
-                                          fontSize: 12.0,
-                                          color: Colors.white),
-                                    ),
-                                  ),
-                                )
                               ],
                             )),
                       ),
                     ),
-                    Column(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.fromLTRB(40.0, 0.0, 20.0, 0.0),
-                          child: Stack(
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.topCenter,
-                                child: Container(
-                                  child: new InkWell(
-                                    onTap: () {
+                    Container(
+                      transform: Matrix4.translationValues(0, -50, 0),
+                      child: new InkWell(
+                        onTap: () {
 
-                                      // make PayPal payment
+                          // make PayPal payment
 
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (BuildContext context) => PaypalPayment(
-                                            onFinish: (number) async {
-                                              // payment done
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => PaypalPayment(
+                                onFinish: (number) async {
+                                  // payment done
 
-                                              print('order id: ' + number);
+                                  print('order id: ' + number);
 
 
-                                            },
-                                          ),
-                                        ),
-                                      );
-
-                                    },
-                                    child: Stack(
-                                      children: <Widget>[
-                                        Align(
-                                          alignment: Alignment.topCenter,
-                                          child: new Image(
-                                            image: AssetImage('assets/images/group_2_copy_2966.png'),
-                                            height: 120,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                },
                               ),
-                            ],
-                          ),
+                            ),
+                          );
+
+                        },
+                        child: Stack(
+                          children: <Widget>[
+                            Align(
+                              alignment: Alignment.topCenter,
+                              child: new Image(
+                                image: AssetImage('assets/images/group_2_copy_2966.png'),
+                                height: 150,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    )
+                      ),
+                    ),
 
                   ],
                 )),
               )
             ],
           ),
+          // ignore: missing_return
           onWillPop: () async {
-            return Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => Homescreen()));
+              Navigator.pop(context);
           }),
     );
   }

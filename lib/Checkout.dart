@@ -1,33 +1,110 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:peg/PaymentScreen.dart';
+import 'package:peg/RestDatasource.dart';
 import 'package:peg/homescreen.dart';
+import 'package:peg/main.dart';
+import 'package:http/http.dart' as http;
 
 class Checkout extends StatelessWidget {
+  String checkinsideoutside;
+  String userid;
+
+  Checkout({Key key, @required this.checkinsideoutside, this.userid})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
-      body: Center(child: CheckoutFull()),
+      body: Center(
+          child: CheckoutFull(
+        checkinsideoutside: checkinsideoutside,
+      )),
     ));
   }
 }
 
 class CheckoutFull extends StatefulWidget {
+  String checkinsideoutside;
+  String userid;
+
+  CheckoutFull({Key key, @required this.checkinsideoutside, this.userid})
+      : super(key: key);
+
   @override
-  _CheckoutFullState createState() => _CheckoutFullState();
+  _CheckoutFullState createState() =>
+      _CheckoutFullState(checkinsideoutside, userid);
 }
 
 var back_1 = new AssetImage('assets/images/back_1.png');
 var borderimg2 = new AssetImage('assets/images/rounded_rectangle_234.png');
 var borderimg = new AssetImage('assets/images/borderimg.png');
 
+bool checkvalue = false;
 
-final username_controller = TextEditingController();
+String userid = "";
+
+final billingemail = TextEditingController();
+final billingname = TextEditingController();
+final billingaddress = TextEditingController();
+final billingcountry = TextEditingController();
+final billingstate = TextEditingController();
+final billingcity = TextEditingController();
+final billingzipcode = TextEditingController();
+final billingziphone = TextEditingController();
+
+final shipingemail = TextEditingController();
+final shipingname = TextEditingController();
+final shipingaddresszz = TextEditingController();
+final shipingcountry = TextEditingController();
+final shipingstate = TextEditingController();
+final shipingcity = TextEditingController();
+final shipingzipcode = TextEditingController();
+final shipingphone = TextEditingController();
 
 class _CheckoutFullState extends State<CheckoutFull> {
+  String checkinsideoutside;
+  String userid;
+
+  _CheckoutFullState(this.checkinsideoutside, this.userid);
+
+  Map<String, dynamic> snapshotplayerlist = Map();
+
+  Future<String> getSWData(String userid) async {
+    print(userid);
+
+    var res = await http.get(
+        Uri.encodeFull(RestDatasource.get_profile_info + userid),
+        headers: {"Accept": "application/json"});
+
+    setState(() {
+      snapshotplayerlist =
+          Map<String, dynamic>.from(json.decode(res.body)['user_profile']);
+      print(snapshotplayerlist);
+    });
+
+    return "Success";
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    getStringValuesSF().then((value) => {this.getSWData(value)});
+  }
+
   @override
   Widget build(BuildContext context) {
+    billingname.text = snapshotplayerlist["name"];
+    billingemail.text = snapshotplayerlist["email"];
+    billingaddress.text = snapshotplayerlist["location"];
+    billingcountry.text = snapshotplayerlist["country"];
+    billingstate.text = snapshotplayerlist["state"];
+    billingzipcode.text = snapshotplayerlist["zip_code"];
+
     return Scaffold(
       body: WillPopScope(
           child: Stack(
@@ -124,7 +201,7 @@ class _CheckoutFullState extends State<CheckoutFull> {
                       ],
                     ),
                     Container(
-                      margin: EdgeInsets.only(right: 30, left: 30 , top: 20),
+                      margin: EdgeInsets.only(right: 30, left: 30, top: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -154,7 +231,7 @@ class _CheckoutFullState extends State<CheckoutFull> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(right: 30, left: 30 , top: 20),
+                      margin: EdgeInsets.only(right: 30, left: 30, top: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -195,7 +272,7 @@ class _CheckoutFullState extends State<CheckoutFull> {
                           ),
                           child: TextField(
                             style: style,
-                            controller: username_controller,
+                            controller: billingemail,
                             decoration: InputDecoration(
                               contentPadding:
                                   EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -219,7 +296,7 @@ class _CheckoutFullState extends State<CheckoutFull> {
                           ),
                           child: TextField(
                             style: style,
-                            controller: username_controller,
+                            controller: billingname,
                             decoration: InputDecoration(
                               contentPadding:
                                   EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -243,7 +320,7 @@ class _CheckoutFullState extends State<CheckoutFull> {
                           ),
                           child: TextField(
                             style: style,
-                            controller: username_controller,
+                            controller: billingaddress,
                             decoration: InputDecoration(
                               contentPadding:
                                   EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -267,7 +344,7 @@ class _CheckoutFullState extends State<CheckoutFull> {
                           ),
                           child: TextField(
                             style: style,
-                            controller: username_controller,
+                            controller: billingcountry,
                             decoration: InputDecoration(
                               contentPadding:
                                   EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -291,7 +368,7 @@ class _CheckoutFullState extends State<CheckoutFull> {
                           ),
                           child: TextField(
                             style: style,
-                            controller: username_controller,
+                            controller: billingstate,
                             decoration: InputDecoration(
                               contentPadding:
                                   EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -315,7 +392,7 @@ class _CheckoutFullState extends State<CheckoutFull> {
                           ),
                           child: TextField(
                             style: style,
-                            controller: username_controller,
+                            controller: billingcity,
                             decoration: InputDecoration(
                               contentPadding:
                                   EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -339,7 +416,7 @@ class _CheckoutFullState extends State<CheckoutFull> {
                           ),
                           child: TextField(
                             style: style,
-                            controller: username_controller,
+                            controller: billingzipcode,
                             decoration: InputDecoration(
                               contentPadding:
                                   EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -363,7 +440,7 @@ class _CheckoutFullState extends State<CheckoutFull> {
                           ),
                           child: TextField(
                             style: style,
-                            controller: username_controller,
+                            controller: billingziphone,
                             decoration: InputDecoration(
                               contentPadding:
                                   EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -375,26 +452,47 @@ class _CheckoutFullState extends State<CheckoutFull> {
                         )
                       ],
                     ),
-
                     Container(
-                      margin: EdgeInsets.only(right: 30, left: 30 , top: 20),
+                      margin: EdgeInsets.only(left: 50, top: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            alignment: Alignment.centerRight,
-                            margin: EdgeInsets.only(left: 20),
-                            child: Image(
-                              image: AssetImage('assets/images/rectangle_4_copy_2345.png'),
-                              height: 20,
-                              width: 20,
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                if (checkvalue) {
+                                  checkvalue = false;
+                                } else {
+                                  checkvalue = true;
+                                }
+                              });
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(top: 5, bottom: 5),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(right: 2.0),
+                                    height: 20,
+                                    width: 20,
+                                    child: Container(
+                                      child: Image(
+                                          image: checkvalue
+                                              ? AssetImage(
+                                                  "assets/images/correct_5_copy_2.png")
+                                              : AssetImage(
+                                                  "assets/images/rounded_rectangle_3.png")),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           Container(
                             alignment: Alignment.centerLeft,
                             margin: EdgeInsets.only(right: 30),
                             child: Text(
-                              "Ship to diffrent address",
+                              "Ship to different address",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Roboto-Medium',
@@ -406,18 +504,49 @@ class _CheckoutFullState extends State<CheckoutFull> {
                         ],
                       ),
                     ),
+                    shipingaddress(),
                     Container(
                       child: new InkWell(
                         onTap: () {
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(
-                              builder: (BuildContext context) => Payment()));
+                         /* Map<String, String> map = new Map();
+                          map["user_id"] = userid;
+                          map["name"] = billingname.text;
+                          map["email"] = billingemail.text;
+                          map["phone"] = billingziphone.text;
+                          map["address"] = billingaddress.text;
+                          map["country"] = billingcountry.text;
+                          map["countrysortname"] = "US";
+                          map["state"] = billingstate.text;
+                          map["city"] = billingcity.text;
+                          map["zip_code"] = billingzipcode.text;
+                          map["shippping_address"] = shipingaddresszz.text;
+                          map["shipping_country"] = shipingcountry.text;
+                          map["shipping_countrysortname"] = "US";
+                          map["shipping_state"] = shipingstate.text;
+                          map["shiptocity"] = shipingcity.text;
+                          map["shiptozip"] = shipingzipcode.text;
+                          map["shipping_location_type"] = checkinsideoutside;
+                          map["ship_to_diffadd_check"] = "off";
+
+                          api.paypal_request(map).then((value) => {
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            Payment()))
+                              });*/
+
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      Payment()));
                         },
                         child: Stack(
                           children: <Widget>[
                             Align(
                               alignment: Alignment.topCenter,
                               child: new Image(
-                                image: AssetImage('assets/images/group_2_copy_258.png'),
+                                image: AssetImage(
+                                    'assets/images/group_2_copy_258.png'),
                                 height: 150,
                                 fit: BoxFit.cover,
                               ),
@@ -426,7 +555,6 @@ class _CheckoutFullState extends State<CheckoutFull> {
                         ),
                       ),
                     ),
-
                   ],
                 )),
               )
@@ -438,6 +566,151 @@ class _CheckoutFullState extends State<CheckoutFull> {
           }),
     );
   }
+}
+
+Widget shipingaddress() {
+  return Column(
+    children: [
+      Stack(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
+            decoration: new BoxDecoration(
+              image: new DecorationImage(
+                image: borderimg,
+                fit: BoxFit.fill,
+              ),
+            ),
+            child: TextField(
+              style: style,
+              controller: shipingaddresszz,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                hintText: "Address",
+                border: InputBorder.none,
+                hintStyle: hintstyle,
+              ),
+            ),
+          )
+        ],
+      ),
+      Stack(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
+            decoration: new BoxDecoration(
+              image: new DecorationImage(
+                image: borderimg,
+                fit: BoxFit.fill,
+              ),
+            ),
+            child: TextField(
+              style: style,
+              controller: shipingcountry,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                hintText: "Country",
+                border: InputBorder.none,
+                hintStyle: hintstyle,
+              ),
+            ),
+          )
+        ],
+      ),
+      Stack(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
+            decoration: new BoxDecoration(
+              image: new DecorationImage(
+                image: borderimg,
+                fit: BoxFit.fill,
+              ),
+            ),
+            child: TextField(
+              style: style,
+              controller: shipingstate,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                hintText: "State",
+                border: InputBorder.none,
+                hintStyle: hintstyle,
+              ),
+            ),
+          )
+        ],
+      ),
+      Stack(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
+            decoration: new BoxDecoration(
+              image: new DecorationImage(
+                image: borderimg,
+                fit: BoxFit.fill,
+              ),
+            ),
+            child: TextField(
+              style: style,
+              controller: shipingcity,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                hintText: "City",
+                border: InputBorder.none,
+                hintStyle: hintstyle,
+              ),
+            ),
+          )
+        ],
+      ),
+      Stack(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
+            decoration: new BoxDecoration(
+              image: new DecorationImage(
+                image: borderimg,
+                fit: BoxFit.fill,
+              ),
+            ),
+            child: TextField(
+              style: style,
+              controller: shipingzipcode,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                hintText: "Zip Code",
+                border: InputBorder.none,
+                hintStyle: hintstyle,
+              ),
+            ),
+          )
+        ],
+      ),
+      Stack(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
+            decoration: new BoxDecoration(
+              image: new DecorationImage(
+                image: borderimg,
+                fit: BoxFit.fill,
+              ),
+            ),
+            child: TextField(
+              style: style,
+              controller: shipingphone,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                hintText: "Phone",
+                border: InputBorder.none,
+                hintStyle: hintstyle,
+              ),
+            ),
+          )
+        ],
+      ),
+    ],
+  );
 }
 
 TextStyle hintstyle =

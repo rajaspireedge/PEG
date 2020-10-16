@@ -76,15 +76,18 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
         Uri.encodeFull(RestDatasource.get_all_cart_products + id),
         headers: {"Accept": "application/json"});
 
-    getStringValuesSF().then((value) => {
-          userid = value,
-        });
-    if (json.decode(res.body)["status_code"] == 400) {
+    setState(() {
+      getStringValuesSF().then((value) => {
+        userid = value,
+      });
+    });
 
-      if(json.decode(res.body)["message"] == "Your Cartlist is Empty"){
-       setState(() {
-         snapshotitemlist.clear();
-       });
+
+    if (json.decode(res.body)["status_code"] == 400) {
+      if (json.decode(res.body)["message"] == "Your Cartlist is Empty") {
+        setState(() {
+          snapshotitemlist.clear();
+        });
       }
 
       Fluttertoast.showToast(
@@ -97,17 +100,14 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
           textColor: Colors.white);
       throw new Exception(json.decode(res.body));
     } else {
-      try{
-
+      try {
         setState(() {
           snapshotitemlist.clear();
-          snapshotitemlist =
-          List<Map<String, dynamic>>.from(json.decode(res.body)['cart_list']);
+          snapshotitemlist = List<Map<String, dynamic>>.from(
+              json.decode(res.body)['cart_list']);
           print(snapshotitemlist);
         });
-      } on Exception catch (_) {
-
-      }
+      } on Exception catch (_) {}
     }
     return "Success";
   }
@@ -799,7 +799,7 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                     Padding(
                         padding: const EdgeInsets.only(
                             top: 20, right: 30, left: 30, bottom: 20),
-                        child: Stack(
+                        child: Column(
                           children: [
                             CustomPaint(
                               painter: _GradientPainter(
@@ -838,11 +838,176 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          Navigator.of(context).pushReplacement(
-                                              MaterialPageRoute(
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          Checkout()));
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return Dialog(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20.0)),
+                                                  //this right here
+                                                  child: Container(
+                                                    height: 200,
+                                                    decoration: BoxDecoration(
+                                                        color:
+                                                            Color(0xFF0a0f32)),
+                                                    child: Column(
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Container(
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      left: 30,
+                                                                      top: 20),
+                                                              child: Text(
+                                                                "Select shipping address location",
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontFamily:
+                                                                        'Roboto-Bold',
+                                                                    letterSpacing:
+                                                                        0.03,
+                                                                    fontSize:
+                                                                        12.0,
+                                                                    color: Color(
+                                                                        0xFFff5000)),
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      right: 30,
+                                                                      top: 20),
+                                                              child: Image(
+                                                                image: AssetImage(
+                                                                    "assets/images/close_1.png"),
+                                                                width: 20,
+                                                                height: 20,
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Container(
+                                                          height: 0.5,
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  right: 20,
+                                                                  left: 20,
+                                                                  top: 10),
+                                                          color: Colors.white,
+                                                        ),
+                                                        Container(
+                                                            color: Colors.black,
+                                                            margin: EdgeInsets
+                                                                .fromLTRB(
+                                                                    30.0,
+                                                                    20.0,
+                                                                    30.0,
+                                                                    0.0),
+                                                            child: Padding(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .fromLTRB(
+                                                                          40,
+                                                                          10,
+                                                                          40,
+                                                                          10),
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Container(
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .center,
+                                                                      margin: EdgeInsets.only(
+                                                                          top:
+                                                                              10),
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                              color: Color(
+                                                                                  0xFFff5000)),
+                                                                      child:
+                                                                          InkWell(
+
+                                                                            onTap: () {
+                                                                              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                                                                  builder: (context) => Checkout(checkinsideoutside: "inside",userid: userid,)));
+                                                                            },
+                                                                            child:
+                                                                            Padding(
+                                                                          padding:
+                                                                              EdgeInsets.all(5),
+                                                                          child:
+                                                                              Text(
+                                                                            "INSIDE UNITED STATES",
+                                                                            style: TextStyle(
+                                                                                fontWeight: FontWeight.bold,
+                                                                                fontFamily: 'Roboto-Bold',
+                                                                                letterSpacing: 0.03,
+                                                                                fontSize: 12.0,
+                                                                                color: Colors.white),
+                                                                          ),
+                                                                        ),
+                                                                      )),
+                                                                  Container(
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .center,
+                                                                      margin: EdgeInsets.only(
+                                                                          top:
+                                                                              10,
+                                                                          bottom:
+                                                                              10),
+                                                                      decoration: BoxDecoration(
+                                                                          border: Border.all(
+                                                                              color: Colors
+                                                                                  .blue),
+                                                                          color: Colors
+                                                                              .black),
+                                                                      child:
+                                                                          InkWell(
+
+                                                                            onTap: () {
+
+                                                                              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                                                                  builder: (context) => Checkout(checkinsideoutside: "outside",userid: userid,)));
+                                                                            },
+
+                                                                        child:
+                                                                            Padding(
+                                                                          padding:
+                                                                              EdgeInsets.all(5),
+                                                                          child:
+                                                                              Text(
+                                                                            "OUTSIDE UNITED STATES",
+                                                                            style: TextStyle(
+                                                                                fontWeight: FontWeight.bold,
+                                                                                fontFamily: 'Roboto-Bold',
+                                                                                letterSpacing: 0.03,
+                                                                                fontSize: 12.0,
+                                                                                color: Colors.white),
+                                                                          ),
+                                                                        ),
+                                                                      )),
+                                                                ],
+                                                              ),
+                                                            )),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              });
                                         },
                                         child: Container(
                                           height: 30,
@@ -870,11 +1035,10 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                   child: Align(
                                       alignment: Alignment.bottomCenter,
                                       child: Container(
-                                        margin: EdgeInsets.only(top: 120),
                                         child: new Image(
                                           image: AssetImage(
                                               'assets/images/group_2_copy_25689.png'),
-                                          height: 120,
+                                          height: 100,
                                           fit: BoxFit.cover,
                                         ),
                                       )),
@@ -970,34 +1134,6 @@ class _GradientPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => oldDelegate != this;
-}
-
-Future<void> _showMyDialog(BuildContext context) async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('AlertDialog Title'),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text('This is a demo alert dialog.'),
-              Text('Would you like to approve of this message?'),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: Text('Approve'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
 }
 
 showAlertDialog(BuildContext context) {

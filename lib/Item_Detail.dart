@@ -83,48 +83,6 @@ class _ItemDetailState extends State<ItemDetail> {
 
   Map<int, bool> boolvalues = Map();
 
-  void onChanged22(bool value, int index, int arrayindex, List<dynamic> list) {
-    setState(() {
-      if (value == true) {
-        value = false;
-      } else {
-        value = true;
-      }
-
-      for (int i = 0; i < dynamicbools[arrayindex].length; i++) {
-        if (i == index) {
-          dynamicbools[arrayindex][index] = value;
-        } else {
-          dynamicbools[arrayindex][i] = false;
-        }
-      }
-
-      String optionid = list[index]["option_id"];
-
-      selvertion = "sel_variation" + "[" + arrayindex.toString() + "]" + "[0]";
-
-      apimap[selvertion] = optionid;
-
-      String extraamountt = "";
-
-      for (int i = 0; i < list.length; i++) {
-        if (optionid == list[i]["option_id"]) {
-          extraamountt = list[i]["extra_amount"];
-        }
-      }
-
-      extraamount = "extra_amount" +
-          "[" +
-          arrayindex.toString() +
-          "]" +
-          "[" +
-          optionid +
-          "]";
-
-      apimap[extraamount] = extraamountt;
-    });
-  }
-
   void onChanged(bool value, int index, int arrayindex, List<dynamic> list) {
     setState(() {
       if (value == true) {
@@ -141,23 +99,29 @@ class _ItemDetailState extends State<ItemDetail> {
         }
       }
 
-      String optionid = list[index]["option_id"];
+
+      String extra;
+      String selvartion;
 
       apimap.forEach((key, value) {
-
         if (key.contains("[") && key.contains("extra_amount")) {
           print("array11" + key.substring(13, 14));
           if (key.substring(13, 14) == arrayindex.toString()) {
+            extra = key;
           }
         }
         if (key.contains("[") && key.contains("sel_variation")) {
           print("array22" + key.substring(14, 15));
           if (key.substring(14, 15) == arrayindex.toString()) {
+            selvartion = key;
           }
         }
-
-
       });
+
+      apimap.remove(extra);
+      apimap.remove(selvartion);
+
+      String optionid = list[index]["option_id"];
 
       selvertion = "sel_variation" + "[" + arrayindex.toString() + "]" + "[0]";
 
@@ -314,6 +278,28 @@ class _ItemDetailState extends State<ItemDetail> {
                               onChanged: (newVal) {
                                 setState(() {
                                   _mySelection3 = newVal;
+
+
+                                  String extra;
+                                  String selvartion;
+
+                                  apimap.forEach((key, value) {
+                                    if (key.contains("[") && key.contains("extra_amount")) {
+                                      print("array11" + key.substring(13, 14));
+                                      if (key.substring(13, 14) == arrayindex.toString()) {
+                                        extra = key;
+                                      }
+                                    }
+                                    if (key.contains("[") && key.contains("sel_variation")) {
+                                      print("array22" + key.substring(14, 15));
+                                      if (key.substring(14, 15) == arrayindex.toString()) {
+                                        selvartion = key;
+                                      }
+                                    }
+                                  });
+
+                                  apimap.remove(extra);
+                                  apimap.remove(selvartion);
 
                                   selvertion = "sel_variation" +
                                       "[" +

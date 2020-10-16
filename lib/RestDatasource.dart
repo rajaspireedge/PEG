@@ -30,6 +30,8 @@ class RestDatasource {
   static final get_my_order = BASE_URL + "order/get_my_order/";
   static final get_player_order = BASE_URL + "order/get_player_order/";
   static final cart_product_delete = BASE_URL + "cart/cart_product_delete/";
+  static final get_profile_info = BASE_URL + "user/get_profile_info/";
+  static final paypal_requestapi = BASE_URL + "checkout/paypal_request";
   static final cart_product_qty_update =
       BASE_URL + "cart/cart_product_qty_update";
 
@@ -81,6 +83,36 @@ class RestDatasource {
     return _netUtil
         .post(cart_product_qty_update, body: map)
         .then((dynamic res) {
+      if (res["status_code"] == 200) {
+        Fluttertoast.showToast(
+            msg: res["cart_list"]["data_update"],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 15,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white);
+        ;
+      }
+      if (res["status_code"] == 400) {
+        Fluttertoast.showToast(
+            msg: res["message"],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 15,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white);
+        throw new Exception(res);
+      }
+      return res;
+    });
+  }
+  Future<dynamic> paypal_request(Map<String, String> map) {
+    return _netUtil
+        .post(paypal_requestapi, body: map)
+        .then((dynamic res) {
+          print(res);
       if (res["status_code"] == 200) {
         Fluttertoast.showToast(
             msg: res["cart_list"]["data_update"],
@@ -165,8 +197,9 @@ class RestDatasource {
         json.decode(response.body)["product_data"]);
   }
 
-  Future<Map<String, dynamic>> deletecart(String userid , String cartid) async {
-    http.Response res = await http.delete(cart_product_delete + userid + "/" +cartid);
+  Future<Map<String, dynamic>> deletecart(String userid, String cartid) async {
+    http.Response res =
+        await http.delete(cart_product_delete + userid + "/" + cartid);
     if (json.decode(res.body)["status_code"] == 200) {
       Fluttertoast.showToast(
           msg: json.decode(res.body)["message"],
@@ -176,7 +209,6 @@ class RestDatasource {
           timeInSecForIos: 1,
           backgroundColor: Colors.blue,
           textColor: Colors.white);
-
     }
     if (json.decode(res.body)["status_code"] == 400) {
       Fluttertoast.showToast(
@@ -274,4 +306,5 @@ class RestDatasource {
     return List<Map<String, dynamic>>.from(
         json.decode(response.body)['category_list']);
   }
+
 }

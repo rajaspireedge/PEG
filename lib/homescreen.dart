@@ -48,7 +48,7 @@ class Homescreen extends StatefulWidget {
 
 RestDatasource api = new RestDatasource();
 TextStyle style =
-TextStyle(fontFamily: 'Roboto-Bold', fontSize: 10.0, color: Colors.white);
+TextStyle(fontFamily: 'Roboto-Bold', fontSize: 14.0, color: Colors.white);
 bool product_list = true;
 
 class _HomescreenState extends State<Homescreen> {
@@ -64,7 +64,10 @@ class _HomescreenState extends State<Homescreen> {
 
   Future<String> getSWData() async {
     var res = await http.get(Uri.encodeFull(RestDatasource.get_all_categories),
-        headers: {"Accept": "application/json"});
+        headers: {
+          "Accept": "application/json",
+          "content-type":"application/json"
+        });
     var resBody = json.decode(res.body);
 
     setState(() {
@@ -162,7 +165,7 @@ class _HomescreenState extends State<Homescreen> {
     Color color3 = Color(0xFF6ae7e0);
 
     TextStyle hintstyle =
-    TextStyle(fontFamily: 'Roboto-Bold', fontSize: 10.0, color: Colors.white);
+    TextStyle(fontFamily: 'Roboto-Bold', fontSize: 14.0, color: Colors.white);
 
     final username_controller = TextEditingController();
 
