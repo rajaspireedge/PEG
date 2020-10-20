@@ -89,6 +89,63 @@ class _CheckoutFullState extends State<CheckoutFull> {
     return "Success";
   }
 
+  void addpayment(String value) {
+    Map<String, String> map = new Map();
+    map["user_id"] = value;
+    map["name"] = billingname.text;
+    map["email"] = billingemail.text;
+    map["phone"] = "123";
+    map["address"] = billingaddress.text;
+    map["country"] = billingcountry.text;
+    map["countrysortname"] = "US";
+    map["state"] = billingstate.text;
+    map["city"] = "city";
+    map["zip_code"] = billingzipcode.text;
+
+    if (shipingaddresszz.text == "") {
+
+      map["shippping_address"] = billingaddress.text;
+    } else {
+      map["shippping_address"] = shipingaddresszz.text;
+    }
+
+    if (shipingcountry.text == "") {
+      map["shipping_country"] = billingcountry.text;
+
+    } else {
+      map["shipping_country"] = shipingcountry.text;
+    }
+
+    map["shipping_countrysortname"] = "US";
+
+    if (shipingstate.text == "") {
+
+      map["shipping_state"] = billingstate.text;
+    } else {
+      map["shipping_state"] = shipingstate.text;
+    }
+
+    if (shipingcity.text == "") {
+
+      map["shiptocity"] = billingcity.text;
+    } else {
+      map["shiptocity"] = shipingcity.text;
+    }
+
+    if (shipingzipcode.text == "") {
+
+      map["shiptozip"] = billingzipcode.text;
+    } else {
+      map["shiptozip"] = shipingzipcode.text;
+    }
+
+    map["shipping_location_type"] = checkinsideoutside;
+    map["ship_to_diffadd_check"] = "off";
+
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (BuildContext context) => Payment(map)));
+  }
+
   @override
   void initState() {
     super.initState();
@@ -508,37 +565,8 @@ class _CheckoutFullState extends State<CheckoutFull> {
                     Container(
                       child: new InkWell(
                         onTap: () {
-                         /* Map<String, String> map = new Map();
-                          map["user_id"] = userid;
-                          map["name"] = billingname.text;
-                          map["email"] = billingemail.text;
-                          map["phone"] = billingziphone.text;
-                          map["address"] = billingaddress.text;
-                          map["country"] = billingcountry.text;
-                          map["countrysortname"] = "US";
-                          map["state"] = billingstate.text;
-                          map["city"] = billingcity.text;
-                          map["zip_code"] = billingzipcode.text;
-                          map["shippping_address"] = shipingaddresszz.text;
-                          map["shipping_country"] = shipingcountry.text;
-                          map["shipping_countrysortname"] = "US";
-                          map["shipping_state"] = shipingstate.text;
-                          map["shiptocity"] = shipingcity.text;
-                          map["shiptozip"] = shipingzipcode.text;
-                          map["shipping_location_type"] = checkinsideoutside;
-                          map["ship_to_diffadd_check"] = "off";
-
-                          api.paypal_request(map).then((value) => {
-                                Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            Payment()))
-                              });*/
-
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      Payment()));
+                          getStringValuesSF()
+                              .then((value) => addpayment(value));
                         },
                         child: Stack(
                           children: <Widget>[

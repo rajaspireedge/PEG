@@ -8,16 +8,21 @@ import 'PaypalServices.dart';
 
 class PaypalPayment extends StatefulWidget {
   final Function onFinish;
+  Map<String, dynamic> map = new Map();
 
-  PaypalPayment({this.onFinish});
+  PaypalPayment(this.map, {this.onFinish});
 
   @override
   State<StatefulWidget> createState() {
-    return PaypalPaymentState();
+    return PaypalPaymentState(map);
   }
 }
 
 class PaypalPaymentState extends State<PaypalPayment> {
+  Map<String, dynamic> map = new Map();
+
+  PaypalPaymentState(this.map);
+
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String checkoutUrl;
   String executeUrl;
@@ -35,8 +40,8 @@ class PaypalPaymentState extends State<PaypalPayment> {
   bool isEnableShipping = false;
   bool isEnableAddress = false;
 
-  String returnURL = 'return.example.com';
-  String cancelURL = 'cancel.example.com';
+  String returnURL = "";
+  String cancelURL = "";
 
   @override
   void initState() {
@@ -46,9 +51,10 @@ class PaypalPaymentState extends State<PaypalPayment> {
       try {
         accessToken = await services.getAccessToken();
 
+        print(getOrderParams());
         final transactions = getOrderParams();
         final res =
-            await services.createPaypalPayment(transactions, accessToken);
+        await services.createPaypalPayment(transactions, accessToken);
         if (res != null) {
           setState(() {
             checkoutUrl = res["approvalUrl"];
@@ -107,12 +113,11 @@ class PaypalPaymentState extends State<PaypalPayment> {
       "transactions": [
         {
           "amount": {
-            "total": totalAmount,
+            "total": map["subscribe_amount"],
             "currency": defaultCurrency["currency"],
             "details": {
-              "subtotal": subTotalAmount,
-              "shipping": shippingCost,
-              "shipping_discount": ((-1.0) * shippingDiscountCost).toString()
+              "subtotal": map["subscribe_amount"],
+              "shipping": map["shipping_charge"],
             }
           },
           "description": "The payment transaction description.",
@@ -123,20 +128,23 @@ class PaypalPaymentState extends State<PaypalPayment> {
             "items": items,
             if (isEnableShipping && isEnableAddress)
               "shipping_address": {
-                "recipient_name": userFirstName + " " + userLastName,
-                "line1": addressStreet,
+                "recipient_name": map["name"],
+                "line1": map["shipping_details"][0]["address"],
                 "line2": "",
-                "city": addressCity,
-                "country_code": addressCountry,
-                "postal_code": addressZipCode,
-                "phone": addressPhoneNumber,
-                "state": addressState
+                "city": map["city"],
+                "country_code": map["shipping_details"][0]["countrycode"],
+                "postal_code": "",
+                "phone": map["phone"],
+                "state": map["shipping_details"][0]["state"]
               },
           }
         }
       ],
       "note_to_payer": "Contact us for any questions on your order.",
-      "redirect_urls": {"return_url": returnURL, "cancel_url": cancelURL}
+      "redirect_urls": {
+        "return_url": map["returnurl"],
+        "cancel_url": map["cancelurl"]
+      }
     };
     return temp;
   }
@@ -179,7 +187,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
 
               getStringValuesSF().then((value) => Navigator.of(context)
                   .pushReplacement(MaterialPageRoute(
-                      builder: (BuildContext context) => MyOrder(value))));
+                  builder: (BuildContext context) => MyOrder(value))));
             }
             if (request.url.contains(cancelURL)) {
               Navigator.of(context).pop();

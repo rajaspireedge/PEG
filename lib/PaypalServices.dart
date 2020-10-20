@@ -67,7 +67,7 @@ class PaypalServices {
   }
 
   // for executing the payment transaction
-  Future<String> executePayment(url, payerId, accessToken) async {
+  Future<dynamic> executePayment(url, payerId, accessToken) async {
     try {
       var response = await http.post(url,
           body: convert.jsonEncode({"payer_id": payerId}),
@@ -78,7 +78,7 @@ class PaypalServices {
 
       final body = convert.jsonDecode(response.body);
       if (response.statusCode == 200) {
-        return body["id"];
+        return body;
       }
       return null;
     } catch (e) {

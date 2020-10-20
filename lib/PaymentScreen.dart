@@ -4,20 +4,28 @@ import 'package:peg/homescreen.dart';
 import 'package:peg/makePayment.dart';
 
 class Payment extends StatelessWidget {
+  Map<String, String> map = new Map();
+
+  Payment(this.map);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.black,
-        body: Center(child: PaymentFull()),
+        body: Center(child: PaymentFull(map)),
       ),
     );
   }
 }
 
 class PaymentFull extends StatefulWidget {
+  Map<String, String> map = new Map();
+
+  PaymentFull(this.map);
+
   @override
-  _PaymentFullState createState() => _PaymentFullState();
+  _PaymentFullState createState() => _PaymentFullState(map);
 }
 
 var back_1 = new AssetImage('assets/images/back_1.png');
@@ -29,8 +37,16 @@ Color color2 = Colors.white;
 Color color3 = Color(0xFF6ae7e0);
 
 class _PaymentFullState extends State<PaymentFull> {
+  Map<String, String> map = new Map();
+
+  _PaymentFullState(this.map);
+
   @override
   Widget build(BuildContext context) {
+
+    print("zdklmkmxc"+map.toString());
+
+
     return Scaffold(
       body: WillPopScope(
           child: Stack(
@@ -240,7 +256,7 @@ class _PaymentFullState extends State<PaymentFull> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                   /* Container(
+                                    /* Container(
                                       alignment: Alignment.centerRight,
                                       child: Image(
                                         image: AssetImage(
@@ -261,9 +277,13 @@ class _PaymentFullState extends State<PaymentFull> {
                                             color: Colors.white),
                                       ),
                                     ),
-                                  Container(
-                                      child:Image(image: AssetImage("assets/images/paypal_buttons_peg.png") , width: 80,height: 20,)
-                                    )
+                                    Container(
+                                        child: Image(
+                                      image: AssetImage(
+                                          "assets/images/paypal_buttons_peg.png"),
+                                      width: 80,
+                                      height: 20,
+                                    ))
                                   ],
                                 ),
                               ],
@@ -274,30 +294,40 @@ class _PaymentFullState extends State<PaymentFull> {
                       transform: Matrix4.translationValues(0, -50, 0),
                       child: new InkWell(
                         onTap: () {
-
                           // make PayPal payment
 
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => PaypalPayment(
-                                onFinish: (number) async {
-                                  // payment done
 
-                                  print('order id: ' + number);
+                          api.paypal_request(map).then((value) => {
 
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        PaypalPayment(
+                                          value["paypal_data"],
+                                      onFinish: (number) async {
+                                        // payment done44
 
-                                },
-                              ),
-                            ),
-                          );
-
+                                        String transactions_id =
+                                            number["transactions"][0]
+                                                        ["related_resources"][0]
+                                                    ["sale"]["id"]
+                                                .toString();
+                                        String payer_id = number["payer"]
+                                                ["payer_info"]["payer_id"]
+                                            .toString();
+                                      },
+                                    ),
+                                  ),
+                                )
+                              });
                         },
                         child: Stack(
                           children: <Widget>[
                             Align(
                               alignment: Alignment.topCenter,
                               child: new Image(
-                                image: AssetImage('assets/images/group_2_copy_2966.png'),
+                                image: AssetImage(
+                                    'assets/images/group_2_copy_2966.png'),
                                 height: 150,
                                 fit: BoxFit.cover,
                               ),
@@ -306,7 +336,6 @@ class _PaymentFullState extends State<PaymentFull> {
                         ),
                       ),
                     ),
-
                   ],
                 )),
               )
@@ -314,7 +343,7 @@ class _PaymentFullState extends State<PaymentFull> {
           ),
           // ignore: missing_return
           onWillPop: () async {
-              Navigator.pop(context);
+            Navigator.pop(context);
           }),
     );
   }

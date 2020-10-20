@@ -108,14 +108,12 @@ class RestDatasource {
       return res;
     });
   }
+
   Future<dynamic> paypal_request(Map<String, String> map) {
-    return _netUtil
-        .post(paypal_requestapi, body: map)
-        .then((dynamic res) {
-          print(res);
+    return _netUtil.post(paypal_requestapi, body: map).then((dynamic res) {
       if (res["status_code"] == 200) {
         Fluttertoast.showToast(
-            msg: res["cart_list"]["data_update"],
+            msg: "Order is placed",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             fontSize: 15,
@@ -306,5 +304,4 @@ class RestDatasource {
     return List<Map<String, dynamic>>.from(
         json.decode(response.body)['category_list']);
   }
-
 }
