@@ -48,7 +48,7 @@ class Homescreen extends StatefulWidget {
 
 RestDatasource api = new RestDatasource();
 TextStyle style =
-TextStyle(fontFamily: 'Roboto-Bold', fontSize: 14.0, color: Colors.white);
+TextStyle(fontFamily: 'Roboto-Bold', fontSize: 14.0, color: Colors.white );
 bool product_list = true;
 
 class _HomescreenState extends State<Homescreen> {
@@ -1107,15 +1107,15 @@ class _HomescreenState extends State<Homescreen> {
                       ),
                       itemBuilder: (context, index) {
                         if (snapshotplayerlist == null) {
-                          return Container(
-                            color: Colors.lightBlue,
-                            child: Center(
-                              child: Loading(
-                                  indicator: BallPulseIndicator(),
-                                  size: 100.0,
-                                  color: color3),
-                            ),
-                          );
+                            return Container(
+                              color: Colors.lightBlue,
+                              child: Center(
+                                child: Loading(
+                                    indicator: BallPulseIndicator(),
+                                    size: 100.0,
+                                    color: color3),
+                              ),
+                            );
                         }
                         return Container(
                           child: Column(

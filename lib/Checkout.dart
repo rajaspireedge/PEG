@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:peg/PaymentScreen.dart';
 import 'package:peg/RestDatasource.dart';
 import 'package:peg/homescreen.dart';
@@ -9,6 +10,7 @@ import 'package:peg/main.dart';
 import 'package:http/http.dart' as http;
 
 class Checkout extends StatelessWidget {
+
   String checkinsideoutside;
   String userid;
 
@@ -21,22 +23,19 @@ class Checkout extends StatelessWidget {
         home: Scaffold(
       body: Center(
           child: CheckoutFull(
-        checkinsideoutside: checkinsideoutside,
-      )),
+        checkinsideoutside: checkinsideoutside,)),
     ));
   }
 }
 
 class CheckoutFull extends StatefulWidget {
   String checkinsideoutside;
-  String userid;
-
-  CheckoutFull({Key key, @required this.checkinsideoutside, this.userid})
+  CheckoutFull({Key key, @required this.checkinsideoutside})
       : super(key: key);
 
   @override
   _CheckoutFullState createState() =>
-      _CheckoutFullState(checkinsideoutside, userid);
+      _CheckoutFullState(checkinsideoutside);
 }
 
 var back_1 = new AssetImage('assets/images/back_1.png');
@@ -67,9 +66,8 @@ final shipingphone = TextEditingController();
 
 class _CheckoutFullState extends State<CheckoutFull> {
   String checkinsideoutside;
-  String userid;
 
-  _CheckoutFullState(this.checkinsideoutside, this.userid);
+  _CheckoutFullState(this.checkinsideoutside);
 
   Map<String, dynamic> snapshotplayerlist = Map();
 
@@ -91,19 +89,19 @@ class _CheckoutFullState extends State<CheckoutFull> {
 
   void addpayment(String value) {
     Map<String, String> map = new Map();
+
     map["user_id"] = value;
     map["name"] = billingname.text;
     map["email"] = billingemail.text;
-    map["phone"] = "123";
+    map["phone"] = billingziphone.text;
     map["address"] = billingaddress.text;
     map["country"] = billingcountry.text;
     map["countrysortname"] = "US";
     map["state"] = billingstate.text;
-    map["city"] = "city";
+    map["city"] = billingcity.text;
     map["zip_code"] = billingzipcode.text;
 
     if (shipingaddresszz.text == "") {
-
       map["shippping_address"] = billingaddress.text;
     } else {
       map["shippping_address"] = shipingaddresszz.text;
@@ -111,7 +109,6 @@ class _CheckoutFullState extends State<CheckoutFull> {
 
     if (shipingcountry.text == "") {
       map["shipping_country"] = billingcountry.text;
-
     } else {
       map["shipping_country"] = shipingcountry.text;
     }
@@ -119,21 +116,18 @@ class _CheckoutFullState extends State<CheckoutFull> {
     map["shipping_countrysortname"] = "US";
 
     if (shipingstate.text == "") {
-
       map["shipping_state"] = billingstate.text;
     } else {
       map["shipping_state"] = shipingstate.text;
     }
 
     if (shipingcity.text == "") {
-
       map["shiptocity"] = billingcity.text;
     } else {
       map["shiptocity"] = shipingcity.text;
     }
 
     if (shipingzipcode.text == "") {
-
       map["shiptozip"] = billingzipcode.text;
     } else {
       map["shiptozip"] = shipingzipcode.text;
@@ -142,8 +136,10 @@ class _CheckoutFullState extends State<CheckoutFull> {
     map["shipping_location_type"] = checkinsideoutside;
     map["ship_to_diffadd_check"] = "off";
 
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (BuildContext context) => Payment(map)));
+    api.paypal_request(map).then((value) => {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (BuildContext context) => Payment(value["paypal_data"])))
+        });
   }
 
   @override
@@ -497,6 +493,7 @@ class _CheckoutFullState extends State<CheckoutFull> {
                           ),
                           child: TextField(
                             style: style,
+                            keyboardType: TextInputType.number,
                             controller: billingziphone,
                             decoration: InputDecoration(
                               contentPadding:
@@ -561,7 +558,10 @@ class _CheckoutFullState extends State<CheckoutFull> {
                         ],
                       ),
                     ),
-                    shipingaddress(),
+                    Visibility(
+                      visible: checkvalue,
+                      child: shipingaddress(),
+                    ),
                     Container(
                       child: new InkWell(
                         onTap: () {

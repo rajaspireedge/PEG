@@ -32,6 +32,9 @@ class RestDatasource {
   static final cart_product_delete = BASE_URL + "cart/cart_product_delete/";
   static final get_profile_info = BASE_URL + "user/get_profile_info/";
   static final paypal_requestapi = BASE_URL + "checkout/paypal_request";
+  static final get_store_overview = BASE_URL + "store/get_store_overview/";
+  static final get_store_level = BASE_URL + "store/get_store_level/";
+  static final update_store_banner = BASE_URL + "store/update_store_banner";
   static final cart_product_qty_update =
       BASE_URL + "cart/cart_product_qty_update";
 
@@ -120,11 +123,10 @@ class RestDatasource {
             timeInSecForIos: 1,
             backgroundColor: Colors.blue,
             textColor: Colors.white);
-        ;
       }
       if (res["status_code"] == 400) {
         Fluttertoast.showToast(
-            msg: res["message"],
+            msg: res["error_message"],
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             fontSize: 15,

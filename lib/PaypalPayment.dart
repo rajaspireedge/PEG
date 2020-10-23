@@ -40,8 +40,6 @@ class PaypalPaymentState extends State<PaypalPayment> {
   bool isEnableShipping = false;
   bool isEnableAddress = false;
 
-  String returnURL = "";
-  String cancelURL = "";
 
   @override
   void initState() {
@@ -51,8 +49,9 @@ class PaypalPaymentState extends State<PaypalPayment> {
       try {
         accessToken = await services.getAccessToken();
 
-        print(getOrderParams());
         final transactions = getOrderParams();
+        print(transactions);
+
         final res =
         await services.createPaypalPayment(transactions, accessToken);
         if (res != null) {
@@ -62,7 +61,6 @@ class PaypalPaymentState extends State<PaypalPayment> {
           });
         }
       } catch (e) {
-        print('exception: ' + e.toString());
         final snackBar = SnackBar(
           content: Text(e.toString()),
           duration: Duration(seconds: 10),
@@ -107,17 +105,19 @@ class PaypalPaymentState extends State<PaypalPayment> {
     String addressState = 'Gujarat';
     String addressPhoneNumber = '+919687296871';
 
+    print( map["subscribe_amount"]);
+
     Map<String, dynamic> temp = {
       "intent": "sale",
       "payer": {"payment_method": "paypal"},
       "transactions": [
         {
           "amount": {
-            "total": map["subscribe_amount"],
-            "currency": defaultCurrency["currency"],
+            "total": map["subscribe_amount"].toString(),
+            "currency": defaultCurrency["currency"].toString(),
             "details": {
-              "subtotal": map["subscribe_amount"],
-              "shipping": map["shipping_charge"],
+              "subtotal": map["subscribe_amount"].toString(),
+              "shipping": map["shipping_charge"].toString(),
             }
           },
           "description": "The payment transaction description.",
@@ -125,25 +125,26 @@ class PaypalPaymentState extends State<PaypalPayment> {
             "allowed_payment_method": "INSTANT_FUNDING_SOURCE"
           },
           "item_list": {
-            "items": items,
+            "items": map["items"],
             if (isEnableShipping && isEnableAddress)
               "shipping_address": {
-                "recipient_name": map["name"],
-                "line1": map["shipping_details"][0]["address"],
+                "recipient_name": map["name"].toString(),
+                "line1": map["shipping_details"][0]["address"].toString(),
                 "line2": "",
-                "city": map["city"],
-                "country_code": map["shipping_details"][0]["countrycode"],
+                "city": map["city"].toString()
+                ,
+                "country_code": map["shipping_details"][0]["countrycode"].toString(),
                 "postal_code": "",
-                "phone": map["phone"],
-                "state": map["shipping_details"][0]["state"]
+                "phone": map["phone"].toString(),
+                "state": map["shipping_details"][0]["state"].toString()
               },
           }
         }
       ],
       "note_to_payer": "Contact us for any questions on your order.",
       "redirect_urls": {
-        "return_url": map["returnurl"],
-        "cancel_url": map["cancelurl"]
+        "return_url": map["returnurl"].toString(),
+        "cancel_url": map["cancelurl"].toString()
       }
     };
     return temp;
@@ -166,7 +167,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
           initialUrl: checkoutUrl,
           javascriptMode: JavascriptMode.unrestricted,
           navigationDelegate: (NavigationRequest request) {
-            if (request.url.contains(returnURL)) {
+            if (request.url.contains(map["returnurl"])) {
               final uri = Uri.parse(request.url);
               final payerID = uri.queryParameters['PayerID'];
               if (payerID != null) {
@@ -189,7 +190,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
                   .pushReplacement(MaterialPageRoute(
                   builder: (BuildContext context) => MyOrder(value))));
             }
-            if (request.url.contains(cancelURL)) {
+            if (request.url.contains(map["cancelurl"])) {
               Navigator.of(context).pop();
             }
             return NavigationDecision.navigate;

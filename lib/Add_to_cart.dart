@@ -942,7 +942,7 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
 
                                                                             onTap: () {
                                                                               Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                                                                  builder: (context) => Checkout(checkinsideoutside: "inside",userid: userid,)));
+                                                                                  builder: (context) => Checkout(checkinsideoutside: "inside",)));
                                                                             },
                                                                             child:
                                                                             Padding(
@@ -981,7 +981,7 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                                             onTap: () {
 
                                                                               Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                                                                  builder: (context) => Checkout(checkinsideoutside: "outside",userid: userid,)));
+                                                                                  builder: (context) => Checkout(checkinsideoutside: "outside",)));
                                                                             },
 
                                                                         child:

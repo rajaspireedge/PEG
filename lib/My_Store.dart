@@ -1,13 +1,29 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
+import 'dart:io';
+
+/// Example of a time series chart using a bar renderer.
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:loading/indicator/ball_pulse_indicator.dart';
+import 'package:loading/loading.dart';
+import 'package:peg/RestDatasource.dart';
 import 'package:peg/homescreen.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:peg/main.dart';
 
 class MyStoreLess extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: Center(child: MyStore(),),
+        body: Center(
+          child: MyStore(),
+        ),
       ),
     );
   }
@@ -18,15 +34,129 @@ class MyStore extends StatefulWidget {
   _MyStoreState createState() => _MyStoreState();
 }
 
+List<OrdinalSales> list = new List();
+
 class _MyStoreState extends State<MyStore> {
   Color color1 = Color(0xFF06cdff);
   Color color2 = Colors.white;
   Color color3 = Color(0xFF6ae7e0);
 
   var borderimg = new AssetImage('assets/images/borderimg.png');
+  Map<String, dynamic> map = new Map();
+  Map<String, dynamic> currentlevel = new Map();
+
+  String uploadimageString = "No file Chosen";
+
+  Future<String> getSWData(String id) async {
+    var res = await http
+        .get(Uri.encodeFull(RestDatasource.get_store_overview + id), headers: {
+      "Accept": "application/json",
+      "content-type": "application/json"
+    });
+    var resBody = json.decode(res.body);
+
+    setState(() {
+      map = resBody["store_data"];
+    });
+
+    return "Success";
+  }
+
+  File file;
+  var serverReceiverPath = RestDatasource.update_store_banner;
+
+  Future<String> uploadImage(filename, useris, BuildContext context) async {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return  Container(
+            alignment: Alignment.center,
+            height: 50,
+            width: 50,
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.cyan,
+              strokeWidth: 5,
+            ),
+          );
+        });
+
+    var request = http.MultipartRequest('POST', Uri.parse(serverReceiverPath));
+    request.files.add(await http.MultipartFile.fromString('user_id', useris));
+    request.files
+        .add(await http.MultipartFile.fromPath('banner_image', filename));
+    var res = await request.send();
+
+    if (res.statusCode == 200) {
+      Navigator.pop(context);
+      Fluttertoast.showToast(
+          msg: "Upload Successfully",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          fontSize: 15,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.blue,
+          textColor: Colors.white);
+    } else {}
+
+    print(res.statusCode);
+    return res.reasonPhrase;
+  }
+
+  File uploadimage; //variable for choosed file
+
+  Future<void> chooseImage() async {
+    var choosedimage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    //set source: ImageSource.camera to get image from camera
+    setState(() {
+      uploadimage = choosedimage;
+      uploadimageString = uploadimage.path.toString();
+    });
+  }
+
+  Future<String> getCurrentLevel(String id) async {
+    var res = await http
+        .get(Uri.encodeFull(RestDatasource.get_store_level + id), headers: {
+      "Accept": "application/json",
+      "content-type": "application/json"
+    });
+    var resBody = json.decode(res.body);
+
+    setState(() {
+      currentlevel.clear();
+      currentlevel = resBody["data"];
+
+      for (int i = 0; i < currentlevel["user_level_data_array"].length; i++) {
+        String position = i.toString();
+        int value =
+            int.parse(currentlevel["user_level_data_array"][i].toString());
+        list.add(new OrdinalSales(position, value));
+      }
+    });
+
+    return "Success";
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    getStringValuesSF()
+        .then((value) => {this.getCurrentLevel(value), this.getSWData(value)});
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (currentlevel.isEmpty) {
+      return Container(
+        color: Color(0xFF0a0f32),
+        child: Center(
+          child: Loading(
+              indicator: BallPulseIndicator(), size: 100.0, color: color3),
+        ),
+      );
+    }
+
     return Scaffold(
       body: WillPopScope(
           child: Stack(
@@ -113,7 +243,8 @@ class _MyStoreState extends State<MyStore> {
                                           margin: EdgeInsets.only(
                                               right: 10, top: 5),
                                           child: Text(
-                                            "0",
+                                            map["total_gross_selling"]
+                                                .toString(),
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontFamily: 'Roboto-Medium',
@@ -163,7 +294,7 @@ class _MyStoreState extends State<MyStore> {
                                           margin: EdgeInsets.only(
                                               right: 10, top: 5),
                                           child: Text(
-                                            "0",
+                                            map["total_items_sold"].toString(),
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontFamily: 'Roboto-Medium',
@@ -216,7 +347,7 @@ class _MyStoreState extends State<MyStore> {
                                           margin: EdgeInsets.only(
                                               right: 10, top: 5),
                                           child: Text(
-                                            "0",
+                                            map["total_orders"].toString(),
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontFamily: 'Roboto-Medium',
@@ -273,7 +404,8 @@ class _MyStoreState extends State<MyStore> {
                               child: Container(
                                 margin: EdgeInsets.only(left: 27),
                                 child: Text(
-                                  "1",
+                                  currentlevel["current_level"]["level"]
+                                      .toString(),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'Roboto-Medium',
@@ -302,7 +434,10 @@ class _MyStoreState extends State<MyStore> {
                                     ),
                                     Container(
                                       child: Text(
-                                        "Level : New Level One",
+                                        "Level : " +
+                                            currentlevel["current_level"]
+                                                    ["level_title"]
+                                                .toString(),
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontFamily: 'Roboto-Medium',
@@ -320,7 +455,8 @@ class _MyStoreState extends State<MyStore> {
                               child: Container(
                                 margin: EdgeInsets.only(right: 27),
                                 child: Text(
-                                  "1",
+                                  currentlevel["current_level"]["level"]
+                                      .toString(),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'Roboto-Medium',
@@ -371,6 +507,10 @@ class _MyStoreState extends State<MyStore> {
                           ],
                         ),
                       ),
+                      Container(
+                          height: 150,
+                          width: 300,
+                          child: CustomFontSizeAndColor(_createSampleData())),
                       Column(
                         children: [
                           Container(
@@ -405,31 +545,38 @@ class _MyStoreState extends State<MyStore> {
                             ),
                             child: Row(
                               children: [
-                                Container(
-                                    alignment: Alignment.center,
-                                    margin: EdgeInsets.only(left: 10),
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xFF101a6f),
-                                      borderRadius: BorderRadius.all(
-                                          const Radius.circular(20)),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          10.0, 5.0, 10.0, 5.0),
-                                      child: Text(
-                                        "Choose File",
-                                        style: TextStyle(
-                                            fontFamily: 'Roboto-Bold',
-                                            letterSpacing: 0.03,
-                                            fontSize: 15.0,
-                                            color: Colors.white),
+                                InkWell(
+                                  onTap: () {
+                                    chooseImage();
+                                  },
+                                  child: Container(
+                                      alignment: Alignment.center,
+                                      margin: EdgeInsets.only(left: 10),
+                                      height: 30,
+                                      decoration: BoxDecoration(
+                                        color: Color(0xFF101a6f),
+                                        borderRadius: BorderRadius.all(
+                                            const Radius.circular(20)),
                                       ),
-                                    )),
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            10.0, 5.0, 10.0, 5.0),
+                                        child: Text(
+                                          "Choose File",
+                                          style: TextStyle(
+                                              fontFamily: 'Roboto-Bold',
+                                              letterSpacing: 0.03,
+                                              fontSize: 15.0,
+                                              color: Colors.white),
+                                        ),
+                                      )),
+                                ),
                                 Container(
+                                  width: 100,
                                   margin: EdgeInsets.only(left: 10.0),
                                   child: Text(
-                                    "No file choosen",
+                                    uploadimageString,
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         fontFamily: 'Roboto-Bold',
                                         letterSpacing: 0.03,
@@ -440,18 +587,147 @@ class _MyStoreState extends State<MyStore> {
                               ],
                             ),
                           ),
-                          Container(
-                            height: 60,
-                            margin: EdgeInsets.only(right: 20, top: 10),
-                            alignment: Alignment.centerRight,
-                            child: Container(
-                              child: Image(
-                                image: AssetImage("assets/images/upload.png"),
-                                height: 60,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
+                          InkWell(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20.0)),
+                                        //this right here
+                                        child: Container(
+                                          height: 200,
+                                          decoration: BoxDecoration(
+                                              color: Color(0xFF0a0f32)),
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        left: 30, top: 20),
+                                                    child: Text(
+                                                      "Select shipping address location",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontFamily:
+                                                              'Roboto-Bold',
+                                                          letterSpacing: 0.03,
+                                                          fontSize: 12.0,
+                                                          color: Color(
+                                                              0xFFff5000)),
+                                                    ),
+                                                  ),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Container(
+                                                      margin: EdgeInsets.only(
+                                                          right: 30, top: 20),
+                                                      child: Image(
+                                                        image: AssetImage(
+                                                            "assets/images/close_1.png"),
+                                                        width: 20,
+                                                        height: 20,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                              Container(
+                                                height: 0.5,
+                                                margin: EdgeInsets.only(
+                                                    right: 20,
+                                                    left: 20,
+                                                    top: 10),
+                                                color: Colors.white,
+                                              ),
+                                              Container(
+                                                  color: Colors.black,
+                                                  margin: EdgeInsets.fromLTRB(
+                                                      30.0, 20.0, 30.0, 0.0),
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsets.fromLTRB(
+                                                            40, 10, 40, 10),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Container(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    top: 10,
+                                                                    bottom: 10),
+                                                            decoration: BoxDecoration(
+                                                                border: Border.all(
+                                                                    color: Colors
+                                                                        .blue),
+                                                                color: Colors
+                                                                    .black),
+                                                            child: InkWell(
+                                                              onTap: () {},
+                                                              child: Padding(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(5),
+                                                                child: Text(
+                                                                  "Choose Image",
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontFamily:
+                                                                          'Roboto-Bold',
+                                                                      letterSpacing:
+                                                                          0.03,
+                                                                      fontSize:
+                                                                          12.0,
+                                                                      color: Colors
+                                                                          .white),
+                                                                ),
+                                                              ),
+                                                            )),
+                                                      ],
+                                                    ),
+                                                  )),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    });
+                              },
+                              child: InkWell(
+                                onTap: () {
+                                  getStringValuesSF().then((value) =>
+                                      uploadImage(
+                                          uploadimage.path, value, context));
+                                },
+                                child: Container(
+                                  height: 60,
+                                  margin: EdgeInsets.only(right: 20, top: 10),
+                                  alignment: Alignment.centerRight,
+                                  child: Container(
+                                    child: Image(
+                                      image: AssetImage(
+                                          "assets/images/upload.png"),
+                                      height: 60,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ))
                         ],
                       ),
                       Column(
@@ -632,4 +908,76 @@ class _GradientPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => oldDelegate != this;
+}
+
+/// Example of using a custom primary measure and domain axis replacing the
+/// renderSpec with one with a custom font size and a custom color.
+///
+/// There are many axis styling options in the SmallTickRenderer allowing you
+/// to customize the font, tick lengths, and offsets.
+class CustomFontSizeAndColor extends StatelessWidget {
+  final List<charts.Series> seriesList;
+  final bool animate;
+
+  CustomFontSizeAndColor(this.seriesList, {this.animate});
+
+  @override
+  Widget build(BuildContext context) {
+    return new charts.BarChart(
+      seriesList,
+      animate: animate,
+
+      /// Assign a custom style for the domain axis.
+      ///
+      /// This is an OrdinalAxisSpec to match up with BarChart's default
+      /// ordinal domain axis (use NumericAxisSpec or DateTimeAxisSpec for
+      /// other charts).
+      domainAxis: new charts.OrdinalAxisSpec(
+          renderSpec: new charts.SmallTickRendererSpec(
+
+              // Tick and Label styling here.
+              labelStyle: new charts.TextStyleSpec(
+                  fontSize: 18, // size in Pts.
+                  color: charts.MaterialPalette.white),
+
+              // Change the line colors to match text color.
+              lineStyle: new charts.LineStyleSpec(
+                  color: charts.MaterialPalette.white))),
+
+      /// Assign a custom style for the measure axis.
+      primaryMeasureAxis: new charts.NumericAxisSpec(
+          renderSpec: new charts.GridlineRendererSpec(
+
+              // Tick and Label styling here.
+              labelStyle: new charts.TextStyleSpec(
+                  fontSize: 18, // size in Pts.
+                  color: charts.MaterialPalette.white),
+
+              // Change the line colors to match text color.
+              lineStyle: new charts.LineStyleSpec(
+                  color: charts.MaterialPalette.white))),
+    );
+  }
+
+  /// Create series list with single series
+
+}
+
+/// Sample ordinal data type.
+class OrdinalSales {
+  final String year;
+  final int sales;
+
+  OrdinalSales(this.year, this.sales);
+}
+
+List<charts.Series<OrdinalSales, String>> _createSampleData() {
+  return [
+    new charts.Series<OrdinalSales, String>(
+      id: 'Global Revenue',
+      domainFn: (OrdinalSales sales, _) => sales.year,
+      measureFn: (OrdinalSales sales, _) => sales.sales,
+      data: list,
+    ),
+  ];
 }

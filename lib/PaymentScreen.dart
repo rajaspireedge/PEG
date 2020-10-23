@@ -4,7 +4,7 @@ import 'package:peg/homescreen.dart';
 import 'package:peg/makePayment.dart';
 
 class Payment extends StatelessWidget {
-  Map<String, String> map = new Map();
+  Map<String, dynamic> map = new Map();
 
   Payment(this.map);
 
@@ -20,7 +20,7 @@ class Payment extends StatelessWidget {
 }
 
 class PaymentFull extends StatefulWidget {
-  Map<String, String> map = new Map();
+  Map<String, dynamic> map = new Map();
 
   PaymentFull(this.map);
 
@@ -37,7 +37,7 @@ Color color2 = Colors.white;
 Color color3 = Color(0xFF6ae7e0);
 
 class _PaymentFullState extends State<PaymentFull> {
-  Map<String, String> map = new Map();
+  Map<String, dynamic> map = new Map();
 
   _PaymentFullState(this.map);
 
@@ -295,31 +295,24 @@ class _PaymentFullState extends State<PaymentFull> {
                       child: new InkWell(
                         onTap: () {
                           // make PayPal payment
-
-
-                          api.paypal_request(map).then((value) => {
-
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        PaypalPayment(
-                                          value["paypal_data"],
-                                      onFinish: (number) async {
-                                        // payment done44
-
-                                        String transactions_id =
-                                            number["transactions"][0]
-                                                        ["related_resources"][0]
-                                                    ["sale"]["id"]
-                                                .toString();
-                                        String payer_id = number["payer"]
-                                                ["payer_info"]["payer_id"]
-                                            .toString();
-                                      },
-                                    ),
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  PaypalPayment(map,
+                                    onFinish: (number) async {
+                                      // payment done44
+                                      String transactions_id =
+                                      number["transactions"][0]
+                                      ["related_resources"][0]
+                                      ["sale"]["id"]
+                                          .toString();
+                                      String payer_id = number["payer"]
+                                      ["payer_info"]["payer_id"]
+                                          .toString();
+                                    },
                                   ),
-                                )
-                              });
+                            ),
+                          );
                         },
                         child: Stack(
                           children: <Widget>[
