@@ -35,6 +35,14 @@ class RestDatasource {
   static final get_store_overview = BASE_URL + "store/get_store_overview/";
   static final get_store_level = BASE_URL + "store/get_store_level/";
   static final update_store_banner = BASE_URL + "store/update_store_banner";
+  static final update_store_link = BASE_URL + "store/update_store_link";
+  static final delete_product = BASE_URL + "product/delete_product/";
+  static final delete_categories = BASE_URL + "category/delete_categories/";
+  static final update_player_international_tax =
+      BASE_URL + "product/update_player_international_tax";
+  static final add_category_api = BASE_URL + "category/add_category";
+  static final update_player_local_tax =
+      BASE_URL + "product/update_player_local_tax";
   static final cart_product_qty_update =
       BASE_URL + "cart/cart_product_qty_update";
 
@@ -68,6 +76,141 @@ class RestDatasource {
         getStringValuesSF().then((value) => print(value));
       }
       if (res["status_code"] == 400) {
+        Fluttertoast.showToast(
+            msg: res["error_message"],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 15,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white);
+        throw new Exception(res);
+      }
+      return;
+    });
+  }
+
+  Future<User> updatestorelink(
+      String userid, String storelink, BuildContext context) {
+    return _netUtil.post(update_store_link,
+        body: {"user_id": userid, "store_link": storelink}).then((dynamic res) {
+      print(res);
+      if (res["status_code"] == 200) {
+        Navigator.pop(context);
+        Fluttertoast.showToast(
+            msg: res["data"],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 15,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white);
+      }
+      if (res["status_code"] == 400) {
+        Navigator.pop(context);
+        Fluttertoast.showToast(
+            msg: res["message"],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 15,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white);
+        throw new Exception(res);
+      }
+      return;
+    });
+  }
+
+  Future<User> updatelocaltax(
+      String userid, String type, String value, BuildContext context) {
+    return _netUtil.post(update_player_local_tax, body: {
+      "user_id": userid,
+      "type": type,
+      "value": value
+    }).then((dynamic res) {
+      print(res);
+      if (res["status_code"] == 200) {
+        Navigator.pop(context);
+        Fluttertoast.showToast(
+            msg: res["message"],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 15,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white);
+      }
+      if (res["status_code"] == 400) {
+        Navigator.pop(context);
+        Fluttertoast.showToast(
+            msg: res["error_message"],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 15,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white);
+        throw new Exception(res);
+      }
+      return;
+    });
+  }
+
+  Future<User> add_category(String userid, String name, BuildContext context) {
+    return _netUtil.post(add_category_api, body: {
+      "user_id": userid,
+      "name": name,
+    }).then((dynamic res) {
+      print(res);
+      if (res["status_code"] == 200) {
+        Navigator.pop(context);
+        Fluttertoast.showToast(
+            msg: res["message"],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 15,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white);
+      }
+      if (res["status_code"] == 400) {
+        Navigator.pop(context);
+        Fluttertoast.showToast(
+            msg: res["error_message"],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 15,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white);
+        throw new Exception(res);
+      }
+      return;
+    });
+  }
+
+  Future<User> updateinternationaltax(
+      String userid, String type, String value, BuildContext context) {
+    return _netUtil.post(update_player_international_tax, body: {
+      "user_id": userid,
+      "type": type,
+      "value": value
+    }).then((dynamic res) {
+      print(res);
+      if (res["status_code"] == 200) {
+        Navigator.pop(context);
+        Fluttertoast.showToast(
+            msg: res["message"],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 15,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white);
+      }
+      if (res["status_code"] == 400) {
+        Navigator.pop(context);
         Fluttertoast.showToast(
             msg: res["error_message"],
             toastLength: Toast.LENGTH_SHORT,
@@ -176,6 +319,14 @@ class RestDatasource {
         json.decode(response.body)['product_list']);
   }
 
+  Future<List<Map<String, dynamic>>> fetchSellProductList(
+      String user_id) async {
+    http.Response response = await http.get(get_all_products + "/" + user_id);
+    if (response.statusCode != 200) return null;
+    return List<Map<String, dynamic>>.from(
+        json.decode(response.body)['product_list']);
+  }
+
   Future<List<Map<String, dynamic>>> fetchPlayer() async {
     http.Response response = await http.get(get_all_players);
     if (response.statusCode != 200) return null;
@@ -200,6 +351,56 @@ class RestDatasource {
   Future<Map<String, dynamic>> deletecart(String userid, String cartid) async {
     http.Response res =
         await http.delete(cart_product_delete + userid + "/" + cartid);
+    if (json.decode(res.body)["status_code"] == 200) {
+      Fluttertoast.showToast(
+          msg: json.decode(res.body)["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          fontSize: 15,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.blue,
+          textColor: Colors.white);
+    }
+    if (json.decode(res.body)["status_code"] == 400) {
+      Fluttertoast.showToast(
+          msg: json.decode(res.body)["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          fontSize: 15,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.blue,
+          textColor: Colors.white);
+      throw new Exception(res);
+    }
+  }
+
+  Future<Map<String, dynamic>> deleteproduct(String product_id) async {
+    http.Response res = await http.delete(delete_product + "/" + product_id);
+    if (json.decode(res.body)["status_code"] == 200) {
+      Fluttertoast.showToast(
+          msg: json.decode(res.body)["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          fontSize: 15,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.blue,
+          textColor: Colors.white);
+    }
+    if (json.decode(res.body)["status_code"] == 400) {
+      Fluttertoast.showToast(
+          msg: json.decode(res.body)["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          fontSize: 15,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.blue,
+          textColor: Colors.white);
+      throw new Exception(res);
+    }
+  }
+
+  Future<Map<String, dynamic>> deletecat(String cat_id) async {
+    http.Response res = await http.delete(delete_categories + "/" + cat_id);
     if (json.decode(res.body)["status_code"] == 200) {
       Fluttertoast.showToast(
           msg: json.decode(res.body)["message"],

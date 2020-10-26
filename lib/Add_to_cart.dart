@@ -342,7 +342,7 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                                   child: Image(
                                                                     image: AssetImage(
                                                                         "assets/images/submit.png"),
-                                                                    height: 80,
+                                                                    height: 60,
                                                                     width: 150,
                                                                     fit: BoxFit
                                                                         .cover,

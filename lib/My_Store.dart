@@ -40,6 +40,11 @@ class _MyStoreState extends State<MyStore> {
   Color color1 = Color(0xFF06cdff);
   Color color2 = Colors.white;
   Color color3 = Color(0xFF6ae7e0);
+  final username_controller = TextEditingController();
+
+  TextStyle hintstyle =
+      TextStyle(fontFamily: 'Roboto-Bold', fontSize: 14.0, color: Colors.white);
+  bool click = false;
 
   var borderimg = new AssetImage('assets/images/borderimg.png');
   Map<String, dynamic> map = new Map();
@@ -57,6 +62,7 @@ class _MyStoreState extends State<MyStore> {
 
     setState(() {
       map = resBody["store_data"];
+      username_controller.text = map["store_link"];
     });
 
     return "Success";
@@ -69,7 +75,7 @@ class _MyStoreState extends State<MyStore> {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return  Container(
+          return Container(
             alignment: Alignment.center,
             height: 50,
             width: 50,
@@ -87,7 +93,7 @@ class _MyStoreState extends State<MyStore> {
     var res = await request.send();
 
     if (res.statusCode == 200) {
-      Navigator.pop(context);
+      getSWData(useris);
       Fluttertoast.showToast(
           msg: "Upload Successfully",
           toastLength: Toast.LENGTH_SHORT,
@@ -96,7 +102,9 @@ class _MyStoreState extends State<MyStore> {
           timeInSecForIos: 1,
           backgroundColor: Colors.blue,
           textColor: Colors.white);
-    } else {}
+    } else {
+      Navigator.pop(context);
+    }
 
     print(res.statusCode);
     return res.reasonPhrase;
@@ -124,12 +132,11 @@ class _MyStoreState extends State<MyStore> {
     setState(() {
       currentlevel.clear();
       currentlevel = resBody["data"];
-
       for (int i = 0; i < currentlevel["user_level_data_array"].length; i++) {
-        String position = i.toString();
+        int position = i + 1;
         int value =
             int.parse(currentlevel["user_level_data_array"][i].toString());
-        list.add(new OrdinalSales(position, value));
+        list.add(new OrdinalSales("Level " + position.toString(), value));
       }
     });
 
@@ -147,7 +154,15 @@ class _MyStoreState extends State<MyStore> {
 
   @override
   Widget build(BuildContext context) {
-    if (currentlevel.isEmpty) {
+    if (map == null) {
+      return Container(
+        color: Color(0xFF0a0f32),
+        child: Center(
+          child: Loading(
+              indicator: BallPulseIndicator(), size: 100.0, color: color3),
+        ),
+      );
+    } else if (currentlevel.isEmpty) {
       return Container(
         color: Color(0xFF0a0f32),
         child: Center(
@@ -491,21 +506,36 @@ class _MyStoreState extends State<MyStore> {
                                     color: Colors.white),
                               ),
                             ),
-                            Container(
-                              width: 100,
-                              height: 60,
-                              alignment: Alignment.center,
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  if (click) {
+                                    click = false;
+                                  } else {
+                                    click = true;
+                                  }
+                                });
+                              },
                               child: Container(
-                                child: Image(
-                                  image: AssetImage("assets/images/list.png"),
-                                  width: 100,
-                                  height: 60,
-                                  fit: BoxFit.cover,
+                                width: 100,
+                                height: 60,
+                                alignment: Alignment.center,
+                                child: Container(
+                                  child: Image(
+                                    image: AssetImage("assets/images/list.png"),
+                                    width: 100,
+                                    height: 60,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
-                            ),
+                            )
                           ],
                         ),
+                      ),
+                      Visibility(
+                        visible: click,
+                        child: levellist(currentlevel["levels"]),
                       ),
                       Container(
                           height: 150,
@@ -587,6 +617,15 @@ class _MyStoreState extends State<MyStore> {
                               ],
                             ),
                           ),
+                          Container(
+                            margin: EdgeInsets.only(left: 30, top: 10),
+                            alignment: Alignment.centerLeft,
+                            child: Image(
+                                image: NetworkImage(map["store_banner"]),
+                                height: 80,
+                                width: 80,
+                                fit: BoxFit.scaleDown),
+                          ),
                           InkWell(
                               onTap: () {
                                 showDialog(
@@ -610,7 +649,7 @@ class _MyStoreState extends State<MyStore> {
                                                 children: [
                                                   Container(
                                                     margin: EdgeInsets.only(
-                                                        left: 30, top: 20),
+                                                        left: 30, top: 10),
                                                     child: Text(
                                                       "Select shipping address location",
                                                       style: TextStyle(
@@ -778,16 +817,24 @@ class _MyStoreState extends State<MyStore> {
                               ],
                             ),
                           ),
-                          Container(
-                            height: 60,
-                            margin: EdgeInsets.only(right: 20, top: 10),
-                            alignment: Alignment.centerRight,
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context)
+                                  .pushReplacement(MaterialPageRoute(
+                                builder: (context) => Homescreen(),
+                              ));
+                            },
                             child: Container(
-                              child: Image(
-                                image:
-                                    AssetImage("assets/images/go_to_store.png"),
-                                height: 60,
-                                fit: BoxFit.cover,
+                              height: 60,
+                              margin: EdgeInsets.only(right: 20, top: 10),
+                              alignment: Alignment.centerRight,
+                              child: Container(
+                                child: Image(
+                                  image: AssetImage(
+                                      "assets/images/go_to_store.png"),
+                                  height: 60,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
@@ -805,7 +852,7 @@ class _MyStoreState extends State<MyStore> {
                             alignment: Alignment.topLeft,
                             margin: EdgeInsets.only(left: 30, top: 20),
                             child: Text(
-                              "Default Link : 1736",
+                              "Default Link : " + map["store_link"],
                               style: TextStyle(
                                   fontFamily: 'Roboto-Bold',
                                   letterSpacing: 0.03,
@@ -828,31 +875,55 @@ class _MyStoreState extends State<MyStore> {
                             child: Row(
                               children: [
                                 Container(
+                                  width: 80,
                                   margin: EdgeInsets.only(left: 20.0),
-                                  child: Text(
-                                    "1376",
-                                    style: TextStyle(
-                                        fontFamily: 'Roboto-Bold',
-                                        letterSpacing: 0.03,
-                                        fontSize: 10.0,
-                                        color: Color(0xFF7052d0)),
+                                  child: TextField(
+                                    style: style,
+                                    controller: username_controller,
+                                    decoration: InputDecoration(
+                                      hintText: "Default Link",
+                                      border: InputBorder.none,
+                                      hintStyle: hintstyle,
+                                    ),
                                   ),
                                 )
                               ],
                             ),
                           ),
-                          Container(
-                            height: 60,
-                            margin: EdgeInsets.only(right: 20, top: 10),
-                            alignment: Alignment.centerRight,
+                          InkWell(
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Container(
+                                      alignment: Alignment.center,
+                                      height: 50,
+                                      width: 50,
+                                      child: CircularProgressIndicator(
+                                        backgroundColor: Colors.cyan,
+                                        strokeWidth: 5,
+                                      ),
+                                    );
+                                  });
+
+                              getStringValuesSF().then((userids) => api
+                                  .updatestorelink(userids,
+                                      username_controller.text, context)
+                                  .then((value) => getSWData(userids)));
+                            },
                             child: Container(
-                              child: Image(
-                                image: AssetImage("assets/images/submit.png"),
-                                height: 60,
-                                fit: BoxFit.cover,
+                              height: 60,
+                              margin: EdgeInsets.only(right: 20, top: 10),
+                              alignment: Alignment.centerRight,
+                              child: Container(
+                                child: Image(
+                                  image: AssetImage("assets/images/submit.png"),
+                                  height: 60,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
-                          ),
+                          )
                         ],
                       )
                     ],
@@ -980,4 +1051,172 @@ List<charts.Series<OrdinalSales, String>> _createSampleData() {
       data: list,
     ),
   ];
+}
+
+Widget levellist(List<dynamic> snaplevellist) {
+  Color color3 = Color(0xFF6ae7e0);
+
+  if (snaplevellist == null) {
+    return Container(
+      color: Color(0xFF0a0f32),
+      child: Center(
+        child: Loading(
+            indicator: BallPulseIndicator(), size: 100.0, color: color3),
+      ),
+    );
+  }
+
+  return ListView.builder(
+    shrinkWrap: true,
+    physics: NeverScrollableScrollPhysics(),
+    itemBuilder: (context, index) {
+      return Container(
+        margin: EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  child: Text(
+                    "Level Number",
+                    style: TextStyle(
+                        letterSpacing: 0.02,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Roboto-Bold',
+                        fontSize: 15.0,
+                        color: Colors.white),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    child: Text(
+                      snaplevellist[index]["level"],
+                      style: TextStyle(
+                          letterSpacing: 0.02,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Roboto-Bold',
+                          fontSize: 15.0,
+                          color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  child: Text(
+                    "Level name",
+                    style: TextStyle(
+                        letterSpacing: 0.02,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Roboto-Bold',
+                        fontSize: 15.0,
+                        color: Colors.white),
+                  ),
+                ),
+                Container(
+                  child: Text(
+                    snaplevellist[index]["level_title"],
+                    style: TextStyle(
+                        letterSpacing: 0.02,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Roboto-Bold',
+                        fontSize: 15.0,
+                        color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  child: Text(
+                    "Level Reward",
+                    style: TextStyle(
+                        letterSpacing: 0.02,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Roboto-Bold',
+                        fontSize: 15.0,
+                        color: Colors.white),
+                  ),
+                ),
+                Container(
+                  child: Text(
+                    new String.fromCharCodes(new Runes('\u0024')) +
+                        snaplevellist[index]["reward"],
+                    style: TextStyle(
+                        letterSpacing: 0.02,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Roboto-Bold',
+                        fontSize: 15.0,
+                        color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  child: Text(
+                    "Item Sold",
+                    style: TextStyle(
+                        letterSpacing: 0.02,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Roboto-Bold',
+                        fontSize: 15.0,
+                        color: Colors.white),
+                  ),
+                ),
+                Container(
+                  child: Text(
+                    snaplevellist[index]["item_sold"],
+                    style: TextStyle(
+                        letterSpacing: 0.02,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Roboto-Bold',
+                        fontSize: 15.0,
+                        color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  child: Text(
+                    "Status",
+                    style: TextStyle(
+                        letterSpacing: 0.02,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Roboto-Bold',
+                        fontSize: 15.0,
+                        color: Colors.white),
+                  ),
+                ),
+                Container(
+                  child: Text(
+                    snaplevellist[index]["status"],
+                    style: TextStyle(
+                        letterSpacing: 0.02,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Roboto-Bold',
+                        fontSize: 15.0,
+                        color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    },
+    itemCount: snaplevellist.length,
+  );
 }

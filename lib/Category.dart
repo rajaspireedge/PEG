@@ -1,5 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:peg/RestDatasource.dart';
+import 'package:peg/ScrollingText.dart';
 import 'package:peg/homescreen.dart';
+import 'package:http/http.dart' as http;
+import 'package:peg/main.dart';
 
 class Category extends StatelessWidget {
   @override
@@ -33,6 +40,41 @@ class _CategoryFullState extends State<CategoryFull> {
   bool officon3 = true;
   bool onicon3 = false;
 
+  List data = List(); //edited line
+  List data2 = List(); //edited line
+
+  Future<String> getSWData(String userid) async {
+    var res = await http.get(
+        Uri.encodeFull(RestDatasource.get_all_categories + "/" + userid),
+        headers: {
+          "Accept": "application/json",
+          "content-type": "application/json"
+        });
+    var resBody = json.decode(res.body);
+
+    setState(() {
+      data = resBody["category_list"];
+    });
+
+    return "Success";
+  }
+
+  Future<String> getSubCatData(String userid) async {
+    var res = await http.get(
+        Uri.encodeFull(RestDatasource.get_all_subcategories + userid),
+        headers: {
+          "Accept": "application/json",
+          "content-type": "application/json"
+        });
+    var resBody = json.decode(res.body);
+
+    setState(() {
+      data = resBody["subcategory_list"];
+    });
+
+    return "Success";
+  }
+
   final entercategoryname = TextField(
     style: style,
     controller: username_controller,
@@ -43,6 +85,15 @@ class _CategoryFullState extends State<CategoryFull> {
       hintStyle: hintstyle,
     ),
   );
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getStringValuesSF().then((value) => {
+          getSWData(value),
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -216,34 +267,83 @@ class _CategoryFullState extends State<CategoryFull> {
                                                                   Colors.white,
                                                             ),
                                                             Container(
-                                                              color: Colors
-                                                                  .black,
+                                                              color:
+                                                                  Colors.black,
                                                               margin: EdgeInsets
                                                                   .fromLTRB(
-                                                                  30.0,
-                                                                  20.0,
-                                                                  30.0,
-                                                                  0.0),
-                                                              child:
-                                                              Container(
-                                                                margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
-                                                                decoration:
-                                                                new BoxDecoration(
-                                                                    border:
-                                                                    Border.all(color: Color(0xFF00ffff))),
-                                                                child: Center(child: entercategoryname,)
-                                                              ),
+                                                                      30.0,
+                                                                      20.0,
+                                                                      30.0,
+                                                                      0.0),
+                                                              child: Container(
+                                                                  margin: EdgeInsets
+                                                                      .fromLTRB(
+                                                                          10,
+                                                                          20,
+                                                                          10,
+                                                                          20),
+                                                                  decoration: new BoxDecoration(
+                                                                      border: Border.all(
+                                                                          color:
+                                                                              Color(0xFF00ffff))),
+                                                                  child: Center(
+                                                                    child:
+                                                                        entercategoryname,
+                                                                  )),
                                                             ),
-                                                            Container(
-                                                              margin: EdgeInsets.only(bottom: 15 , top: 20),
-                                                              child: Image(
-                                                                image: AssetImage(
-                                                                    "assets/images/submit.png"),
-                                                                height: 50,
-                                                                width: 100,
-                                                                fit: BoxFit.cover,
+                                                            InkWell(
+                                                              onTap: () {
+                                                                if (username_controller
+                                                                        .text
+                                                                        .length ==
+                                                                    0) {
+                                                                  Fluttertoast.showToast(
+                                                                      msg:
+                                                                          "Enter Category",
+                                                                      toastLength:
+                                                                          Toast
+                                                                              .LENGTH_SHORT,
+                                                                      gravity: ToastGravity
+                                                                          .BOTTOM,
+                                                                      fontSize:
+                                                                          15,
+                                                                      timeInSecForIos:
+                                                                          1,
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .blue,
+                                                                      textColor:
+                                                                          Colors
+                                                                              .white);
+                                                                } else {
+                                                                  getStringValuesSF().then((userid) => api
+                                                                      .add_category(
+                                                                          userid,
+                                                                          username_controller
+                                                                              .text,
+                                                                          context)
+                                                                      .then((value) =>
+                                                                          getSWData(
+                                                                              userid)));
+                                                                }
+                                                              },
+                                                              child: Container(
+                                                                margin: EdgeInsets
+                                                                    .only(
+                                                                        bottom:
+                                                                            15,
+                                                                        top:
+                                                                            20),
+                                                                child: Image(
+                                                                  image: AssetImage(
+                                                                      "assets/images/submit.png"),
+                                                                  height: 50,
+                                                                  width: 100,
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                ),
                                                               ),
-                                                            ),
+                                                            )
                                                           ],
                                                         ),
                                                       ),
@@ -383,7 +483,8 @@ class _CategoryFullState extends State<CategoryFull> {
                                                     margin: EdgeInsets.only(
                                                         left: 8, top: 10),
                                                     child: Text(
-                                                      index.toString() + ".",
+                                                      (index + 1).toString() +
+                                                          ".",
                                                       style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold,
@@ -410,17 +511,21 @@ class _CategoryFullState extends State<CategoryFull> {
                                                     ),
                                                   ),
                                                   Container(
+                                                    width: 50,
+                                                    height: 20,
                                                     margin: EdgeInsets.only(
                                                         left: 8, top: 23),
-                                                    child: Text(
-                                                      "Kids |  Kids",
-                                                      style: TextStyle(
+                                                    child: ScrollingText(
+                                                      ratioOfBlankToScreen:
+                                                          0.05,
+                                                      text: data[index]["name"],
+                                                      textStyle: TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontFamily:
                                                               'Roboto-Bold',
                                                           letterSpacing: 0.03,
-                                                          fontSize: 12.0,
+                                                          fontSize: 14.0,
                                                           color: Colors.black),
                                                     ),
                                                   ),
@@ -554,24 +659,121 @@ class _CategoryFullState extends State<CategoryFull> {
                                                           fit: BoxFit.cover,
                                                         ),
                                                       ),
-                                                      Container(
-                                                        margin: EdgeInsets.only(
-                                                            right: 5, top: 23),
-                                                        child: Image(
-                                                          image: AssetImage(
-                                                              "assets/images/icons_8_delete_bin_24.png"),
-                                                          width: 13,
-                                                          height: 13,
-                                                          fit: BoxFit.cover,
+                                                      InkWell(
+                                                        onTap: () {
+                                                          showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return Dialog(
+                                                                  shape: RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              20.0)),
+                                                                  //this right here
+                                                                  child:
+                                                                      Container(
+                                                                    height: 200,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                            color:
+                                                                                Color(0xFF0a0f32)),
+                                                                    child:
+                                                                        Column(
+                                                                      children: [
+                                                                        InkWell(
+                                                                          onTap:
+                                                                              () {
+                                                                            Navigator.pop(context);
+                                                                          },
+                                                                          child:
+                                                                              Container(
+                                                                            alignment:
+                                                                                Alignment.centerRight,
+                                                                            margin:
+                                                                                EdgeInsets.only(right: 30, top: 20),
+                                                                            child:
+                                                                                Image(
+                                                                              image: AssetImage("assets/images/close_1.png"),
+                                                                              width: 20,
+                                                                              height: 20,
+                                                                              fit: BoxFit.cover,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceBetween,
+                                                                          children: [
+                                                                            Container(
+                                                                              alignment: Alignment.center,
+                                                                              margin: EdgeInsets.only(left: 30, top: 20),
+                                                                              child: Text(
+                                                                                "Do you want to delete Category ?",
+                                                                                style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Color(0xFFff5000)),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                        Container(
+                                                                          color:
+                                                                              Colors.black,
+                                                                          margin: EdgeInsets.fromLTRB(
+                                                                              30.0,
+                                                                              5.0,
+                                                                              30.0,
+                                                                              0.0),
+                                                                        ),
+                                                                        InkWell(
+                                                                          onTap:
+                                                                              () {
+                                                                            api.deletecat(data[index]["id"].toString()).then((value) =>
+                                                                                {
+                                                                                  Navigator.pop(context),
+                                                                                  getStringValuesSF().then((value) => getSWData(value))
+                                                                                });
+                                                                          },
+                                                                          child:
+                                                                              Container(
+                                                                            margin:
+                                                                                EdgeInsets.only(bottom: 15),
+                                                                            child:
+                                                                                Image(
+                                                                              image: AssetImage("assets/images/submit.png"),
+                                                                              height: 60,
+                                                                              width: 150,
+                                                                              fit: BoxFit.cover,
+                                                                            ),
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              });
+                                                        },
+                                                        child: Container(
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  right: 5,
+                                                                  top: 23),
+                                                          child: Image(
+                                                            image: AssetImage(
+                                                                "assets/images/icons_8_delete_bin_24.png"),
+                                                            width: 13,
+                                                            height: 13,
+                                                            fit: BoxFit.cover,
+                                                          ),
                                                         ),
-                                                      ),
+                                                      )
                                                     ],
                                                   )
                                                 ],
                                               )
                                             ],
                                           ),
-                                          itemCount: 4,
+                                          itemCount: data.length,
                                         )
                                       ],
                                     ))),
