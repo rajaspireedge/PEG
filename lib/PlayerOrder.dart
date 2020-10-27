@@ -260,12 +260,18 @@ class _PlayerOrderFullState extends State<PlayerOrderFull> {
                                       Align(
                                         alignment: Alignment.bottomLeft,
                                         child: InkWell(
-                                            onTap: () => Navigator.of(context)
-                                                .pushReplacement(
-                                                    MaterialPageRoute(
-                                                        builder: (BuildContext
-                                                                context) =>
-                                                            MyOrderDetailFull())),
+                                            onTap: () => {
+                                              getStringValuesSF().then((value) =>
+                                                  Navigator.of(context).pushReplacement(
+                                                      MaterialPageRoute(
+                                                          builder: (BuildContext
+                                                          context) =>
+                                                              MyOrderDetail(
+                                                                  value,
+                                                                  snapshotitemlist[
+                                                                  index]
+                                                                  ["id"])))),
+                                            },
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment

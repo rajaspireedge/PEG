@@ -70,6 +70,8 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
 
   List<double> totallist = List();
   List<Map<String, dynamic>> snapshotitemlist = List();
+  List<dynamic> atrlbl = List();
+  List<dynamic> optlbl = List();
 
   Future<String> getSWData(String id) async {
     var res = await http.get(
@@ -78,10 +80,9 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
 
     setState(() {
       getStringValuesSF().then((value) => {
-        userid = value,
-      });
+            userid = value,
+          });
     });
-
 
     if (json.decode(res.body)["status_code"] == 400) {
       if (json.decode(res.body)["message"] == "Your Cartlist is Empty") {
@@ -105,7 +106,6 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
           snapshotitemlist.clear();
           snapshotitemlist = List<Map<String, dynamic>>.from(
               json.decode(res.body)['cart_list']);
-          print(snapshotitemlist);
         });
       } on Exception catch (_) {}
     }
@@ -214,6 +214,13 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
+                          atrlbl = snapshotitemlist[index]["sel_variation"]
+                              ["atrlbl"];
+                          optlbl = snapshotitemlist[index]["sel_variation"]
+                              ["optlbl"];
+
+                          print(atrlbl);
+                          print(optlbl);
                           return Container(
                             margin: EdgeInsets.only(
                                 right: 30, left: 30, bottom: 10),
@@ -668,28 +675,47 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                               .start,
                                                       children: [
                                                         Container(
-                                                          width: 100,
-                                                          height: 90,
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  right: 10,
-                                                                  top: 20,
-                                                                  bottom: 50),
-                                                          child: Text(
-                                                            "Badge Stlye : Custom VIP Badge 5 Custom Tag  Pro Esports Gaming",
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Colors
-                                                                    .white),
-                                                          ),
-                                                        ),
+                                                            width: 100,
+                                                            height: 90,
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    right: 10,
+                                                                    top: 20,
+                                                                    bottom: 50),
+                                                            child: Row(
+                                                              children: [
+                                                                Expanded(
+                                                                  child: ListView
+                                                                      .builder(
+                                                                    shrinkWrap:
+                                                                        true,
+                                                                    physics:
+                                                                        NeverScrollableScrollPhysics(),
+                                                                    itemBuilder:
+                                                                        (context,
+                                                                            index) {
+                                                                      return Container(
+                                                                        child:
+                                                                            Text(
+                                                                          atrlbl[index] +
+                                                                              ": " +
+                                                                              optlbl[index],
+                                                                          style: TextStyle(
+                                                                              fontWeight: FontWeight.bold,
+                                                                              fontFamily: 'Roboto-Medium',
+                                                                              letterSpacing: 0.03,
+                                                                              fontSize: 15.0,
+                                                                              color: Colors.white),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                    itemCount:
+                                                                        atrlbl
+                                                                            .length,
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            )),
                                                         Container(
                                                           margin:
                                                               EdgeInsets.only(
@@ -939,12 +965,14 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                                                   0xFFff5000)),
                                                                       child:
                                                                           InkWell(
-
-                                                                            onTap: () {
-                                                                              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                                                                  builder: (context) => Checkout(checkinsideoutside: "inside",)));
-                                                                            },
-                                                                            child:
+                                                                        onTap:
+                                                                            () {
+                                                                          Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                                                              builder: (context) => Checkout(
+                                                                                    checkinsideoutside: "inside",
+                                                                                  )));
+                                                                        },
+                                                                        child:
                                                                             Padding(
                                                                           padding:
                                                                               EdgeInsets.all(5),
@@ -977,13 +1005,13 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                                               .black),
                                                                       child:
                                                                           InkWell(
-
-                                                                            onTap: () {
-
-                                                                              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                                                                  builder: (context) => Checkout(checkinsideoutside: "outside",)));
-                                                                            },
-
+                                                                        onTap:
+                                                                            () {
+                                                                          Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                                                              builder: (context) => Checkout(
+                                                                                    checkinsideoutside: "outside",
+                                                                                  )));
+                                                                        },
                                                                         child:
                                                                             Padding(
                                                                           padding:

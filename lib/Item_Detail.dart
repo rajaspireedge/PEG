@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:peg/Add_to_cart.dart';
@@ -39,6 +40,11 @@ class ItemDetail extends StatefulWidget {
   _ItemDetailState createState() => _ItemDetailState(id);
 }
 
+final username_controller = TextEditingController();
+
+TextStyle hintstyle =
+    TextStyle(fontFamily: 'Roboto-Bold', fontSize: 10.0, color: Colors.white);
+
 class _ItemDetailState extends State<ItemDetail> {
   String id;
   String name;
@@ -46,11 +52,24 @@ class _ItemDetailState extends State<ItemDetail> {
 
   String userid;
 
+  final entercategoryname = TextField(
+    style: style,
+    controller: username_controller,
+    decoration: InputDecoration(
+      contentPadding: EdgeInsets.all(18),
+      hintText: "Enter Tag",
+      border: InputBorder.none,
+      hintStyle: hintstyle,
+    ),
+  );
+
   var ref_seller_id;
 
   int qty = 0;
 
-  var Custom_Tag;
+  String Custom_Tag = "";
+
+  var customvis = false;
 
   var product_image;
 
@@ -99,20 +118,19 @@ class _ItemDetailState extends State<ItemDetail> {
         }
       }
 
-
       String extra;
       String selvartion;
 
       apimap.forEach((key, value) {
         if (key.contains("[") && key.contains("extra_amount")) {
           print("array11" + key.substring(13, 14));
-          if (key.substring(13, 14) == arrayindex.toString()) {
+          if (key.substring(13, 14) == list[arrayindex]["attr_id"]) {
             extra = key;
           }
         }
         if (key.contains("[") && key.contains("sel_variation")) {
           print("array22" + key.substring(14, 15));
-          if (key.substring(14, 15) == arrayindex.toString()) {
+          if (key.substring(14, 15) == list[arrayindex]["attr_id"]) {
             selvartion = key;
           }
         }
@@ -123,7 +141,8 @@ class _ItemDetailState extends State<ItemDetail> {
 
       String optionid = list[index]["option_id"];
 
-      selvertion = "sel_variation" + "[" + arrayindex.toString() + "]" + "[0]";
+      selvertion =
+          "sel_variation" + "[" + list[arrayindex]["attr_id"] + "]" + "[0]";
 
       apimap[selvertion] = optionid;
 
@@ -137,7 +156,7 @@ class _ItemDetailState extends State<ItemDetail> {
 
       extraamount = "extra_amount" +
           "[" +
-          arrayindex.toString() +
+          list[arrayindex]["attr_id"] +
           "]" +
           "[" +
           optionid +
@@ -279,20 +298,25 @@ class _ItemDetailState extends State<ItemDetail> {
                                 setState(() {
                                   _mySelection3 = newVal;
 
-
                                   String extra;
                                   String selvartion;
 
                                   apimap.forEach((key, value) {
-                                    if (key.contains("[") && key.contains("extra_amount")) {
+                                    if (key.contains("[") &&
+                                        key.contains("extra_amount")) {
                                       print("array11" + key.substring(13, 14));
-                                      if (key.substring(13, 14) == arrayindex.toString()) {
+                                      if (key.substring(13, 14) ==
+                                          snapshotitemlist[arrayindex]
+                                              ["attr_id"]) {
                                         extra = key;
                                       }
                                     }
-                                    if (key.contains("[") && key.contains("sel_variation")) {
+                                    if (key.contains("[") &&
+                                        key.contains("sel_variation")) {
                                       print("array22" + key.substring(14, 15));
-                                      if (key.substring(14, 15) == arrayindex.toString()) {
+                                      if (key.substring(14, 15) ==
+                                          snapshotitemlist[arrayindex]
+                                              ["attr_id"]) {
                                         selvartion = key;
                                       }
                                     }
@@ -303,7 +327,7 @@ class _ItemDetailState extends State<ItemDetail> {
 
                                   selvertion = "sel_variation" +
                                       "[" +
-                                      arrayindex.toString() +
+                                      snapshotitemlist[arrayindex]["attr_id"] +
                                       "]" +
                                       "[0]";
 
@@ -323,13 +347,14 @@ class _ItemDetailState extends State<ItemDetail> {
 
                                   extraamount = "extra_amount" +
                                       "[" +
-                                      arrayindex.toString() +
+                                      snapshotitemlist[arrayindex]["attr_id"] +
                                       "]" +
                                       "[" +
                                       _mySelection3 +
                                       "]";
 
                                   apimap[extraamount] = extraamountt;
+                                  print("drop" + apimap.toString());
                                 });
                               },
                               items: snapshotitemlist.map((item) {
@@ -373,7 +398,12 @@ class _ItemDetailState extends State<ItemDetail> {
       images = snapshotitemlist["prdct_img_arr"];
       ref_seller_id = snapshotitemlist["product_detail"]["seller_id"];
       qty = int.parse(snapshotitemlist["product_detail"]["qty"].toString());
-      Custom_Tag = snapshotitemlist["product_detail"]["customizable_tag"];
+
+      if (snapshotitemlist["product_detail"]["is_customizable"] == "1") {
+        setState(() {
+          customvis = true;
+        });
+      }
       product_image = snapshotitemlist["product_detail"]["image"];
       product_id = snapshotitemlist["product_id"];
       price = snapshotitemlist["product_detail"]["price"];
@@ -385,7 +415,6 @@ class _ItemDetailState extends State<ItemDetail> {
             userid = value,
             apimap["user_id"] = value,
             apimap["ref_seller_id"] = ref_seller_id.toString(),
-            apimap["Custom_Tag"] = Custom_Tag.toString(),
             apimap["product_image"] = product_image.toString(),
             apimap["product_id"] = product_id.toString(),
             apimap["amount"] = price.toString(),
@@ -548,7 +577,7 @@ class _ItemDetailState extends State<ItemDetail> {
                                       ),
                                     ],
                                   ),
-                                  margin: EdgeInsets.only(left: 50, right: 50),
+                                  margin: EdgeInsets.only(left: 50, right: 50 ,bottom: 20),
                                   decoration: BoxDecoration(
                                       color: Color(0xFF0a0f32),
                                       border:
@@ -699,7 +728,7 @@ class _ItemDetailState extends State<ItemDetail> {
                                 ),
                                 Container(
                                     margin: EdgeInsets.only(
-                                        right: 30.0, left: 30.0, top: 20.0),
+                                        right: 30.0, left: 30.0, top: 20.0 , ),
                                     color: Color(0xFF0a0f32),
                                     child: Container(
                                       child: ListView.builder(
@@ -743,50 +772,215 @@ class _ItemDetailState extends State<ItemDetail> {
                                       ),
                                     )),
                                 Container(
-                                  height: 150,
-                                  child: Stack(
+                                  child: Column(
                                     children: [
-                                      Align(
-                                        alignment: Alignment.topCenter,
-                                        child: Container(
-                                          margin: EdgeInsets.only(bottom: 50),
-                                          child: Image(
-                                            image: AssetImage(
-                                                "assets/images/group_2_copy_2_2.png"),
-                                            width: 200,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          api.addtocart(apimap).then(
-                                                (value) => getStringValuesSF()
-                                                    .then((value) => Navigator
-                                                            .of(context)
-                                                        .pushReplacement(
-                                                            MaterialPageRoute(
-                                                                builder: (BuildContext
-                                                                        context) =>
-                                                                    Addtocart(
-                                                                      id: value,
-                                                                    )))),
-                                              );
-                                        },
-                                        child: Align(
-                                          alignment: Alignment.bottomCenter,
-                                          child: Container(
-                                            margin: EdgeInsets.only(top: 50),
+                                      Visibility(
+                                        visible: customvis,
+                                        child: InkWell(
+                                          onTap: () {
+                                            showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return Dialog(
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20.0)),
+                                                    //this right here
+                                                    child: Container(
+                                                      height: 250,
+                                                      decoration: BoxDecoration(
+                                                          color: Color(
+                                                              0xFF0a0f32)),
+                                                      child: Column(
+                                                        children: [
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Container(
+                                                                margin: EdgeInsets
+                                                                    .only(
+                                                                        left:
+                                                                            30,
+                                                                        top:
+                                                                            20),
+                                                                child: Text(
+                                                                  "Category Name",
+                                                                  style: TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontFamily:
+                                                                          'Roboto-Bold',
+                                                                      letterSpacing:
+                                                                          0.03,
+                                                                      fontSize:
+                                                                          12.0,
+                                                                      color: Color(
+                                                                          0xFFff5000)),
+                                                                ),
+                                                              ),
+                                                              InkWell(
+                                                                onTap: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                child:
+                                                                    Container(
+                                                                  margin: EdgeInsets
+                                                                      .only(
+                                                                          right:
+                                                                              30,
+                                                                          top:
+                                                                              20),
+                                                                  child: Image(
+                                                                    image: AssetImage(
+                                                                        "assets/images/close_1.png"),
+                                                                    width: 20,
+                                                                    height: 20,
+                                                                    fit: BoxFit
+                                                                        .cover,
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          Container(
+                                                            height: 0.5,
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    right: 20,
+                                                                    left: 20,
+                                                                    top: 10),
+                                                            color: Colors.white,
+                                                          ),
+                                                          Container(
+                                                            color: Colors.black,
+                                                            margin: EdgeInsets
+                                                                .fromLTRB(
+                                                                    30.0,
+                                                                    20.0,
+                                                                    30.0,
+                                                                    0.0),
+                                                            child: Container(
+                                                                margin: EdgeInsets
+                                                                    .fromLTRB(
+                                                                        10,
+                                                                        20,
+                                                                        10,
+                                                                        20),
+                                                                decoration: new BoxDecoration(
+                                                                    border: Border.all(
+                                                                        color: Color(
+                                                                            0xFF00ffff))),
+                                                                child: Center(
+                                                                  child:
+                                                                      entercategoryname,
+                                                                )),
+                                                          ),
+                                                          InkWell(
+                                                            onTap: () {
+                                                              if (username_controller
+                                                                      .text
+                                                                      .length ==
+                                                                  0) {
+                                                                Fluttertoast.showToast(
+                                                                    msg:
+                                                                        "Enter Tag",
+                                                                    toastLength:
+                                                                        Toast
+                                                                            .LENGTH_SHORT,
+                                                                    gravity: ToastGravity
+                                                                        .BOTTOM,
+                                                                    fontSize:
+                                                                        15,
+                                                                    timeInSecForIos:
+                                                                        1,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .blue,
+                                                                    textColor:
+                                                                        Colors
+                                                                            .white);
+                                                              } else {
+                                                                Custom_Tag =
+                                                                    username_controller
+                                                                        .text;
+                                                                Navigator.pop(
+                                                                    context);
+                                                              }
+                                                            },
+                                                            child: Container(
+                                                              margin: EdgeInsets
+                                                                  .only(
+                                                                      bottom:
+                                                                          15,
+                                                                      top: 20),
+                                                              child: Image(
+                                                                image: AssetImage(
+                                                                    "assets/images/submit.png"),
+                                                                height: 50,
+                                                                width: 150,
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                              ),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                });
+                                          },
+                                          child:  Container(
+                                            margin: EdgeInsets.only(top: 20),
                                             child: Image(
                                               image: AssetImage(
-                                                  "assets/images/group_2_copy_2.png"),
+                                                  "assets/images/group_2_copy_2_2.png"),
                                               width: 200,
+                                              height: 40,
                                               fit: BoxFit.cover,
                                             ),
                                           ),
                                         ),
-                                      )
+                                      ),
                                     ],
+                                  ),
+                                ),
+
+                                GestureDetector(
+                                  onTap: () {
+                                    if (Custom_Tag == "" && customvis) {
+                                      apimap["Custom_Tag"] = "PRO ESPORTS GAMiNG";
+                                    } else{
+                                      apimap["Custom_Tag"] = Custom_Tag.toString();
+                                    }
+
+                                    api.addtocart(apimap).then(
+                                          (value) => getStringValuesSF()
+                                          .then((value) => Navigator
+                                          .of(context)
+                                          .pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (BuildContext
+                                              context) =>
+                                                  Addtocart(
+                                                    id: value,
+                                                  )))),
+                                    );
+                                  },
+                                  child: Container(
+                                    child: Image(
+                                      image: AssetImage(
+                                          "assets/images/group_2_copy_2.png"),
+                                      width: 200,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                                 Container(
@@ -825,7 +1019,7 @@ class _ItemDetailState extends State<ItemDetail> {
                                     ],
                                   ),
                                   margin: EdgeInsets.only(
-                                      right: 30, left: 30, bottom: 30),
+                                      right: 30, left: 30, bottom: 30 ),
                                   decoration: BoxDecoration(
                                       color: Color(0xFF0a0f32),
                                       border:

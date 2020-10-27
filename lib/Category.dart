@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:peg/Checkout.dart';
 import 'package:peg/RestDatasource.dart';
 import 'package:peg/ScrollingText.dart';
 import 'package:peg/homescreen.dart';
@@ -27,6 +28,12 @@ class CategoryFull extends StatefulWidget {
 }
 
 final username_controller = TextEditingController();
+final username_controller22 = TextEditingController();
+
+final edit_controller = TextEditingController();
+final edit_controller22 = TextEditingController();
+
+
 
 TextStyle hintstyle =
     TextStyle(fontFamily: 'Roboto-Bold', fontSize: 10.0, color: Colors.white);
@@ -39,9 +46,198 @@ class _CategoryFullState extends State<CategoryFull> {
 
   bool officon3 = true;
   bool onicon3 = false;
+  var back_1 = new AssetImage('assets/images/back_1.png');
+  var borderimg = new AssetImage('assets/images/rounded_rectangle_234.png');
+  String _mySelection;
 
   List data = List(); //edited line
-  List data2 = List(); //edited line
+  List data2 = List();
+
+  Future _showDialog22(context) async {
+    return await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Color(0xFF0a0f32),
+          content: StatefulBuilder(
+            builder: (BuildContext context,
+                void Function(void Function()) setState) {
+              print(data);
+              return Container(
+                height: 300,
+                width: 250,
+                decoration: BoxDecoration(color: Color(0xFF0a0f32)),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: 10, top: 20),
+                          child: Text(
+                            "Shipping Tax",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Roboto-Bold',
+                                letterSpacing: 0.03,
+                                fontSize: 12.0,
+                                color: Color(0xFFff5000)),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(right: 10, top: 20),
+                            child: Image(
+                              image: AssetImage("assets/images/close_1.png"),
+                              width: 20,
+                              height: 20,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      height: 0.5,
+                      margin: EdgeInsets.only(right: 10, left: 10, top: 10),
+                      color: Colors.white,
+                    ),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+                      child: Text(
+                        'International Fee',
+                        style: TextStyle(
+                            fontFamily: 'Roboto-Bold',
+                            fontSize: 14.0,
+                            color: Colors.white),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      color: Colors.black,
+                      child: Column(
+                        children: [
+                          Stack(
+                            children: <Widget>[
+                              Container(
+                                  margin: EdgeInsets.fromLTRB(
+                                      10.0, 10.0, 10.0, 10.0),
+                                  decoration: new BoxDecoration(
+                                    image: new DecorationImage(
+                                      image: borderimg,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                  child: Stack(
+                                    alignment: AlignmentDirectional.center,
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            right: 10.0, left: 10),
+                                        child: Padding(
+                                          padding: EdgeInsets.all(2.0),
+                                          child: Theme(
+                                              data: Theme.of(context).copyWith(
+                                                canvasColor: Color(0xFF0a0f32),
+                                              ),
+                                              child:
+                                                  DropdownButtonHideUnderline(
+                                                child: DropdownButton(
+                                                  iconSize: 0.0,
+                                                  isExpanded: true,
+                                                  hint: Text(
+                                                    "Please category",
+                                                    style: style,
+                                                  ),
+                                                  style: style,
+                                                  value: _mySelection,
+                                                  onChanged: (newVal) {
+                                                    setState(() {
+                                                      _mySelection = newVal;
+                                                    });
+                                                  },
+                                                  items: data.map((item) {
+                                                    return DropdownMenuItem(
+                                                      child: new Text(
+                                                        item['name'],
+                                                        style: style,
+                                                      ),
+                                                      value: item['id'],
+                                                    );
+                                                  }).toList(),
+                                                ),
+                                              )),
+                                        ),
+                                      ),
+                                      Container(
+                                        alignment: Alignment.centerRight,
+                                        margin: EdgeInsets.only(right: 10.0),
+                                        child: Image(
+                                          image: back_1,
+                                          height: 20,
+                                          width: 20,
+                                        ),
+                                      ),
+                                    ],
+                                  ))
+                            ],
+                          ),
+                          Container(
+                            margin: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+                            child: Container(
+                                margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                decoration: new BoxDecoration(
+                                    border:
+                                        Border.all(color: Color(0xFF00ffff))),
+                                child: Center(
+                                  child: entercategoryname22,
+                                )),
+                          ),
+                        ],
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        if (username_controller22.text.length == 0) {
+                          Fluttertoast.showToast(
+                              msg: "Enter Category",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              fontSize: 15,
+                              timeInSecForIos: 1,
+                              backgroundColor: Colors.blue,
+                              textColor: Colors.white);
+                        } else {
+                          print(_mySelection);
+                          getStringValuesSF().then((userid) => api
+                              .add_category22(userid, _mySelection,
+                                  username_controller22.text, context)
+                              .then((value) => {getSWData(userid)}));
+                        }
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(top: 10),
+                        child: Image(
+                          image: AssetImage("assets/images/submit.png"),
+                          height: 40,
+                          width: 150,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
 
   Future<String> getSWData(String userid) async {
     var res = await http.get(
@@ -51,26 +247,33 @@ class _CategoryFullState extends State<CategoryFull> {
           "content-type": "application/json"
         });
     var resBody = json.decode(res.body);
+    print(resBody);
 
-    setState(() {
-      data = resBody["category_list"];
-    });
-
-    return "Success";
-  }
-
-  Future<String> getSubCatData(String userid) async {
-    var res = await http.get(
-        Uri.encodeFull(RestDatasource.get_all_subcategories + userid),
-        headers: {
-          "Accept": "application/json",
-          "content-type": "application/json"
+    if (json.decode(res.body)["status_code"] == 400) {
+      if (json.decode(res.body)["message"] == "Category Not Available") {
+        setState(() {
+          data.clear();
         });
-    var resBody = json.decode(res.body);
+      }
 
-    setState(() {
-      data = resBody["subcategory_list"];
-    });
+      Fluttertoast.showToast(
+          msg: json.decode(res.body)["message"],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          fontSize: 15,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.blue,
+          textColor: Colors.white);
+      throw new Exception(json.decode(res.body));
+    } else {
+      setState(() {
+        data = resBody["category_list"];
+        for (int i = 0; i < data.length; i++) {
+          data2 = data[i]["subcategories"];
+        }
+        print(data2);
+      });
+    }
 
     return "Success";
   }
@@ -86,13 +289,44 @@ class _CategoryFullState extends State<CategoryFull> {
     ),
   );
 
+  final editcategoryname = TextField(
+    style: style,
+    controller: edit_controller,
+    decoration: InputDecoration(
+      contentPadding: EdgeInsets.all(18),
+      hintText: "Enter Category Name",
+      border: InputBorder.none,
+      hintStyle: hintstyle,
+    ),
+  );
+
+  final editcategoryname22 = TextField(
+    style: style,
+    controller: edit_controller22,
+    decoration: InputDecoration(
+      contentPadding: EdgeInsets.all(18),
+      hintText: "Enter Category Name",
+      border: InputBorder.none,
+      hintStyle: hintstyle,
+    ),
+  );
+
+  final entercategoryname22 = TextField(
+    style: style,
+    controller: username_controller22,
+    decoration: InputDecoration(
+      contentPadding: EdgeInsets.all(18),
+      hintText: "Enter Category Name",
+      border: InputBorder.none,
+      hintStyle: hintstyle,
+    ),
+  );
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getStringValuesSF().then((value) => {
-          getSWData(value),
-        });
+    getStringValuesSF().then((value) => {getSWData(value)});
   }
 
   @override
@@ -360,15 +594,20 @@ class _CategoryFullState extends State<CategoryFull> {
                                               ),
                                             ),
                                           ),
-                                          Container(
-                                            child: Image(
-                                              image: AssetImage(
-                                                  "assets/images/add_sub_category.png"),
-                                              height: 50,
-                                              width: 140,
-                                              fit: BoxFit.scaleDown,
+                                          InkWell(
+                                            onTap: () {
+                                              _showDialog22(context);
+                                            },
+                                            child: Container(
+                                              child: Image(
+                                                image: AssetImage(
+                                                    "assets/images/add_sub_category.png"),
+                                                height: 50,
+                                                width: 140,
+                                                fit: BoxFit.scaleDown,
+                                              ),
                                             ),
-                                          ),
+                                          )
                                         ],
                                       ),
                                     )
@@ -462,175 +701,129 @@ class _CategoryFullState extends State<CategoryFull> {
                                         ),
                                         ListView.builder(
                                           shrinkWrap: true,
-                                          padding: EdgeInsets.all(20),
-                                          itemBuilder: (_, index) => Stack(
-                                            children: [
-                                              Container(
-                                                margin: EdgeInsets.only(
-                                                    top: 10, bottom: 10),
-                                                child: Image(
-                                                  image: AssetImage(
-                                                      "assets/images/ellipse_4222.png"),
-                                                  fit: BoxFit.cover,
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          padding: EdgeInsets.only(
+                                              top: 20, right: 20, left: 20),
+                                          itemBuilder: (context, index) {
+                                            return Stack(
+                                              children: [
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                      top: 10, bottom: 10),
+                                                  child: Image(
+                                                    image: AssetImage(
+                                                        "assets/images/ellipse_4222.png"),
+                                                    fit: BoxFit.cover,
+                                                  ),
                                                 ),
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                        left: 8, top: 10),
-                                                    child: Text(
-                                                      (index + 1).toString() +
-                                                          ".",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontFamily:
-                                                              'Roboto-Bold',
-                                                          letterSpacing: 0.03,
-                                                          fontSize: 12.0,
-                                                          color: Colors.black),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          left: 8, top: 10),
+                                                      child: Text(
+                                                        (index + 1).toString() +
+                                                            ".",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontFamily:
+                                                                'Roboto-Bold',
+                                                            letterSpacing: 0.03,
+                                                            fontSize: 12.0,
+                                                            color:
+                                                                Colors.black),
+                                                      ),
                                                     ),
-                                                  ),
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                        left: 8, top: 23),
-                                                    child: Text(
-                                                      "Main Category",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontFamily:
-                                                              'Roboto-Bold',
-                                                          letterSpacing: 0.03,
-                                                          fontSize: 12.0,
-                                                          color: Colors.black),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          left: 8, top: 23),
+                                                      child: Text(
+                                                        "Main Category",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontFamily:
+                                                                'Roboto-Bold',
+                                                            letterSpacing: 0.03,
+                                                            fontSize: 12.0,
+                                                            color:
+                                                                Colors.black),
+                                                      ),
                                                     ),
-                                                  ),
-                                                  Container(
-                                                    width: 50,
-                                                    height: 20,
-                                                    margin: EdgeInsets.only(
-                                                        left: 8, top: 23),
-                                                    child: ScrollingText(
-                                                      ratioOfBlankToScreen:
-                                                          0.05,
-                                                      text: data[index]["name"],
-                                                      textStyle: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontFamily:
-                                                              'Roboto-Bold',
-                                                          letterSpacing: 0.03,
-                                                          fontSize: 14.0,
-                                                          color: Colors.black),
+                                                    Container(
+                                                      width: 50,
+                                                      height: 20,
+                                                      margin: EdgeInsets.only(
+                                                          left: 8, top: 23),
+                                                      child: ScrollingText(
+                                                        ratioOfBlankToScreen:
+                                                            0.05,
+                                                        text: data[index]
+                                                            ["name"],
+                                                        textStyle: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontFamily:
+                                                                'Roboto-Bold',
+                                                            letterSpacing: 0.03,
+                                                            fontSize: 14.0,
+                                                            color:
+                                                                Colors.black),
+                                                      ),
                                                     ),
-                                                  ),
-                                                  Container(
-                                                    height: 20,
-                                                    width: 50,
-                                                    child: Stack(
-                                                      children: <Widget>[
-                                                        InkWell(
-                                                          child: new Image(
-                                                            image: AssetImage(
-                                                                "assets/images/rounded_rectangle_2_copy.png"),
-                                                            height: 50,
-                                                            width: 65,
+                                                    Container(
+                                                      height: 20,
+                                                      width: 50,
+                                                      child: Stack(
+                                                        children: <Widget>[
+                                                          InkWell(
+                                                            child: new Image(
+                                                              image: AssetImage(
+                                                                  "assets/images/rounded_rectangle_2_copy.png"),
+                                                              height: 50,
+                                                              width: 65,
+                                                            ),
+                                                            onTap: () {
+                                                              if (officon3) {
+                                                                setState(() {
+                                                                  onicon3 =
+                                                                      true;
+                                                                  officon3 =
+                                                                      false;
+                                                                  challengemail =
+                                                                      "1";
+                                                                  api.category_status_updatess(data[index]["id"], challengemail, context);
+
+                                                                });
+                                                              } else {
+                                                                setState(() {
+                                                                  onicon3 =
+                                                                      false;
+                                                                  officon3 =
+                                                                      true;
+                                                                  challengemail =
+                                                                      "0";
+                                                                  api.category_status_updatess(data[index]["id"], challengemail, context);
+
+                                                                });
+                                                              }
+                                                            },
                                                           ),
-                                                          onTap: () {
-                                                            if (officon3) {
-                                                              setState(() {
-                                                                onicon3 = true;
-                                                                officon3 =
-                                                                    false;
-                                                                challengemail =
-                                                                    "1";
-                                                              });
-                                                            } else {
-                                                              setState(() {
-                                                                onicon3 = false;
-                                                                officon3 = true;
-                                                                challengemail =
-                                                                    "0";
-                                                              });
-                                                            }
-                                                          },
-                                                        ),
-                                                        Visibility(
-                                                            visible: officon3,
-                                                            child: Container(
-                                                                margin:
-                                                                    EdgeInsets
-                                                                        .all(2),
-                                                                child: Row(
-                                                                  children: [
-                                                                    Image(
-                                                                      image: AssetImage(
-                                                                          "assets/images/ellipse_5_copy.png"),
-                                                                      height:
-                                                                          50,
-                                                                      width: 20,
-                                                                    ),
-                                                                    Container(
-                                                                      margin: EdgeInsets.only(
-                                                                          left:
-                                                                              10),
-                                                                      child:
-                                                                          Text(
-                                                                        "on",
-                                                                        style: TextStyle(
-                                                                            fontWeight: FontWeight
-                                                                                .bold,
-                                                                            fontFamily:
-                                                                                'Roboto-Bold',
-                                                                            letterSpacing:
-                                                                                0.03,
-                                                                            fontSize:
-                                                                                10.0,
-                                                                            color:
-                                                                                Colors.black),
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ))),
-                                                        Visibility(
-                                                            visible: onicon3,
-                                                            child: Container(
-                                                                margin:
-                                                                    EdgeInsets
-                                                                        .all(2),
-                                                                child: Row(
-                                                                  children: [
-                                                                    Container(
-                                                                      margin: EdgeInsets.only(
-                                                                          left:
-                                                                              4),
-                                                                      child:
-                                                                          Text(
-                                                                        "off",
-                                                                        style: TextStyle(
-                                                                            fontWeight: FontWeight
-                                                                                .bold,
-                                                                            fontFamily:
-                                                                                'Roboto-Bold',
-                                                                            letterSpacing:
-                                                                                0.03,
-                                                                            fontSize:
-                                                                                10.0,
-                                                                            color:
-                                                                                Colors.black),
-                                                                      ),
-                                                                    ),
-                                                                    Container(
-                                                                      margin: EdgeInsets.only(
-                                                                          left:
-                                                                              9),
-                                                                      child:
-                                                                          Image(
+                                                          Visibility(
+                                                              visible: officon3,
+                                                              child: Container(
+                                                                  margin:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              2),
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Image(
                                                                         image: AssetImage(
                                                                             "assets/images/ellipse_5_copy.png"),
                                                                         height:
@@ -638,143 +831,847 @@ class _CategoryFullState extends State<CategoryFull> {
                                                                         width:
                                                                             20,
                                                                       ),
-                                                                    )
-                                                                  ],
-                                                                ))),
-                                                      ],
-                                                    ),
-                                                    margin: EdgeInsets.only(
-                                                        left: 8, top: 20),
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Container(
-                                                        margin: EdgeInsets.only(
-                                                            right: 5, top: 23),
-                                                        child: Image(
-                                                          image: AssetImage(
-                                                              "assets/images/edit_2222.png"),
-                                                          width: 13,
-                                                          height: 13,
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      ),
-                                                      InkWell(
-                                                        onTap: () {
-                                                          showDialog(
-                                                              context: context,
-                                                              builder:
-                                                                  (BuildContext
-                                                                      context) {
-                                                                return Dialog(
-                                                                  shape: RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              20.0)),
-                                                                  //this right here
-                                                                  child:
                                                                       Container(
-                                                                    height: 200,
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                            color:
-                                                                                Color(0xFF0a0f32)),
-                                                                    child:
-                                                                        Column(
-                                                                      children: [
-                                                                        InkWell(
-                                                                          onTap:
-                                                                              () {
-                                                                            Navigator.pop(context);
-                                                                          },
-                                                                          child:
-                                                                              Container(
-                                                                            alignment:
-                                                                                Alignment.centerRight,
-                                                                            margin:
-                                                                                EdgeInsets.only(right: 30, top: 20),
-                                                                            child:
-                                                                                Image(
-                                                                              image: AssetImage("assets/images/close_1.png"),
-                                                                              width: 20,
-                                                                              height: 20,
-                                                                              fit: BoxFit.cover,
-                                                                            ),
-                                                                          ),
+                                                                        margin: EdgeInsets.only(
+                                                                            left:
+                                                                                10),
+                                                                        child:
+                                                                            Text(
+                                                                          "on",
+                                                                          style: TextStyle(
+                                                                              fontWeight: FontWeight.bold,
+                                                                              fontFamily: 'Roboto-Bold',
+                                                                              letterSpacing: 0.03,
+                                                                              fontSize: 10.0,
+                                                                              color: Colors.black),
                                                                         ),
-                                                                        Row(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.spaceBetween,
-                                                                          children: [
-                                                                            Container(
-                                                                              alignment: Alignment.center,
-                                                                              margin: EdgeInsets.only(left: 30, top: 20),
-                                                                              child: Text(
-                                                                                "Do you want to delete Category ?",
-                                                                                style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Color(0xFFff5000)),
+                                                                      )
+                                                                    ],
+                                                                  ))),
+                                                          Visibility(
+                                                              visible: onicon3,
+                                                              child: Container(
+                                                                  margin:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              2),
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Container(
+                                                                        margin: EdgeInsets.only(
+                                                                            left:
+                                                                                4),
+                                                                        child:
+                                                                            Text(
+                                                                          "off",
+                                                                          style: TextStyle(
+                                                                              fontWeight: FontWeight.bold,
+                                                                              fontFamily: 'Roboto-Bold',
+                                                                              letterSpacing: 0.03,
+                                                                              fontSize: 10.0,
+                                                                              color: Colors.black),
+                                                                        ),
+                                                                      ),
+                                                                      Container(
+                                                                        margin: EdgeInsets.only(
+                                                                            left:
+                                                                                9),
+                                                                        child:
+                                                                            Image(
+                                                                          image:
+                                                                              AssetImage("assets/images/ellipse_5_copy.png"),
+                                                                          height:
+                                                                              50,
+                                                                          width:
+                                                                              20,
+                                                                        ),
+                                                                      )
+                                                                    ],
+                                                                  ))),
+                                                        ],
+                                                      ),
+                                                      margin: EdgeInsets.only(
+                                                          left: 8, top: 20),
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        InkWell(
+                                                          onTap: () {
+                                                            showDialog(
+                                                                context: context,
+                                                                builder:
+                                                                    (BuildContext context) {
+                                                                  return Dialog(
+                                                                    shape:
+                                                                    RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                            20.0)),
+                                                                    //this right here
+                                                                    child: Container(
+                                                                      height: 250,
+                                                                      decoration:
+                                                                      BoxDecoration(
+                                                                          color: Color(
+                                                                              0xFF0a0f32)),
+                                                                      child: Column(
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                            MainAxisAlignment
+                                                                                .spaceBetween,
+                                                                            children: [
+                                                                              Container(
+                                                                                margin: EdgeInsets
+                                                                                    .only(
+                                                                                    left:
+                                                                                    30,
+                                                                                    top:
+                                                                                    20),
+                                                                                child: Text(
+                                                                                  "Category Name",
+                                                                                  style: TextStyle(
+                                                                                      fontWeight:
+                                                                                      FontWeight
+                                                                                          .bold,
+                                                                                      fontFamily:
+                                                                                      'Roboto-Bold',
+                                                                                      letterSpacing:
+                                                                                      0.03,
+                                                                                      fontSize:
+                                                                                      12.0,
+                                                                                      color: Color(
+                                                                                          0xFFff5000)),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                margin: EdgeInsets
+                                                                                    .only(
+                                                                                    right:
+                                                                                    30,
+                                                                                    top:
+                                                                                    20),
+                                                                                child: Image(
+                                                                                  image: AssetImage(
+                                                                                      "assets/images/close_1.png"),
+                                                                                  width: 20,
+                                                                                  height: 20,
+                                                                                  fit: BoxFit
+                                                                                      .cover,
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Container(
+                                                                            height: 0.5,
+                                                                            margin: EdgeInsets
+                                                                                .only(
+                                                                                right: 20,
+                                                                                left: 20,
+                                                                                top: 10),
+                                                                            color:
+                                                                            Colors.white,
+                                                                          ),
+                                                                          Container(
+                                                                            color:
+                                                                            Colors.black,
+                                                                            margin: EdgeInsets
+                                                                                .fromLTRB(
+                                                                                30.0,
+                                                                                20.0,
+                                                                                30.0,
+                                                                                0.0),
+                                                                            child: Container(
+                                                                                margin: EdgeInsets
+                                                                                    .fromLTRB(
+                                                                                    10,
+                                                                                    20,
+                                                                                    10,
+                                                                                    20),
+                                                                                decoration: new BoxDecoration(
+                                                                                    border: Border.all(
+                                                                                        color:
+                                                                                        Color(0xFF00ffff))),
+                                                                                child: Center(
+                                                                                  child:
+                                                                                  editcategoryname,
+                                                                                )),
+                                                                          ),
+                                                                          InkWell(
+                                                                            onTap: () {
+                                                                              if (edit_controller
+                                                                                  .text
+                                                                                  .length ==
+                                                                                  0) {
+                                                                                Fluttertoast.showToast(
+                                                                                    msg:
+                                                                                    "Enter Category",
+                                                                                    toastLength:
+                                                                                    Toast
+                                                                                        .LENGTH_SHORT,
+                                                                                    gravity: ToastGravity
+                                                                                        .BOTTOM,
+                                                                                    fontSize:
+                                                                                    15,
+                                                                                    timeInSecForIos:
+                                                                                    1,
+                                                                                    backgroundColor:
+                                                                                    Colors
+                                                                                        .blue,
+                                                                                    textColor:
+                                                                                    Colors
+                                                                                        .white);
+                                                                              } else {
+                                                                                getStringValuesSF().then((userid) => api
+                                                                                    .edit_cat(
+                                                                                    data[index]["id"],
+                                                                                    edit_controller
+                                                                                        .text,
+                                                                                    context)
+                                                                                    .then((value) =>
+                                                                                    getSWData(
+                                                                                        userid)));
+                                                                              }
+                                                                            },
+                                                                            child: Container(
+                                                                              margin: EdgeInsets
+                                                                                  .only(
+                                                                                  bottom:
+                                                                                  15,
+                                                                                  top:
+                                                                                  20),
+                                                                              child: Image(
+                                                                                image: AssetImage(
+                                                                                    "assets/images/submit.png"),
+                                                                                height: 50,
+                                                                                width: 100,
+                                                                                fit: BoxFit
+                                                                                    .cover,
                                                                               ),
                                                                             ),
-                                                                          ],
-                                                                        ),
-                                                                        Container(
-                                                                          color:
-                                                                              Colors.black,
-                                                                          margin: EdgeInsets.fromLTRB(
-                                                                              30.0,
-                                                                              5.0,
-                                                                              30.0,
-                                                                              0.0),
-                                                                        ),
-                                                                        InkWell(
-                                                                          onTap:
-                                                                              () {
-                                                                            api.deletecat(data[index]["id"].toString()).then((value) =>
-                                                                                {
-                                                                                  Navigator.pop(context),
-                                                                                  getStringValuesSF().then((value) => getSWData(value))
-                                                                                });
-                                                                          },
-                                                                          child:
-                                                                              Container(
-                                                                            margin:
-                                                                                EdgeInsets.only(bottom: 15),
-                                                                            child:
-                                                                                Image(
-                                                                              image: AssetImage("assets/images/submit.png"),
-                                                                              height: 60,
-                                                                              width: 150,
-                                                                              fit: BoxFit.cover,
-                                                                            ),
-                                                                          ),
-                                                                        )
-                                                                      ],
+                                                                          )
+                                                                        ],
+                                                                      ),
                                                                     ),
-                                                                  ),
-                                                                );
-                                                              });
-                                                        },
-                                                        child: Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  right: 5,
-                                                                  top: 23),
-                                                          child: Image(
-                                                            image: AssetImage(
-                                                                "assets/images/icons_8_delete_bin_24.png"),
-                                                            width: 13,
-                                                            height: 13,
-                                                            fit: BoxFit.cover,
+                                                                  );
+                                                                });
+
+                                                          },
+                                                          child: Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    right: 5,
+                                                                    top: 23),
+                                                            child: Image(
+                                                              image: AssetImage(
+                                                                  "assets/images/edit_2222.png"),
+                                                              width: 13,
+                                                              height: 13,
+                                                              fit: BoxFit.cover,
+                                                            ),
                                                           ),
                                                         ),
-                                                      )
-                                                    ],
-                                                  )
-                                                ],
-                                              )
-                                            ],
-                                          ),
+                                                        InkWell(
+                                                          onTap: () {
+                                                            showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return Dialog(
+                                                                    shape: RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(20.0)),
+                                                                    //this right here
+                                                                    child:
+                                                                        Container(
+                                                                      height:
+                                                                          200,
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                              color: Color(0xFF0a0f32)),
+                                                                      child:
+                                                                          Column(
+                                                                        children: [
+                                                                          InkWell(
+                                                                            onTap:
+                                                                                () {
+                                                                              Navigator.pop(context);
+                                                                            },
+                                                                            child:
+                                                                                Container(
+                                                                              alignment: Alignment.centerRight,
+                                                                              margin: EdgeInsets.only(right: 30, top: 20),
+                                                                              child: Image(
+                                                                                image: AssetImage("assets/images/close_1.png"),
+                                                                                width: 20,
+                                                                                height: 20,
+                                                                                fit: BoxFit.cover,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              Container(
+                                                                                alignment: Alignment.center,
+                                                                                margin: EdgeInsets.only(left: 30, top: 20),
+                                                                                child: Text(
+                                                                                  "Do you want to delete Category ?",
+                                                                                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Color(0xFFff5000)),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Container(
+                                                                            color:
+                                                                                Colors.black,
+                                                                            margin: EdgeInsets.fromLTRB(
+                                                                                30.0,
+                                                                                5.0,
+                                                                                30.0,
+                                                                                0.0),
+                                                                          ),
+                                                                          InkWell(
+                                                                            onTap:
+                                                                                () {
+                                                                              api.deletecat(data[index]["id"].toString()).then((value) => {
+                                                                                    Navigator.pop(context),
+                                                                                    getStringValuesSF().then((value) => getSWData(value))
+                                                                                  });
+                                                                            },
+                                                                            child:
+                                                                                Container(
+                                                                              margin: EdgeInsets.only(bottom: 15),
+                                                                              child: Image(
+                                                                                image: AssetImage("assets/images/submit.png"),
+                                                                                height: 60,
+                                                                                width: 150,
+                                                                                fit: BoxFit.cover,
+                                                                              ),
+                                                                            ),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                });
+                                                          },
+                                                          child: Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    right: 5,
+                                                                    top: 23),
+                                                            child: Image(
+                                                              image: AssetImage(
+                                                                  "assets/images/icons_8_delete_bin_24.png"),
+                                                              width: 13,
+                                                              height: 13,
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    )
+                                                  ],
+                                                )
+                                              ],
+                                            );
+                                          },
                                           itemCount: data.length,
-                                        )
+                                        ),
+                                        ListView.builder(
+                                          shrinkWrap: true,
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          padding: EdgeInsets.only(
+                                              bottom: 20, left: 20, right: 20),
+                                          itemBuilder: (context, index) {
+                                            return Stack(
+                                              children: [
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                      top: 10, bottom: 10),
+                                                  child: Image(
+                                                    image: AssetImage(
+                                                        "assets/images/ellipse_4222.png"),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          left: 8, top: 10),
+                                                      child: Text(
+                                                        (index + 1).toString() +
+                                                            ".",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontFamily:
+                                                                'Roboto-Bold',
+                                                            letterSpacing: 0.03,
+                                                            fontSize: 12.0,
+                                                            color:
+                                                                Colors.black),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          left: 8, top: 23),
+                                                      child: Text(
+                                                        "Sub Category",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontFamily:
+                                                                'Roboto-Bold',
+                                                            letterSpacing: 0.03,
+                                                            fontSize: 12.0,
+                                                            color:
+                                                                Colors.black),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      width: 50,
+                                                      height: 20,
+                                                      margin: EdgeInsets.only(
+                                                          left: 8, top: 23),
+                                                      child: ScrollingText(
+                                                        ratioOfBlankToScreen:
+                                                            0.05,
+                                                        text: data2[index]
+                                                            ["name"],
+                                                        textStyle: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontFamily:
+                                                                'Roboto-Bold',
+                                                            letterSpacing: 0.03,
+                                                            fontSize: 14.0,
+                                                            color:
+                                                                Colors.black),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      height: 20,
+                                                      width: 50,
+                                                      child: Stack(
+                                                        children: <Widget>[
+                                                          InkWell(
+                                                            child: new Image(
+                                                              image: AssetImage(
+                                                                  "assets/images/rounded_rectangle_2_copy.png"),
+                                                              height: 50,
+                                                              width: 65,
+                                                            ),
+                                                            onTap: () {
+                                                              if (officon3) {
+                                                                setState(() {
+                                                                  onicon3 =
+                                                                      true;
+                                                                  officon3 =
+                                                                      false;
+                                                                  challengemail =
+                                                                      "1";
+                                                                  api.category_status_updatess(data2[index]["id"], challengemail, context);
+
+                                                                });
+                                                              } else {
+                                                                setState(() {
+                                                                  onicon3 =
+                                                                      false;
+                                                                  officon3 =
+                                                                      true;
+                                                                  challengemail =
+                                                                      "0";
+
+                                                                  api.category_status_updatess(data2[index]["id"], challengemail, context);
+                                                                });
+                                                              }
+                                                            },
+                                                          ),
+                                                          Visibility(
+                                                              visible: officon3,
+                                                              child: Container(
+                                                                  margin:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              2),
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Image(
+                                                                        image: AssetImage(
+                                                                            "assets/images/ellipse_5_copy.png"),
+                                                                        height:
+                                                                            50,
+                                                                        width:
+                                                                            20,
+                                                                      ),
+                                                                      Container(
+                                                                        margin: EdgeInsets.only(
+                                                                            left:
+                                                                                10),
+                                                                        child:
+                                                                            Text(
+                                                                          "on",
+                                                                          style: TextStyle(
+                                                                              fontWeight: FontWeight.bold,
+                                                                              fontFamily: 'Roboto-Bold',
+                                                                              letterSpacing: 0.03,
+                                                                              fontSize: 10.0,
+                                                                              color: Colors.black),
+                                                                        ),
+                                                                      )
+                                                                    ],
+                                                                  ))),
+                                                          Visibility(
+                                                              visible: onicon3,
+                                                              child: Container(
+                                                                  margin:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              2),
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Container(
+                                                                        margin: EdgeInsets.only(
+                                                                            left:
+                                                                                4),
+                                                                        child:
+                                                                            Text(
+                                                                          "off",
+                                                                          style: TextStyle(
+                                                                              fontWeight: FontWeight.bold,
+                                                                              fontFamily: 'Roboto-Bold',
+                                                                              letterSpacing: 0.03,
+                                                                              fontSize: 10.0,
+                                                                              color: Colors.black),
+                                                                        ),
+                                                                      ),
+                                                                      Container(
+                                                                        margin: EdgeInsets.only(
+                                                                            left:
+                                                                                9),
+                                                                        child:
+                                                                            Image(
+                                                                          image:
+                                                                              AssetImage("assets/images/ellipse_5_copy.png"),
+                                                                          height:
+                                                                              50,
+                                                                          width:
+                                                                              20,
+                                                                        ),
+                                                                      )
+                                                                    ],
+                                                                  ))),
+                                                        ],
+                                                      ),
+                                                      margin: EdgeInsets.only(
+                                                          left: 8, top: 20),
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        InkWell(
+                                                          onTap: () {
+                                                            showDialog(
+                                                                context: context,
+                                                                builder:
+                                                                    (BuildContext context) {
+                                                                  return Dialog(
+                                                                    shape:
+                                                                    RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                            20.0)),
+                                                                    //this right here
+                                                                    child: Container(
+                                                                      height: 250,
+                                                                      decoration:
+                                                                      BoxDecoration(
+                                                                          color: Color(
+                                                                              0xFF0a0f32)),
+                                                                      child: Column(
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                            MainAxisAlignment
+                                                                                .spaceBetween,
+                                                                            children: [
+                                                                              Container(
+                                                                                margin: EdgeInsets
+                                                                                    .only(
+                                                                                    left:
+                                                                                    30,
+                                                                                    top:
+                                                                                    20),
+                                                                                child: Text(
+                                                                                  "Category Name",
+                                                                                  style: TextStyle(
+                                                                                      fontWeight:
+                                                                                      FontWeight
+                                                                                          .bold,
+                                                                                      fontFamily:
+                                                                                      'Roboto-Bold',
+                                                                                      letterSpacing:
+                                                                                      0.03,
+                                                                                      fontSize:
+                                                                                      12.0,
+                                                                                      color: Color(
+                                                                                          0xFFff5000)),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                margin: EdgeInsets
+                                                                                    .only(
+                                                                                    right:
+                                                                                    30,
+                                                                                    top:
+                                                                                    20),
+                                                                                child: Image(
+                                                                                  image: AssetImage(
+                                                                                      "assets/images/close_1.png"),
+                                                                                  width: 20,
+                                                                                  height: 20,
+                                                                                  fit: BoxFit
+                                                                                      .cover,
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Container(
+                                                                            height: 0.5,
+                                                                            margin: EdgeInsets
+                                                                                .only(
+                                                                                right: 20,
+                                                                                left: 20,
+                                                                                top: 10),
+                                                                            color:
+                                                                            Colors.white,
+                                                                          ),
+                                                                          Container(
+                                                                            color:
+                                                                            Colors.black,
+                                                                            margin: EdgeInsets
+                                                                                .fromLTRB(
+                                                                                30.0,
+                                                                                20.0,
+                                                                                30.0,
+                                                                                0.0),
+                                                                            child: Container(
+                                                                                margin: EdgeInsets
+                                                                                    .fromLTRB(
+                                                                                    10,
+                                                                                    20,
+                                                                                    10,
+                                                                                    20),
+                                                                                decoration: new BoxDecoration(
+                                                                                    border: Border.all(
+                                                                                        color:
+                                                                                        Color(0xFF00ffff))),
+                                                                                child: Center(
+                                                                                  child:
+                                                                                  editcategoryname22,
+                                                                                )),
+                                                                          ),
+                                                                          InkWell(
+                                                                            onTap: () {
+                                                                              if (edit_controller22
+                                                                                  .text
+                                                                                  .length ==
+                                                                                  0) {
+                                                                                Fluttertoast.showToast(
+                                                                                    msg:
+                                                                                    "Enter Category",
+                                                                                    toastLength:
+                                                                                    Toast
+                                                                                        .LENGTH_SHORT,
+                                                                                    gravity: ToastGravity
+                                                                                        .BOTTOM,
+                                                                                    fontSize:
+                                                                                    15,
+                                                                                    timeInSecForIos:
+                                                                                    1,
+                                                                                    backgroundColor:
+                                                                                    Colors
+                                                                                        .blue,
+                                                                                    textColor:
+                                                                                    Colors
+                                                                                        .white);
+                                                                              } else {
+
+                                                                                print(data2[index]["id"]);
+                                                                                print(data2[index]["parent_id"]);
+
+                                                                                getStringValuesSF().then((userid) => api
+                                                                                    .edit_cat22(
+                                                                                    data2[index]["id"],
+                                                                                    data2[index]["parent_id"],
+                                                                                    edit_controller22
+                                                                                        .text,
+                                                                                    context)
+                                                                                    .then((value) =>
+                                                                                    getSWData(
+                                                                                        userid)));
+                                                                              }
+                                                                            },
+                                                                            child: Container(
+                                                                              margin: EdgeInsets
+                                                                                  .only(
+                                                                                  bottom:
+                                                                                  15,
+                                                                                  top:
+                                                                                  20),
+                                                                              child: Image(
+                                                                                image: AssetImage(
+                                                                                    "assets/images/submit.png"),
+                                                                                height: 50,
+                                                                                width: 100,
+                                                                                fit: BoxFit
+                                                                                    .cover,
+                                                                              ),
+                                                                            ),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                });
+
+                                                          },
+                                                          child: Container(
+                                                            margin:
+                                                            EdgeInsets.only(
+                                                                right: 5,
+                                                                top: 23),
+                                                            child: Image(
+                                                              image: AssetImage(
+                                                                  "assets/images/edit_2222.png"),
+                                                              width: 13,
+                                                              height: 13,
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        InkWell(
+                                                          onTap: () {
+                                                            showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return Dialog(
+                                                                    shape: RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(20.0)),
+                                                                    //this right here
+                                                                    child:
+                                                                        Container(
+                                                                      height:
+                                                                          200,
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                              color: Color(0xFF0a0f32)),
+                                                                      child:
+                                                                          Column(
+                                                                        children: [
+                                                                          InkWell(
+                                                                            onTap:
+                                                                                () {
+                                                                              Navigator.pop(context);
+                                                                            },
+                                                                            child:
+                                                                                Container(
+                                                                              alignment: Alignment.centerRight,
+                                                                              margin: EdgeInsets.only(right: 30, top: 20),
+                                                                              child: Image(
+                                                                                image: AssetImage("assets/images/close_1.png"),
+                                                                                width: 20,
+                                                                                height: 20,
+                                                                                fit: BoxFit.cover,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              Container(
+                                                                                alignment: Alignment.center,
+                                                                                margin: EdgeInsets.only(left: 30, top: 20),
+                                                                                child: Text(
+                                                                                  "Do you want to delete Category ?",
+                                                                                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Color(0xFFff5000)),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          Container(
+                                                                            color:
+                                                                                Colors.black,
+                                                                            margin: EdgeInsets.fromLTRB(
+                                                                                30.0,
+                                                                                5.0,
+                                                                                30.0,
+                                                                                0.0),
+                                                                          ),
+                                                                          InkWell(
+                                                                            onTap:
+                                                                                () {
+                                                                              api.deletecat(data2[index]["id"].toString()).then((value) => {
+                                                                                    Navigator.pop(context),
+                                                                                    getStringValuesSF().then((value) => getSWData(value))
+                                                                                  });
+                                                                            },
+                                                                            child:
+                                                                                Container(
+                                                                              margin: EdgeInsets.only(bottom: 15),
+                                                                              child: Image(
+                                                                                image: AssetImage("assets/images/submit.png"),
+                                                                                height: 60,
+                                                                                width: 150,
+                                                                                fit: BoxFit.cover,
+                                                                              ),
+                                                                            ),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                });
+                                                          },
+                                                          child: Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    right: 5,
+                                                                    top: 23),
+                                                            child: Image(
+                                                              image: AssetImage(
+                                                                  "assets/images/icons_8_delete_bin_24.png"),
+                                                              width: 13,
+                                                              height: 13,
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    )
+                                                  ],
+                                                )
+                                              ],
+                                            );
+                                          },
+                                          itemCount: data2.length,
+                                        ),
                                       ],
                                     ))),
                           )

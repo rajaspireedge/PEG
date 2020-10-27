@@ -28,6 +28,7 @@ class RestDatasource {
   static final add_to_cart_product = BASE_URL + "product/add_to_cart_product";
   static final get_all_cart_products = BASE_URL + "cart/get_all_cart_products/";
   static final get_my_order = BASE_URL + "order/get_my_order/";
+  static final get_my_order_details = BASE_URL + "order/get_my_order_details/";
   static final get_player_order = BASE_URL + "order/get_player_order/";
   static final cart_product_delete = BASE_URL + "cart/cart_product_delete/";
   static final get_profile_info = BASE_URL + "user/get_profile_info/";
@@ -41,6 +42,9 @@ class RestDatasource {
   static final update_player_international_tax =
       BASE_URL + "product/update_player_international_tax";
   static final add_category_api = BASE_URL + "category/add_category";
+  static final add_subcategory = BASE_URL + "category/add_subcategory";
+  static final edit_category = BASE_URL + "category/edit_category";
+  static final category_status_update = BASE_URL + "category/category_status_update";
   static final update_player_local_tax =
       BASE_URL + "product/update_player_local_tax";
   static final cart_product_qty_update =
@@ -160,6 +164,134 @@ class RestDatasource {
   Future<User> add_category(String userid, String name, BuildContext context) {
     return _netUtil.post(add_category_api, body: {
       "user_id": userid,
+      "name": name,
+    }).then((dynamic res) {
+      print(res);
+      if (res["status_code"] == 200) {
+        Navigator.pop(context);
+        Fluttertoast.showToast(
+            msg: res["message"],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 15,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white);
+      }
+      if (res["status_code"] == 400) {
+        Navigator.pop(context);
+        Fluttertoast.showToast(
+            msg: res["error_message"],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 15,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white);
+        throw new Exception(res);
+      }
+      return;
+    });
+  }
+  Future<User> add_category22(String userid,String parentid, String name, BuildContext context) {
+    return _netUtil.post(add_subcategory, body: {
+      "user_id": userid,
+      "parent_id": parentid,
+      "name": name,
+    }).then((dynamic res) {
+      print(res);
+      if (res["status_code"] == 200) {
+        Navigator.pop(context);
+        Fluttertoast.showToast(
+            msg: res["message"],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 15,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white);
+      }
+      if (res["status_code"] == 400) {
+        Navigator.pop(context);
+        Fluttertoast.showToast(
+            msg: res["error_message"],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 15,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white);
+        throw new Exception(res);
+      }
+      return;
+    });
+  }
+  Future<User> edit_cat(String userid, String name, BuildContext context) {
+    return _netUtil.post(edit_category, body: {
+      "id": userid,
+      "name": name,
+    }).then((dynamic res) {
+      print(res);
+      if (res["status_code"] == 200) {
+        Navigator.pop(context);
+        Fluttertoast.showToast(
+            msg: res["message"],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 15,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white);
+      }
+      if (res["status_code"] == 400) {
+        Navigator.pop(context);
+        Fluttertoast.showToast(
+            msg: res["error_message"],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 15,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white);
+        throw new Exception(res);
+      }
+      return;
+    });
+  }
+  Future<User> category_status_updatess(String userid, String name, BuildContext context) {
+    return _netUtil.post(category_status_update, body: {
+      "id": userid,
+      "status": name,
+    }).then((dynamic res) {
+      print(res);
+      if (res["status_code"] == 200) {
+        Fluttertoast.showToast(
+            msg: res["message"],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 15,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white);
+      }
+      if (res["status_code"] == 400) {
+        Fluttertoast.showToast(
+            msg: res["error_message"],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            fontSize: 15,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white);
+        throw new Exception(res);
+      }
+      return;
+    });
+  }
+  Future<User> edit_cat22(String userid,String parentid, String name, BuildContext context) {
+    return _netUtil.post(edit_category, body: {
+      "id": userid,
+      "parent_id": parentid,
       "name": name,
     }).then((dynamic res) {
       print(res);
