@@ -53,7 +53,13 @@ class _AddproductFullState extends State<AddproductFull> {
   }
 
   Future<String> getProductList() async {
-    api.fetchProductList().then((value) => {snapshotproductlist = value});
+    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_products), headers: {"Accept": "application/json", "content-type": "application/json"});
+    var resBody = json.decode(res.body);
+    print(res.body);
+
+    setState(() {
+      snapshotproductlist = resBody["product_list"];
+    });
 
     return "Success";
   }

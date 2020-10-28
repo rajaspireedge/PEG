@@ -42,22 +42,18 @@ class _MyStoreState extends State<MyStore> {
   Color color3 = Color(0xFF6ae7e0);
   final username_controller = TextEditingController();
 
-  TextStyle hintstyle =
-      TextStyle(fontFamily: 'Roboto-Bold', fontSize: 14.0, color: Colors.white);
+  TextStyle hintstyle = TextStyle(fontFamily: 'Roboto-Bold', fontSize: 14.0, color: Colors.white);
   bool click = false;
 
   var borderimg = new AssetImage('assets/images/borderimg.png');
-  Map<String, dynamic> map = new Map();
+  Map<String, dynamic> map;
+
   Map<String, dynamic> currentlevel = new Map();
 
   String uploadimageString = "No file Chosen";
 
   Future<String> getSWData(String id) async {
-    var res = await http
-        .get(Uri.encodeFull(RestDatasource.get_store_overview + id), headers: {
-      "Accept": "application/json",
-      "content-type": "application/json"
-    });
+    var res = await http.get(Uri.encodeFull(RestDatasource.get_store_overview + id), headers: {"Accept": "application/json", "content-type": "application/json"});
     var resBody = json.decode(res.body);
 
     setState(() {
@@ -88,20 +84,12 @@ class _MyStoreState extends State<MyStore> {
 
     var request = http.MultipartRequest('POST', Uri.parse(serverReceiverPath));
     request.files.add(await http.MultipartFile.fromString('user_id', useris));
-    request.files
-        .add(await http.MultipartFile.fromPath('banner_image', filename));
+    request.files.add(await http.MultipartFile.fromPath('banner_image', filename));
     var res = await request.send();
 
     if (res.statusCode == 200) {
       getSWData(useris);
-      Fluttertoast.showToast(
-          msg: "Upload Successfully",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          fontSize: 15,
-          timeInSecForIos: 1,
-          backgroundColor: Colors.blue,
-          textColor: Colors.white);
+      Fluttertoast.showToast(msg: "Upload Successfully", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
     } else {
       Navigator.pop(context);
     }
@@ -122,11 +110,7 @@ class _MyStoreState extends State<MyStore> {
   }
 
   Future<String> getCurrentLevel(String id) async {
-    var res = await http
-        .get(Uri.encodeFull(RestDatasource.get_store_level + id), headers: {
-      "Accept": "application/json",
-      "content-type": "application/json"
-    });
+    var res = await http.get(Uri.encodeFull(RestDatasource.get_store_level + id), headers: {"Accept": "application/json", "content-type": "application/json"});
     var resBody = json.decode(res.body);
 
     setState(() {
@@ -134,8 +118,7 @@ class _MyStoreState extends State<MyStore> {
       currentlevel = resBody["data"];
       for (int i = 0; i < currentlevel["user_level_data_array"].length; i++) {
         int position = i + 1;
-        int value =
-            int.parse(currentlevel["user_level_data_array"][i].toString());
+        int value = int.parse(currentlevel["user_level_data_array"][i].toString());
         list.add(new OrdinalSales("Level " + position.toString(), value));
       }
     });
@@ -148,8 +131,7 @@ class _MyStoreState extends State<MyStore> {
     // TODO: implement initState
     super.initState();
 
-    getStringValuesSF()
-        .then((value) => {this.getCurrentLevel(value), this.getSWData(value)});
+    getStringValuesSF().then((value) => {this.getCurrentLevel(value), this.getSWData(value)});
   }
 
   @override
@@ -158,16 +140,14 @@ class _MyStoreState extends State<MyStore> {
       return Container(
         color: Color(0xFF0a0f32),
         child: Center(
-          child: Loading(
-              indicator: BallPulseIndicator(), size: 100.0, color: color3),
+          child: Loading(indicator: BallPulseIndicator(), size: 100.0, color: color3),
         ),
       );
     } else if (currentlevel.isEmpty) {
       return Container(
         color: Color(0xFF0a0f32),
         child: Center(
-          child: Loading(
-              indicator: BallPulseIndicator(), size: 100.0, color: color3),
+          child: Loading(indicator: BallPulseIndicator(), size: 100.0, color: color3),
         ),
       );
     }
@@ -194,11 +174,9 @@ class _MyStoreState extends State<MyStore> {
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Container(
-                                margin:
-                                    EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
+                                margin: EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
                                 child: Image(
-                                  image:
-                                      AssetImage('assets/images/back_12.png'),
+                                  image: AssetImage('assets/images/back_12.png'),
                                   height: 30,
                                   width: 30,
                                 ),
@@ -207,17 +185,11 @@ class _MyStoreState extends State<MyStore> {
                             Align(
                               alignment: Alignment.center,
                               child: Container(
-                                margin:
-                                    EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+                                margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
                                 alignment: Alignment.center,
                                 child: Text(
                                   "My Store",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Roboto-Bold',
-                                      letterSpacing: 0.03,
-                                      fontSize: 16.0,
-                                      color: Colors.white),
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Colors.white),
                                 ),
                               ),
                             )
@@ -233,12 +205,7 @@ class _MyStoreState extends State<MyStore> {
                         margin: EdgeInsets.only(left: 30),
                         child: Text(
                           "Store Details",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Roboto-Bold',
-                              letterSpacing: 0.03,
-                              fontSize: 16.0,
-                              color: Colors.white),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Colors.white),
                         ),
                       ),
                       Row(
@@ -255,24 +222,14 @@ class _MyStoreState extends State<MyStore> {
                                       child: Align(
                                         alignment: Alignment.topRight,
                                         child: Container(
-                                          margin: EdgeInsets.only(
-                                              right: 10, top: 5),
+                                          margin: EdgeInsets.only(right: 10, top: 5),
                                           child: Text(
-                                            map["total_gross_selling"]
-                                                .toString(),
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontFamily: 'Roboto-Medium',
-                                                letterSpacing: 0.03,
-                                                fontSize: 12.0,
-                                                color: Color(0xFFff5000)),
+                                            map["total_gross_selling"].toString(),
+                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                           ),
                                         ),
                                       ),
-                                      decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                              image: AssetImage(
-                                                  "assets/images/save_money_white.png"))),
+                                      decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/save_money_white.png"))),
                                     ),
                                     painter: _GradientPainter(
                                       strokeWidth: 1,
@@ -288,11 +245,7 @@ class _MyStoreState extends State<MyStore> {
                                     margin: EdgeInsets.only(top: 10),
                                     child: Text(
                                       "Gross Selling",
-                                      style: TextStyle(
-                                          fontFamily: 'Roboto-Medium',
-                                          letterSpacing: 0.03,
-                                          fontSize: 12.0,
-                                          color: Color(0xFFff5000)),
+                                      style: TextStyle(fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                     ),
                                   )
                                 ],
@@ -306,23 +259,14 @@ class _MyStoreState extends State<MyStore> {
                                       child: Align(
                                         alignment: Alignment.topRight,
                                         child: Container(
-                                          margin: EdgeInsets.only(
-                                              right: 10, top: 5),
+                                          margin: EdgeInsets.only(right: 10, top: 5),
                                           child: Text(
                                             map["total_items_sold"].toString(),
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontFamily: 'Roboto-Medium',
-                                                letterSpacing: 0.03,
-                                                fontSize: 12.0,
-                                                color: Color(0xFFff5000)),
+                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                           ),
                                         ),
                                       ),
-                                      decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                              image: AssetImage(
-                                                  "assets/images/shopping_bag_white.png"))),
+                                      decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/shopping_bag_white.png"))),
                                       height: 100,
                                       width: 100,
                                     ),
@@ -340,18 +284,13 @@ class _MyStoreState extends State<MyStore> {
                                     margin: EdgeInsets.only(top: 10),
                                     child: Text(
                                       "Sold Items",
-                                      style: TextStyle(
-                                          fontFamily: 'Roboto-Medium',
-                                          letterSpacing: 0.03,
-                                          fontSize: 12.0,
-                                          color: Color(0xFFff5000)),
+                                      style: TextStyle(fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                     ),
                                   )
                                 ],
                               )),
                           Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 20, right: 30),
+                              padding: const EdgeInsets.only(top: 20, right: 30),
                               child: Column(
                                 children: [
                                   CustomPaint(
@@ -359,23 +298,14 @@ class _MyStoreState extends State<MyStore> {
                                       child: Align(
                                         alignment: Alignment.topRight,
                                         child: Container(
-                                          margin: EdgeInsets.only(
-                                              right: 10, top: 5),
+                                          margin: EdgeInsets.only(right: 10, top: 5),
                                           child: Text(
                                             map["total_orders"].toString(),
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontFamily: 'Roboto-Medium',
-                                                letterSpacing: 0.03,
-                                                fontSize: 12.0,
-                                                color: Color(0xFFff5000)),
+                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                           ),
                                         ),
                                       ),
-                                      decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                              image: AssetImage(
-                                                  "assets/images/sold_items_white.png"))),
+                                      decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/sold_items_white.png"))),
                                       height: 100,
                                       width: 100,
                                     ),
@@ -393,11 +323,7 @@ class _MyStoreState extends State<MyStore> {
                                     margin: EdgeInsets.only(top: 10),
                                     child: Text(
                                       "Order Received",
-                                      style: TextStyle(
-                                          fontFamily: 'Roboto-Medium',
-                                          letterSpacing: 0.03,
-                                          fontSize: 12.0,
-                                          color: Color(0xFFff5000)),
+                                      style: TextStyle(fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                     ),
                                   )
                                 ],
@@ -419,14 +345,8 @@ class _MyStoreState extends State<MyStore> {
                               child: Container(
                                 margin: EdgeInsets.only(left: 27),
                                 child: Text(
-                                  currentlevel["current_level"]["level"]
-                                      .toString(),
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Roboto-Medium',
-                                      letterSpacing: 0.03,
-                                      fontSize: 16.0,
-                                      color: Color(0xFFff5000)),
+                                  currentlevel["current_level"]["level"].toString(),
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 16.0, color: Color(0xFFff5000)),
                                 ),
                               ),
                             ),
@@ -439,26 +359,13 @@ class _MyStoreState extends State<MyStore> {
                                     Container(
                                       child: Text(
                                         "Current Level",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'Roboto-Medium',
-                                            letterSpacing: 0.03,
-                                            fontSize: 16.0,
-                                            color: Color(0xFF4edbfb)),
+                                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 16.0, color: Color(0xFF4edbfb)),
                                       ),
                                     ),
                                     Container(
                                       child: Text(
-                                        "Level : " +
-                                            currentlevel["current_level"]
-                                                    ["level_title"]
-                                                .toString(),
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'Roboto-Medium',
-                                            letterSpacing: 0.03,
-                                            fontSize: 12.0,
-                                            color: Color(0xFFff5000)),
+                                        "Level : " + currentlevel["current_level"]["level_title"].toString(),
+                                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                       ),
                                     ),
                                   ],
@@ -470,23 +377,14 @@ class _MyStoreState extends State<MyStore> {
                               child: Container(
                                 margin: EdgeInsets.only(right: 27),
                                 child: Text(
-                                  currentlevel["current_level"]["level"]
-                                      .toString(),
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Roboto-Medium',
-                                      letterSpacing: 0.03,
-                                      fontSize: 16.0,
-                                      color: Color(0xFFff5000)),
+                                  currentlevel["current_level"]["level"].toString(),
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 16.0, color: Color(0xFFff5000)),
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image:
-                                    AssetImage("assets/images/group_9.png"))),
+                        decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/group_9.png"))),
                       ),
                       Container(
                         height: 40,
@@ -499,11 +397,7 @@ class _MyStoreState extends State<MyStore> {
                               margin: EdgeInsets.only(left: 30, top: 10),
                               child: Text(
                                 "Current Levels",
-                                style: TextStyle(
-                                    fontFamily: 'Roboto-Bold',
-                                    letterSpacing: 0.03,
-                                    fontSize: 18.0,
-                                    color: Colors.white),
+                                style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 18.0, color: Colors.white),
                               ),
                             ),
                             InkWell(
@@ -537,16 +431,12 @@ class _MyStoreState extends State<MyStore> {
                         visible: click,
                         child: levellist(currentlevel["levels"]),
                       ),
-                      Container(
-                          height: 150,
-                          width: 300,
-                          child: CustomFontSizeAndColor(_createSampleData())),
+                      Container(height: 150, width: 300, child: CustomFontSizeAndColor(_createSampleData())),
                       Column(
                         children: [
                           Container(
                             height: 0.5,
-                            margin:
-                                EdgeInsets.only(right: 30, left: 30, top: 20),
+                            margin: EdgeInsets.only(right: 30, left: 30, top: 20),
                             color: Colors.white,
                           ),
                           Container(
@@ -554,11 +444,7 @@ class _MyStoreState extends State<MyStore> {
                             margin: EdgeInsets.only(left: 30, top: 20),
                             child: Text(
                               "Store Banner",
-                              style: TextStyle(
-                                  fontFamily: 'Roboto-Bold',
-                                  letterSpacing: 0.03,
-                                  fontSize: 18.0,
-                                  color: Colors.white),
+                              style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 18.0, color: Colors.white),
                             ),
                           ),
                           Container(
@@ -566,8 +452,7 @@ class _MyStoreState extends State<MyStore> {
                             margin: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 0.0),
                             decoration: new BoxDecoration(
                               color: Color(0xFF0a0f32),
-                              borderRadius:
-                                  BorderRadius.all(const Radius.circular(20)),
+                              borderRadius: BorderRadius.all(const Radius.circular(20)),
                               image: new DecorationImage(
                                 image: borderimg,
                                 fit: BoxFit.fill,
@@ -585,19 +470,13 @@ class _MyStoreState extends State<MyStore> {
                                       height: 30,
                                       decoration: BoxDecoration(
                                         color: Color(0xFF101a6f),
-                                        borderRadius: BorderRadius.all(
-                                            const Radius.circular(20)),
+                                        borderRadius: BorderRadius.all(const Radius.circular(20)),
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            10.0, 5.0, 10.0, 5.0),
+                                        padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                                         child: Text(
                                           "Choose File",
-                                          style: TextStyle(
-                                              fontFamily: 'Roboto-Bold',
-                                              letterSpacing: 0.03,
-                                              fontSize: 15.0,
-                                              color: Colors.white),
+                                          style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 15.0, color: Colors.white),
                                         ),
                                       )),
                                 ),
@@ -607,11 +486,7 @@ class _MyStoreState extends State<MyStore> {
                                   child: Text(
                                     uploadimageString,
                                     overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontFamily: 'Roboto-Bold',
-                                        letterSpacing: 0.03,
-                                        fontSize: 10.0,
-                                        color: Color(0xFF3aa2a2a2)),
+                                    style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFF3aa2a2a2)),
                                   ),
                                 )
                               ],
@@ -620,11 +495,7 @@ class _MyStoreState extends State<MyStore> {
                           Container(
                             margin: EdgeInsets.only(left: 30, top: 10),
                             alignment: Alignment.centerLeft,
-                            child: Image(
-                                image: NetworkImage(map["store_banner"]),
-                                height: 80,
-                                width: 80,
-                                fit: BoxFit.scaleDown),
+                            child: Image(image: NetworkImage(map["store_banner"]), height: 80, width: 80, fit: BoxFit.scaleDown),
                           ),
                           InkWell(
                               onTap: () {
@@ -632,35 +503,21 @@ class _MyStoreState extends State<MyStore> {
                                     context: context,
                                     builder: (BuildContext context) {
                                       return Dialog(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20.0)),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                         //this right here
                                         child: Container(
                                           height: 200,
-                                          decoration: BoxDecoration(
-                                              color: Color(0xFF0a0f32)),
+                                          decoration: BoxDecoration(color: Color(0xFF0a0f32)),
                                           child: Column(
                                             children: [
                                               Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Container(
-                                                    margin: EdgeInsets.only(
-                                                        left: 30, top: 10),
+                                                    margin: EdgeInsets.only(left: 30, top: 10),
                                                     child: Text(
                                                       "Select shipping address location",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontFamily:
-                                                              'Roboto-Bold',
-                                                          letterSpacing: 0.03,
-                                                          fontSize: 12.0,
-                                                          color: Color(
-                                                              0xFFff5000)),
+                                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                                     ),
                                                   ),
                                                   InkWell(
@@ -668,11 +525,9 @@ class _MyStoreState extends State<MyStore> {
                                                       Navigator.pop(context);
                                                     },
                                                     child: Container(
-                                                      margin: EdgeInsets.only(
-                                                          right: 30, top: 20),
+                                                      margin: EdgeInsets.only(right: 30, top: 20),
                                                       child: Image(
-                                                        image: AssetImage(
-                                                            "assets/images/close_1.png"),
+                                                        image: AssetImage("assets/images/close_1.png"),
                                                         width: 20,
                                                         height: 20,
                                                         fit: BoxFit.cover,
@@ -683,58 +538,28 @@ class _MyStoreState extends State<MyStore> {
                                               ),
                                               Container(
                                                 height: 0.5,
-                                                margin: EdgeInsets.only(
-                                                    right: 20,
-                                                    left: 20,
-                                                    top: 10),
+                                                margin: EdgeInsets.only(right: 20, left: 20, top: 10),
                                                 color: Colors.white,
                                               ),
                                               Container(
                                                   color: Colors.black,
-                                                  margin: EdgeInsets.fromLTRB(
-                                                      30.0, 20.0, 30.0, 0.0),
+                                                  margin: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 0.0),
                                                   child: Padding(
-                                                    padding:
-                                                        EdgeInsets.fromLTRB(
-                                                            40, 10, 40, 10),
+                                                    padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
                                                     child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
+                                                      mainAxisAlignment: MainAxisAlignment.center,
                                                       children: [
                                                         Container(
-                                                            alignment: Alignment
-                                                                .center,
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    top: 10,
-                                                                    bottom: 10),
-                                                            decoration: BoxDecoration(
-                                                                border: Border.all(
-                                                                    color: Colors
-                                                                        .blue),
-                                                                color: Colors
-                                                                    .black),
+                                                            alignment: Alignment.center,
+                                                            margin: EdgeInsets.only(top: 10, bottom: 10),
+                                                            decoration: BoxDecoration(border: Border.all(color: Colors.blue), color: Colors.black),
                                                             child: InkWell(
                                                               onTap: () {},
                                                               child: Padding(
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .all(5),
+                                                                padding: EdgeInsets.all(5),
                                                                 child: Text(
                                                                   "Choose Image",
-                                                                  style: TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      fontFamily:
-                                                                          'Roboto-Bold',
-                                                                      letterSpacing:
-                                                                          0.03,
-                                                                      fontSize:
-                                                                          12.0,
-                                                                      color: Colors
-                                                                          .white),
+                                                                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                                                                 ),
                                                               ),
                                                             )),
@@ -749,9 +574,7 @@ class _MyStoreState extends State<MyStore> {
                               },
                               child: InkWell(
                                 onTap: () {
-                                  getStringValuesSF().then((value) =>
-                                      uploadImage(
-                                          uploadimage.path, value, context));
+                                  getStringValuesSF().then((value) => uploadImage(uploadimage.path, value, context));
                                 },
                                 child: Container(
                                   height: 60,
@@ -759,8 +582,7 @@ class _MyStoreState extends State<MyStore> {
                                   alignment: Alignment.centerRight,
                                   child: Container(
                                     child: Image(
-                                      image: AssetImage(
-                                          "assets/images/upload.png"),
+                                      image: AssetImage("assets/images/upload.png"),
                                       height: 60,
                                       fit: BoxFit.cover,
                                     ),
@@ -773,8 +595,7 @@ class _MyStoreState extends State<MyStore> {
                         children: [
                           Container(
                             height: 0.5,
-                            margin:
-                                EdgeInsets.only(right: 30, left: 30, top: 20),
+                            margin: EdgeInsets.only(right: 30, left: 30, top: 20),
                             color: Colors.white,
                           ),
                           Container(
@@ -782,11 +603,7 @@ class _MyStoreState extends State<MyStore> {
                             margin: EdgeInsets.only(left: 30, top: 20),
                             child: Text(
                               "Change Your Store Link",
-                              style: TextStyle(
-                                  fontFamily: 'Roboto-Bold',
-                                  letterSpacing: 0.03,
-                                  fontSize: 18.0,
-                                  color: Colors.white),
+                              style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 18.0, color: Colors.white),
                             ),
                           ),
                           Container(
@@ -794,8 +611,7 @@ class _MyStoreState extends State<MyStore> {
                             margin: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 0.0),
                             decoration: new BoxDecoration(
                               color: Color(0xFF0a0f32),
-                              borderRadius:
-                                  BorderRadius.all(const Radius.circular(20)),
+                              borderRadius: BorderRadius.all(const Radius.circular(20)),
                               image: new DecorationImage(
                                 image: borderimg,
                                 fit: BoxFit.fill,
@@ -807,11 +623,7 @@ class _MyStoreState extends State<MyStore> {
                                   margin: EdgeInsets.only(left: 20.0),
                                   child: Text(
                                     "https://proesportsgaming.com/store/",
-                                    style: TextStyle(
-                                        fontFamily: 'Roboto-Bold',
-                                        letterSpacing: 0.03,
-                                        fontSize: 10.0,
-                                        color: Color(0xFF7052d0)),
+                                    style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFF7052d0)),
                                   ),
                                 )
                               ],
@@ -819,8 +631,7 @@ class _MyStoreState extends State<MyStore> {
                           ),
                           InkWell(
                             onTap: () {
-                              Navigator.of(context)
-                                  .pushReplacement(MaterialPageRoute(
+                              Navigator.of(context).pushReplacement(MaterialPageRoute(
                                 builder: (context) => Homescreen(),
                               ));
                             },
@@ -830,8 +641,7 @@ class _MyStoreState extends State<MyStore> {
                               alignment: Alignment.centerRight,
                               child: Container(
                                 child: Image(
-                                  image: AssetImage(
-                                      "assets/images/go_to_store.png"),
+                                  image: AssetImage("assets/images/go_to_store.png"),
                                   height: 60,
                                   fit: BoxFit.cover,
                                 ),
@@ -844,8 +654,7 @@ class _MyStoreState extends State<MyStore> {
                         children: [
                           Container(
                             height: 0.5,
-                            margin:
-                                EdgeInsets.only(right: 30, left: 30, top: 20),
+                            margin: EdgeInsets.only(right: 30, left: 30, top: 20),
                             color: Colors.white,
                           ),
                           Container(
@@ -853,11 +662,7 @@ class _MyStoreState extends State<MyStore> {
                             margin: EdgeInsets.only(left: 30, top: 20),
                             child: Text(
                               "Default Link : " + map["store_link"],
-                              style: TextStyle(
-                                  fontFamily: 'Roboto-Bold',
-                                  letterSpacing: 0.03,
-                                  fontSize: 18.0,
-                                  color: Colors.white),
+                              style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 18.0, color: Colors.white),
                             ),
                           ),
                           Container(
@@ -865,8 +670,7 @@ class _MyStoreState extends State<MyStore> {
                             margin: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 0.0),
                             decoration: new BoxDecoration(
                               color: Color(0xFF0a0f32),
-                              borderRadius:
-                                  BorderRadius.all(const Radius.circular(20)),
+                              borderRadius: BorderRadius.all(const Radius.circular(20)),
                               image: new DecorationImage(
                                 image: borderimg,
                                 fit: BoxFit.fill,
@@ -906,10 +710,7 @@ class _MyStoreState extends State<MyStore> {
                                     );
                                   });
 
-                              getStringValuesSF().then((userids) => api
-                                  .updatestorelink(userids,
-                                      username_controller.text, context)
-                                  .then((value) => getSWData(userids)));
+                              getStringValuesSF().then((userids) => api.updatestorelink(userids, username_controller.text, context).then((value) => getSWData(userids)));
                             },
                             child: Container(
                               height: 60,
@@ -933,8 +734,7 @@ class _MyStoreState extends State<MyStore> {
             ],
           ),
           onWillPop: () async {
-            return Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => Homescreen()));
+            return Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Homescreen()));
           }),
     );
   }
@@ -946,10 +746,7 @@ class _GradientPainter extends CustomPainter {
   final double strokeWidth;
   final Gradient gradient;
 
-  _GradientPainter(
-      {@required double strokeWidth,
-      @required double radius,
-      @required Gradient gradient})
+  _GradientPainter({@required double strokeWidth, @required double radius, @required Gradient gradient})
       : this.strokeWidth = strokeWidth,
         this.radius = radius,
         this.gradient = gradient;
@@ -958,14 +755,11 @@ class _GradientPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // create outer rectangle equals size
     Rect outerRect = Offset.zero & size;
-    var outerRRect =
-        RRect.fromRectAndRadius(outerRect, Radius.circular(radius));
+    var outerRRect = RRect.fromRectAndRadius(outerRect, Radius.circular(radius));
 
     // create inner rectangle smaller by strokeWidth
-    Rect innerRect = Rect.fromLTWH(strokeWidth, strokeWidth,
-        size.width - strokeWidth * 2, size.height - strokeWidth * 2);
-    var innerRRect = RRect.fromRectAndRadius(
-        innerRect, Radius.circular(radius - strokeWidth));
+    Rect innerRect = Rect.fromLTWH(strokeWidth, strokeWidth, size.width - strokeWidth * 2, size.height - strokeWidth * 2);
+    var innerRRect = RRect.fromRectAndRadius(innerRect, Radius.circular(radius - strokeWidth));
 
     // apply gradient shader
     _paint.shader = gradient.createShader(outerRect);
@@ -1012,8 +806,7 @@ class CustomFontSizeAndColor extends StatelessWidget {
                   color: charts.MaterialPalette.white),
 
               // Change the line colors to match text color.
-              lineStyle: new charts.LineStyleSpec(
-                  color: charts.MaterialPalette.white))),
+              lineStyle: new charts.LineStyleSpec(color: charts.MaterialPalette.white))),
 
       /// Assign a custom style for the measure axis.
       primaryMeasureAxis: new charts.NumericAxisSpec(
@@ -1025,8 +818,7 @@ class CustomFontSizeAndColor extends StatelessWidget {
                   color: charts.MaterialPalette.white),
 
               // Change the line colors to match text color.
-              lineStyle: new charts.LineStyleSpec(
-                  color: charts.MaterialPalette.white))),
+              lineStyle: new charts.LineStyleSpec(color: charts.MaterialPalette.white))),
     );
   }
 
@@ -1060,8 +852,7 @@ Widget levellist(List<dynamic> snaplevellist) {
     return Container(
       color: Color(0xFF0a0f32),
       child: Center(
-        child: Loading(
-            indicator: BallPulseIndicator(), size: 100.0, color: color3),
+        child: Loading(indicator: BallPulseIndicator(), size: 100.0, color: color3),
       ),
     );
   }
@@ -1080,12 +871,7 @@ Widget levellist(List<dynamic> snaplevellist) {
                 Container(
                   child: Text(
                     "Level Number",
-                    style: TextStyle(
-                        letterSpacing: 0.02,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Roboto-Bold',
-                        fontSize: 15.0,
-                        color: Colors.white),
+                    style: TextStyle(letterSpacing: 0.02, fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white),
                   ),
                 ),
                 Align(
@@ -1093,12 +879,7 @@ Widget levellist(List<dynamic> snaplevellist) {
                   child: Container(
                     child: Text(
                       snaplevellist[index]["level"],
-                      style: TextStyle(
-                          letterSpacing: 0.02,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Roboto-Bold',
-                          fontSize: 15.0,
-                          color: Colors.white),
+                      style: TextStyle(letterSpacing: 0.02, fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white),
                     ),
                   ),
                 ),
@@ -1110,23 +891,13 @@ Widget levellist(List<dynamic> snaplevellist) {
                 Container(
                   child: Text(
                     "Level name",
-                    style: TextStyle(
-                        letterSpacing: 0.02,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Roboto-Bold',
-                        fontSize: 15.0,
-                        color: Colors.white),
+                    style: TextStyle(letterSpacing: 0.02, fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white),
                   ),
                 ),
                 Container(
                   child: Text(
                     snaplevellist[index]["level_title"],
-                    style: TextStyle(
-                        letterSpacing: 0.02,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Roboto-Bold',
-                        fontSize: 15.0,
-                        color: Colors.white),
+                    style: TextStyle(letterSpacing: 0.02, fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white),
                   ),
                 ),
               ],
@@ -1137,24 +908,13 @@ Widget levellist(List<dynamic> snaplevellist) {
                 Container(
                   child: Text(
                     "Level Reward",
-                    style: TextStyle(
-                        letterSpacing: 0.02,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Roboto-Bold',
-                        fontSize: 15.0,
-                        color: Colors.white),
+                    style: TextStyle(letterSpacing: 0.02, fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white),
                   ),
                 ),
                 Container(
                   child: Text(
-                    new String.fromCharCodes(new Runes('\u0024')) +
-                        snaplevellist[index]["reward"],
-                    style: TextStyle(
-                        letterSpacing: 0.02,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Roboto-Bold',
-                        fontSize: 15.0,
-                        color: Colors.white),
+                    new String.fromCharCodes(new Runes('\u0024')) + snaplevellist[index]["reward"],
+                    style: TextStyle(letterSpacing: 0.02, fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white),
                   ),
                 ),
               ],
@@ -1165,23 +925,13 @@ Widget levellist(List<dynamic> snaplevellist) {
                 Container(
                   child: Text(
                     "Item Sold",
-                    style: TextStyle(
-                        letterSpacing: 0.02,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Roboto-Bold',
-                        fontSize: 15.0,
-                        color: Colors.white),
+                    style: TextStyle(letterSpacing: 0.02, fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white),
                   ),
                 ),
                 Container(
                   child: Text(
                     snaplevellist[index]["item_sold"],
-                    style: TextStyle(
-                        letterSpacing: 0.02,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Roboto-Bold',
-                        fontSize: 15.0,
-                        color: Colors.white),
+                    style: TextStyle(letterSpacing: 0.02, fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white),
                   ),
                 ),
               ],
@@ -1192,23 +942,13 @@ Widget levellist(List<dynamic> snaplevellist) {
                 Container(
                   child: Text(
                     "Status",
-                    style: TextStyle(
-                        letterSpacing: 0.02,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Roboto-Bold',
-                        fontSize: 15.0,
-                        color: Colors.white),
+                    style: TextStyle(letterSpacing: 0.02, fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white),
                   ),
                 ),
                 Container(
                   child: Text(
                     snaplevellist[index]["status"],
-                    style: TextStyle(
-                        letterSpacing: 0.02,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Roboto-Bold',
-                        fontSize: 15.0,
-                        color: Colors.white),
+                    style: TextStyle(letterSpacing: 0.02, fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white),
                   ),
                 ),
               ],

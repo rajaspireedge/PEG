@@ -47,8 +47,7 @@ class Homescreen extends StatefulWidget {
 }
 
 RestDatasource api = new RestDatasource();
-TextStyle style =
-TextStyle(fontFamily: 'Roboto-Bold', fontSize: 14.0, color: Colors.white );
+TextStyle style = TextStyle(fontFamily: 'Roboto-Bold', fontSize: 14.0, color: Colors.white);
 bool product_list = true;
 
 class _HomescreenState extends State<Homescreen> {
@@ -56,19 +55,19 @@ class _HomescreenState extends State<Homescreen> {
   String _mySelection;
   String _mySelection2;
 
-  List<Map<String, dynamic>> snapshotproductlist = List();
-  List<Map<String, dynamic>> snapshotplayerlist = List();
+  List<dynamic> snapshotproductlist;
+
+  List<dynamic> snapshotplayerlist;
 
   List data = List(); //edited line
+  Map<String, dynamic> userdata = Map();
+
   List data2 = List(); //edited line
 
   Future<String> getSWData() async {
-    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_categories),
-        headers: {
-          "Accept": "application/json",
-          "content-type":"application/json"
-        });
+    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_categories), headers: {"Accept": "application/json", "content-type": "application/json"});
     var resBody = json.decode(res.body);
+    print(res.body);
 
     setState(() {
       data = resBody["category_list"];
@@ -77,14 +76,38 @@ class _HomescreenState extends State<Homescreen> {
     return "Success";
   }
 
+  Future<String> getUserdetail(String userid) async {
+    var res = await http.get(Uri.encodeFull(RestDatasource.get_profile_info + userid), headers: {"Accept": "application/json", "content-type": "application/json"});
+    var resBody = json.decode(res.body);
+    print(res.body);
+
+    setState(() {
+      userdata.addAll(Map<String, dynamic>.from(json.decode(res.body)["user_profile"]));
+    });
+
+    return "Success";
+  }
+
   Future<String> getProductList() async {
-    api.fetchProductList().then((value) => {snapshotproductlist = value});
+    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_products), headers: {"Accept": "application/json", "content-type": "application/json"});
+    var resBody = json.decode(res.body);
+    print(res.body);
+
+    setState(() {
+      snapshotproductlist = resBody["product_list"];
+    });
 
     return "Success";
   }
 
   Future<String> getPlayer() async {
-    api.fetchPlayer().then((value) => {snapshotplayerlist = value});
+    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_players), headers: {"Accept": "application/json", "content-type": "application/json"});
+    var resBody = json.decode(res.body);
+    print(res.body);
+
+    setState(() {
+      snapshotplayerlist = resBody["userslist"];
+    });
 
     return "Success";
   }
@@ -126,9 +149,7 @@ class _HomescreenState extends State<Homescreen> {
   }
 
   Future<String> getsubData(String id) async {
-    var res = await http.get(
-        Uri.encodeFull(RestDatasource.get_all_subcategories + id),
-        headers: {"Accept": "application/json"});
+    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_subcategories + id), headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
 
     setState(() {
@@ -145,7 +166,9 @@ class _HomescreenState extends State<Homescreen> {
     this.getSWData();
     this.getProductList();
     this.getPlayer();
+    getStringValuesSF().then((value) => getUserdetail(value));
   }
+
   String userid;
 
   @override
@@ -164,17 +187,11 @@ class _HomescreenState extends State<Homescreen> {
     Color color2 = Color(0xFF000001);
     Color color3 = Color(0xFF6ae7e0);
 
-    TextStyle hintstyle =
-    TextStyle(fontFamily: 'Roboto-Bold', fontSize: 14.0, color: Colors.white);
+    TextStyle hintstyle = TextStyle(fontFamily: 'Roboto-Bold', fontSize: 14.0, color: Colors.white);
 
     final username_controller = TextEditingController();
 
-
-
-    getStringValuesSF().then((value) => {
-    userid = value
-    });
-
+    getStringValuesSF().then((value) => {userid = value});
 
     final searchproduct = TextField(
       style: style,
@@ -198,11 +215,19 @@ class _HomescreenState extends State<Homescreen> {
       ),
     );
 
+    if (snapshotproductlist == null || userdata.isEmpty) {
+      return Container(
+        color: Color(0xFF0a0f32),
+        child: Center(
+          child: Loading(indicator: BallPulseIndicator(), size: 100.0, color: color3),
+        ),
+      );
+    }
+
     if (product_list) {
       return MaterialApp(
         theme: Theme.of(context).copyWith(
-          canvasColor: Color(
-              0xFF0a0f32), //This will change the drawer background to blue.
+          canvasColor: Color(0xFF0a0f32), //This will change the drawer background to blue.
           //other styles
         ),
         home: Scaffold(
@@ -235,18 +260,12 @@ class _HomescreenState extends State<Homescreen> {
                         ),
                       ),
                       Text(
-                        'George Doe',
-                        style: TextStyle(
-                            fontFamily: 'Roboto-Bold',
-                            fontSize: 16.0,
-                            color: Colors.white),
+                        userdata["name"],
+                        style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 16.0, color: Colors.white),
                       ),
                       Text(
-                        'Account # 28',
-                        style: TextStyle(
-                            fontFamily: 'Roboto-Bold',
-                            fontSize: 13.0,
-                            color: Colors.white),
+                        'Account # ' + userdata["account_no"],
+                        style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 13.0, color: Colors.white),
                       ),
                     ],
                   ),
@@ -311,13 +330,11 @@ class _HomescreenState extends State<Homescreen> {
                   ),
                 ),
                 ListTile(
-
                   onTap: () {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (context) => PlayerOrder(userid),
                     ));
                   },
-
                   leading: Image(
                     image: AssetImage("assets/images/order.png"),
                     height: 20,
@@ -413,17 +430,13 @@ class _HomescreenState extends State<Homescreen> {
                       Container(
                         margin: EdgeInsets.fromLTRB(0.0, 30.0, 2.0, 0.0),
                         decoration: new BoxDecoration(
-                          image: new DecorationImage(
-                              image: borderimg, fit: BoxFit.fill),
+                          image: new DecorationImage(image: borderimg, fit: BoxFit.fill),
                         ),
                         child: Container(
                           margin: EdgeInsets.all(6.0),
                           child: Text(
                             "Available balance : 0.00",
-                            style: TextStyle(
-                                fontFamily: 'Roboto-Bold',
-                                fontSize: 12.0,
-                                color: color1),
+                            style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 12.0, color: color1),
                           ),
                         ),
                       )
@@ -474,10 +487,10 @@ class _HomescreenState extends State<Homescreen> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              Addtocart(id: userid,)));
+                                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                      builder: (BuildContext context) => Addtocart(
+                                            id: userid,
+                                          )));
                                 },
                                 child: Container(
                                   child: Image(
@@ -493,8 +506,7 @@ class _HomescreenState extends State<Homescreen> {
                                 },
                                 child: Container(
                                   child: Image(
-                                    image:
-                                    AssetImage("assets/images/more1.png"),
+                                    image: AssetImage("assets/images/more1.png"),
                                     height: 20,
                                     width: 30,
                                   ),
@@ -666,108 +678,72 @@ class _HomescreenState extends State<Homescreen> {
                         mainAxisSpacing: 10,
                         crossAxisCount: 2,
                       ),
-                      itemBuilder: (_, index) =>
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(10.0)),
-                            child: Stack(
-                              children: <Widget>[
-                                CustomPaint(
-                                    painter: _GradientPainter(
-                                      strokeWidth: 1,
-                                      radius: 10,
-                                      gradient: LinearGradient(
-                                        colors: [color2, color3],
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                      ),
-                                    ),
-                                    child: Container(
-                                      child: Stack(
-                                        children: <Widget>[
-                                          Align(
-                                            alignment:
-                                            AlignmentDirectional.topStart,
-                                            child: Material(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.only(
-                                                    topLeft: Radius.circular(
-                                                        10.0)),
-                                                clipBehavior:
-                                                Clip.antiAliasWithSaveLayer,
-                                                type: MaterialType.transparency,
-                                                child: Container(
-                                                    margin:
-                                                    EdgeInsets.only(right: 30),
-                                                    child: Stack(
-                                                      children: [
-                                                        Image(
-                                                          image: shape_1,
-                                                        ),
-                                                        Container(
-                                                          child: Text(
-                                                              snapshotproductlist[
-                                                              index]
-                                                              ["name"] ??
-                                                                  'Name',
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                  'Roboto-Bold',
-                                                                  fontSize: 10.0,
-                                                                  color: Colors
-                                                                      .black)),
-                                                          margin:
-                                                          EdgeInsets.fromLTRB(
-                                                              5.0,
-                                                              0.0,
-                                                              0.0,
-                                                              0.0),
-                                                          width: 140,
-                                                        ),
-                                                      ],
-                                                    ))),
-                                          ),
-                                          Align(
+                      itemBuilder: (_, index) => Container(
+                        decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(10.0)),
+                        child: Stack(
+                          children: <Widget>[
+                            CustomPaint(
+                                painter: _GradientPainter(
+                                  strokeWidth: 1,
+                                  radius: 10,
+                                  gradient: LinearGradient(
+                                    colors: [color2, color3],
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                  ),
+                                ),
+                                child: Container(
+                                  child: Stack(
+                                    children: <Widget>[
+                                      Align(
+                                        alignment: AlignmentDirectional.topStart,
+                                        child: Material(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0)),
+                                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                                            type: MaterialType.transparency,
                                             child: Container(
-                                              height: 80,
-                                              margin: EdgeInsets.only(
-                                                  right: 10, left: 10),
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: NetworkImage(
-                                                          snapshotproductlist[index]
-                                                          ["image"]),
-                                                      fit: BoxFit.cover)),
-                                            ),
-                                          ),
-                                          Align(
-                                            alignment: Alignment.bottomCenter,
-                                            child: InkWell(
-                                              onTap: () {
-                                                Navigator.of(context)
-                                                    .pushReplacement(
-                                                    MaterialPageRoute(
-                                                        builder: (BuildContext
-                                                        context) =>
-                                                            ItemFull(
-                                                                id: snapshotproductlist[
-                                                                index]["id"])));
-                                              },
-                                              child: Image(
-                                                image: viewmore,
-                                                width: 100,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          )
-                                        ],
+                                                margin: EdgeInsets.only(right: 30),
+                                                child: Stack(
+                                                  children: [
+                                                    Image(
+                                                      image: shape_1,
+                                                    ),
+                                                    Container(
+                                                      child: Text(snapshotproductlist[index]["name"] ?? 'Name', style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 10.0, color: Colors.black)),
+                                                      margin: EdgeInsets.fromLTRB(5.0, 0.0, 0.0, 0.0),
+                                                      width: 140,
+                                                    ),
+                                                  ],
+                                                ))),
                                       ),
-                                    )),
-                              ],
-                            ),
-                          ),
+                                      Align(
+                                        child: Container(
+                                          height: 80,
+                                          margin: EdgeInsets.only(right: 10, left: 10),
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(snapshotproductlist[index]["image"]), fit: BoxFit.cover)),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.bottomCenter,
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => ItemFull(id: snapshotproductlist[index]["id"])));
+                                          },
+                                          child: Image(
+                                            image: viewmore,
+                                            width: 100,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                )),
+                          ],
+                        ),
+                      ),
                       itemCount: snapshotproductlist.length,
                     ),
                   ),
@@ -780,8 +756,7 @@ class _HomescreenState extends State<Homescreen> {
     } else {
       return MaterialApp(
         theme: Theme.of(context).copyWith(
-          canvasColor: Color(
-              0xFF0a0f32), //This will change the drawer background to blue.
+          canvasColor: Color(0xFF0a0f32), //This will change the drawer background to blue.
           //other styles
         ),
         home: Scaffold(
@@ -814,17 +789,11 @@ class _HomescreenState extends State<Homescreen> {
                       ),
                       Text(
                         'George Doe',
-                        style: TextStyle(
-                            fontFamily: 'Roboto-Bold',
-                            fontSize: 16.0,
-                            color: Colors.white),
+                        style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 16.0, color: Colors.white),
                       ),
                       Text(
                         'Account # 28',
-                        style: TextStyle(
-                            fontFamily: 'Roboto-Bold',
-                            fontSize: 13.0,
-                            color: Colors.white),
+                        style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 13.0, color: Colors.white),
                       ),
                     ],
                   ),
@@ -984,17 +953,13 @@ class _HomescreenState extends State<Homescreen> {
                       Container(
                         margin: EdgeInsets.fromLTRB(0.0, 30.0, 2.0, 0.0),
                         decoration: new BoxDecoration(
-                          image: new DecorationImage(
-                              image: borderimg, fit: BoxFit.fill),
+                          image: new DecorationImage(image: borderimg, fit: BoxFit.fill),
                         ),
                         child: Container(
                           margin: EdgeInsets.all(6.0),
                           child: Text(
                             "Available balance : 0.00",
-                            style: TextStyle(
-                                fontFamily: 'Roboto-Bold',
-                                fontSize: 12.0,
-                                color: color1),
+                            style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 12.0, color: color1),
                           ),
                         ),
                       )
@@ -1106,16 +1071,13 @@ class _HomescreenState extends State<Homescreen> {
                         crossAxisCount: 2,
                       ),
                       itemBuilder: (context, index) {
-                        if (snapshotplayerlist == null) {
-                            return Container(
-                              color: Colors.lightBlue,
-                              child: Center(
-                                child: Loading(
-                                    indicator: BallPulseIndicator(),
-                                    size: 100.0,
-                                    color: color3),
-                              ),
-                            );
+                        if (snapshotplayerlist == null || userdata.isEmpty) {
+                          return Container(
+                            color: Colors.lightBlue,
+                            child: Center(
+                              child: Loading(indicator: BallPulseIndicator(), size: 100.0, color: color3),
+                            ),
+                          );
                         }
                         return Container(
                           child: Column(
@@ -1133,24 +1095,14 @@ class _HomescreenState extends State<Homescreen> {
                               Container(
                                 margin: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
                                 child: Text(
-                                  "Account # " +
-                                      snapshotplayerlist[index]["id"] ??
-                                      'id',
-                                  style: TextStyle(
-                                      fontFamily: 'Roboto-Bold',
-                                      fontSize: 12.0,
-                                      color: Colors.deepOrange),
+                                  "Account # " + snapshotplayerlist[index]["id"] ?? 'id',
+                                  style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 12.0, color: Colors.deepOrange),
                                 ),
                               ),
                               Container(
                                 child: Text(
-                                  snapshotplayerlist[index]["display_name"] ??
-                                      'Name',
-                                  style: TextStyle(
-                                      fontFamily: 'Roboto-Bold',
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
+                                  snapshotplayerlist[index]["display_name"] ?? 'Name',
+                                  style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 12.0, fontWeight: FontWeight.bold, color: Colors.white),
                                 ),
                               ),
                               Container(
@@ -1164,10 +1116,7 @@ class _HomescreenState extends State<Homescreen> {
                               )
                             ],
                           ),
-                          decoration: BoxDecoration(
-                              color: Color(0xFF0a0f32),
-                              border: Border.all(color: color3),
-                              borderRadius: BorderRadius.circular(10.0)),
+                          decoration: BoxDecoration(color: Color(0xFF0a0f32), border: Border.all(color: color3), borderRadius: BorderRadius.circular(10.0)),
                         );
                       },
                       itemCount: snapshotplayerlist.length,
@@ -1195,9 +1144,7 @@ class UnicornOutlineButton extends StatelessWidget {
     @required Gradient gradient,
     @required Widget child,
     @required VoidCallback onPressed,
-  })
-      : this._painter = _GradientPainter(
-      strokeWidth: strokeWidth, radius: radius, gradient: gradient),
+  })  : this._painter = _GradientPainter(strokeWidth: strokeWidth, radius: radius, gradient: gradient),
         this._child = child,
         this._callback = onPressed,
         this._radius = radius;
@@ -1233,9 +1180,7 @@ class _GradientPainter extends CustomPainter {
   final double strokeWidth;
   final Gradient gradient;
 
-  _GradientPainter({@required double strokeWidth,
-    @required double radius,
-    @required Gradient gradient})
+  _GradientPainter({@required double strokeWidth, @required double radius, @required Gradient gradient})
       : this.strokeWidth = strokeWidth,
         this.radius = radius,
         this.gradient = gradient;
@@ -1244,23 +1189,18 @@ class _GradientPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // create outer rectangle equals size
     Rect outerRect = Offset.zero & size;
-    var outerRRect =
-    RRect.fromRectAndRadius(outerRect, Radius.circular(radius));
+    var outerRRect = RRect.fromRectAndRadius(outerRect, Radius.circular(radius));
 
     // create inner rectangle smaller by strokeWidth
-    Rect innerRect = Rect.fromLTWH(strokeWidth, strokeWidth,
-        size.width - strokeWidth * 2, size.height - strokeWidth * 2);
-    var innerRRect = RRect.fromRectAndRadius(
-        innerRect, Radius.circular(radius - strokeWidth));
+    Rect innerRect = Rect.fromLTWH(strokeWidth, strokeWidth, size.width - strokeWidth * 2, size.height - strokeWidth * 2);
+    var innerRRect = RRect.fromRectAndRadius(innerRect, Radius.circular(radius - strokeWidth));
 
     // apply gradient shader
     _paint.shader = gradient.createShader(outerRect);
 
     // create difference between outer and inner paths and draw it
-    Path path1 = Path()
-      ..addRRect(outerRRect);
-    Path path2 = Path()
-      ..addRRect(innerRRect);
+    Path path1 = Path()..addRRect(outerRRect);
+    Path path2 = Path()..addRRect(innerRRect);
     var path = Path.combine(PathOperation.difference, path1, path2);
     canvas.drawPath(path, _paint);
   }
@@ -1269,8 +1209,7 @@ class _GradientPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => oldDelegate != this;
 }
 
-TextStyle dropdownstyle = TextStyle(
-    fontFamily: 'Roboto-Bold', fontSize: 10.0, color: Color(0xFF06cdff));
+TextStyle dropdownstyle = TextStyle(fontFamily: 'Roboto-Bold', fontSize: 10.0, color: Color(0xFF06cdff));
 
 class DropDown extends State<Homescreen> {
   @override
