@@ -33,8 +33,7 @@ final username_controller22 = TextEditingController();
 final edit_controller = TextEditingController();
 final edit_controller22 = TextEditingController();
 
-TextStyle hintstyle =
-    TextStyle(fontFamily: 'Roboto-Bold', fontSize: 10.0, color: Colors.white);
+TextStyle hintstyle = TextStyle(fontFamily: 'Roboto-Bold', fontSize: 10.0, color: Colors.white);
 
 class _CategoryFullState extends State<CategoryFull> {
   Color color1 = Color(0xFF06cdff);
@@ -61,8 +60,7 @@ class _CategoryFullState extends State<CategoryFull> {
         return AlertDialog(
           backgroundColor: Color(0xFF0a0f32),
           content: StatefulBuilder(
-            builder: (BuildContext context,
-                void Function(void Function()) setState) {
+            builder: (BuildContext context, void Function(void Function()) setState) {
               return Container(
                 height: 300,
                 width: 250,
@@ -76,12 +74,7 @@ class _CategoryFullState extends State<CategoryFull> {
                           margin: EdgeInsets.only(left: 10, top: 20),
                           child: Text(
                             "Shipping Tax",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Roboto-Bold',
-                                letterSpacing: 0.03,
-                                fontSize: 12.0,
-                                color: Color(0xFFff5000)),
+                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                           ),
                         ),
                         InkWell(
@@ -110,10 +103,7 @@ class _CategoryFullState extends State<CategoryFull> {
                       margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
                       child: Text(
                         'International Fee',
-                        style: TextStyle(
-                            fontFamily: 'Roboto-Bold',
-                            fontSize: 14.0,
-                            color: Colors.white),
+                        style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 12.0, color: Colors.white),
                       ),
                     ),
                     Container(
@@ -124,8 +114,7 @@ class _CategoryFullState extends State<CategoryFull> {
                           Stack(
                             children: <Widget>[
                               Container(
-                                  margin: EdgeInsets.fromLTRB(
-                                      10.0, 10.0, 10.0, 10.0),
+                                  margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
                                   decoration: new BoxDecoration(
                                     image: new DecorationImage(
                                       image: borderimg,
@@ -136,16 +125,14 @@ class _CategoryFullState extends State<CategoryFull> {
                                     alignment: AlignmentDirectional.center,
                                     children: [
                                       Container(
-                                        margin: EdgeInsets.only(
-                                            right: 10.0, left: 10),
+                                        margin: EdgeInsets.only(right: 10.0, left: 10),
                                         child: Padding(
                                           padding: EdgeInsets.all(2.0),
                                           child: Theme(
                                               data: Theme.of(context).copyWith(
                                                 canvasColor: Color(0xFF0a0f32),
                                               ),
-                                              child:
-                                                  DropdownButtonHideUnderline(
+                                              child: DropdownButtonHideUnderline(
                                                 child: DropdownButton(
                                                   iconSize: 0.0,
                                                   isExpanded: true,
@@ -190,9 +177,7 @@ class _CategoryFullState extends State<CategoryFull> {
                             margin: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
                             child: Container(
                                 margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                                decoration: new BoxDecoration(
-                                    border:
-                                        Border.all(color: Color(0xFF00ffff))),
+                                decoration: new BoxDecoration(border: Border.all(color: Color(0xFF00ffff))),
                                 child: Center(
                                   child: entercategoryname22,
                                 )),
@@ -203,19 +188,9 @@ class _CategoryFullState extends State<CategoryFull> {
                     InkWell(
                       onTap: () {
                         if (username_controller22.text.length == 0) {
-                          Fluttertoast.showToast(
-                              msg: "Enter Category",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              fontSize: 15,
-                              timeInSecForIos: 1,
-                              backgroundColor: Colors.blue,
-                              textColor: Colors.white);
+                          Fluttertoast.showToast(msg: "Enter Category", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 12, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
                         } else {
-                          getStringValuesSF().then((userid) => api
-                              .add_category22(userid, _mySelection,
-                                  username_controller22.text, context)
-                              .then((value) => {getSWData(userid)}));
+                          getStringValuesSF().then((userid) => api.add_category22(userid, _mySelection, username_controller22.text, context).then((value) => {getSWData(userid)}));
                         }
                       },
                       child: Container(
@@ -223,7 +198,7 @@ class _CategoryFullState extends State<CategoryFull> {
                         child: Image(
                           image: AssetImage("assets/images/submit.png"),
                           height: 40,
-                          width: 150,
+                          width: 120,
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -239,12 +214,7 @@ class _CategoryFullState extends State<CategoryFull> {
   }
 
   Future<String> getSWData(String userid) async {
-    var res = await http.get(
-        Uri.encodeFull(RestDatasource.get_all_categories + "/" + userid),
-        headers: {
-          "Accept": "application/json",
-          "content-type": "application/json"
-        });
+    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_categories + "/" + userid), headers: {"Accept": "application/json", "content-type": "application/json"});
     var resBody = json.decode(res.body);
 
     if (json.decode(res.body)["status_code"] == 400) {
@@ -254,14 +224,7 @@ class _CategoryFullState extends State<CategoryFull> {
         });
       }
 
-      Fluttertoast.showToast(
-          msg: json.decode(res.body)["message"],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          fontSize: 15,
-          timeInSecForIos: 1,
-          backgroundColor: Colors.blue,
-          textColor: Colors.white);
+      Fluttertoast.showToast(msg: json.decode(res.body)["message"], toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 12, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
       throw new Exception(json.decode(res.body));
     } else {
       setState(() {
@@ -357,31 +320,30 @@ class _CategoryFullState extends State<CategoryFull> {
                               children: [
                                 Align(
                                   alignment: Alignment.centerLeft,
-                                  child: Container(
-                                    margin: EdgeInsets.fromLTRB(
-                                        15.0, 10.0, 0.0, 0.0),
-                                    child: Image(
-                                      image: AssetImage(
-                                          'assets/images/back_12.png'),
-                                      height: 30,
-                                      width: 30,
+                                  child:GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                        builder: (context) => Homescreen(),
+                                      ));
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
+                                      child: Image(
+                                        image: AssetImage('assets/images/back_12.png'),
+                                        height: 30,
+                                        width: 30,
+                                      ),
                                     ),
-                                  ),
+                                  )
                                 ),
                                 Align(
                                   alignment: Alignment.center,
                                   child: Container(
-                                    margin: EdgeInsets.fromLTRB(
-                                        0.0, 10.0, 0.0, 0.0),
+                                    margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
                                     alignment: Alignment.center,
                                     child: Text(
                                       "Category",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Roboto-Bold',
-                                          letterSpacing: 0.03,
-                                          fontSize: 16.0,
-                                          color: Colors.white),
+                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Colors.white),
                                     ),
                                   ),
                                 )
@@ -397,12 +359,7 @@ class _CategoryFullState extends State<CategoryFull> {
                             margin: EdgeInsets.only(left: 20.0),
                             child: Text(
                               "My Category",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Roboto-Bold',
-                                  letterSpacing: 0.03,
-                                  fontSize: 16.0,
-                                  color: Colors.white),
+                              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Colors.white),
                             ),
                           ),
                           Padding(
@@ -429,155 +386,66 @@ class _CategoryFullState extends State<CategoryFull> {
                                             onTap: () {
                                               showDialog(
                                                   context: context,
-                                                  builder:
-                                                      (BuildContext context) {
+                                                  builder: (BuildContext context) {
                                                     return Dialog(
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20.0)),
+                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                                       //this right here
                                                       child: Container(
                                                         height: 250,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                                color: Color(
-                                                                    0xFF0a0f32)),
+                                                        decoration: BoxDecoration(color: Color(0xFF0a0f32)),
                                                         child: Column(
                                                           children: [
                                                             Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
+                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                               children: [
                                                                 Container(
-                                                                  margin: EdgeInsets
-                                                                      .only(
-                                                                          left:
-                                                                              30,
-                                                                          top:
-                                                                              20),
+                                                                  margin: EdgeInsets.only(left: 30, top: 20),
                                                                   child: Text(
                                                                     "Category Name",
-                                                                    style: TextStyle(
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        fontFamily:
-                                                                            'Roboto-Bold',
-                                                                        letterSpacing:
-                                                                            0.03,
-                                                                        fontSize:
-                                                                            12.0,
-                                                                        color: Color(
-                                                                            0xFFff5000)),
+                                                                    style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                                                   ),
                                                                 ),
                                                                 Container(
-                                                                  margin: EdgeInsets
-                                                                      .only(
-                                                                          right:
-                                                                              30,
-                                                                          top:
-                                                                              20),
+                                                                  margin: EdgeInsets.only(right: 30, top: 20),
                                                                   child: Image(
-                                                                    image: AssetImage(
-                                                                        "assets/images/close_1.png"),
+                                                                    image: AssetImage("assets/images/close_1.png"),
                                                                     width: 20,
                                                                     height: 20,
-                                                                    fit: BoxFit
-                                                                        .cover,
+                                                                    fit: BoxFit.cover,
                                                                   ),
                                                                 ),
                                                               ],
                                                             ),
                                                             Container(
                                                               height: 0.5,
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      right: 20,
-                                                                      left: 20,
-                                                                      top: 10),
-                                                              color:
-                                                                  Colors.white,
+                                                              margin: EdgeInsets.only(right: 20, left: 20, top: 10),
+                                                              color: Colors.white,
                                                             ),
                                                             Container(
-                                                              color:
-                                                                  Colors.black,
-                                                              margin: EdgeInsets
-                                                                  .fromLTRB(
-                                                                      30.0,
-                                                                      20.0,
-                                                                      30.0,
-                                                                      0.0),
+                                                              color: Colors.black,
+                                                              margin: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 0.0),
                                                               child: Container(
-                                                                  margin: EdgeInsets
-                                                                      .fromLTRB(
-                                                                          10,
-                                                                          20,
-                                                                          10,
-                                                                          20),
-                                                                  decoration: new BoxDecoration(
-                                                                      border: Border.all(
-                                                                          color:
-                                                                              Color(0xFF00ffff))),
+                                                                  margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
+                                                                  decoration: new BoxDecoration(border: Border.all(color: Color(0xFF00ffff))),
                                                                   child: Center(
-                                                                    child:
-                                                                        entercategoryname,
+                                                                    child: entercategoryname,
                                                                   )),
                                                             ),
                                                             InkWell(
                                                               onTap: () {
-                                                                if (username_controller
-                                                                        .text
-                                                                        .length ==
-                                                                    0) {
-                                                                  Fluttertoast.showToast(
-                                                                      msg:
-                                                                          "Enter Category",
-                                                                      toastLength:
-                                                                          Toast
-                                                                              .LENGTH_SHORT,
-                                                                      gravity: ToastGravity
-                                                                          .BOTTOM,
-                                                                      fontSize:
-                                                                          15,
-                                                                      timeInSecForIos:
-                                                                          1,
-                                                                      backgroundColor:
-                                                                          Colors
-                                                                              .blue,
-                                                                      textColor:
-                                                                          Colors
-                                                                              .white);
+                                                                if (username_controller.text.length == 0) {
+                                                                  Fluttertoast.showToast(msg: "Enter Category", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 12, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
                                                                 } else {
-                                                                  getStringValuesSF().then((userid) => api
-                                                                      .add_category(
-                                                                          userid,
-                                                                          username_controller
-                                                                              .text,
-                                                                          context)
-                                                                      .then((value) =>
-                                                                          getSWData(
-                                                                              userid)));
+                                                                  getStringValuesSF().then((userid) => api.add_category(userid, username_controller.text, context).then((value) => getSWData(userid)));
                                                                 }
                                                               },
                                                               child: Container(
-                                                                margin: EdgeInsets
-                                                                    .only(
-                                                                        bottom:
-                                                                            15,
-                                                                        top:
-                                                                            20),
+                                                                margin: EdgeInsets.only(bottom: 12, top: 20),
                                                                 child: Image(
-                                                                  image: AssetImage(
-                                                                      "assets/images/submit.png"),
+                                                                  image: AssetImage("assets/images/submit.png"),
                                                                   height: 50,
                                                                   width: 100,
-                                                                  fit: BoxFit
-                                                                      .cover,
+                                                                  fit: BoxFit.cover,
                                                                 ),
                                                               ),
                                                             )
@@ -589,10 +457,9 @@ class _CategoryFullState extends State<CategoryFull> {
                                             },
                                             child: Container(
                                               child: Image(
-                                                image: AssetImage(
-                                                    "assets/images/add_category.png"),
+                                                image: AssetImage("assets/images/add_category.png"),
                                                 height: 50,
-                                                width: 140,
+                                                width: 120,
                                                 fit: BoxFit.scaleDown,
                                               ),
                                             ),
@@ -603,10 +470,9 @@ class _CategoryFullState extends State<CategoryFull> {
                                             },
                                             child: Container(
                                               child: Image(
-                                                image: AssetImage(
-                                                    "assets/images/add_sub_category.png"),
+                                                image: AssetImage("assets/images/add_sub_category.png"),
                                                 height: 50,
-                                                width: 140,
+                                                width: 120,
                                                 fit: BoxFit.scaleDown,
                                               ),
                                             ),
@@ -639,80 +505,50 @@ class _CategoryFullState extends State<CategoryFull> {
                                     child: Column(
                                       children: [
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             Container(
                                               margin: EdgeInsets.only(left: 20),
                                               child: Text(
                                                 "Sl.no.",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontFamily: 'Roboto-Bold',
-                                                    letterSpacing: 0.03,
-                                                    fontSize: 10.0,
-                                                    color: Colors.white),
+                                                style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
                                               ),
                                             ),
                                             Container(
                                               child: Text(
                                                 "Category",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontFamily: 'Roboto-Bold',
-                                                    letterSpacing: 0.03,
-                                                    fontSize: 10.0,
-                                                    color: Colors.white),
+                                                style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
                                               ),
                                             ),
                                             Container(
                                               child: Text(
                                                 "Sub Category",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontFamily: 'Roboto-Bold',
-                                                    letterSpacing: 0.03,
-                                                    fontSize: 10.0,
-                                                    color: Colors.white),
+                                                style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
                                               ),
                                             ),
                                             Container(
                                               child: Text(
                                                 "Status",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontFamily: 'Roboto-Bold',
-                                                    letterSpacing: 0.03,
-                                                    fontSize: 10.0,
-                                                    color: Colors.white),
+                                                style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
                                               ),
                                             ),
                                             Container(
-                                              margin:
-                                                  EdgeInsets.only(right: 20),
+                                              margin: EdgeInsets.only(right: 20),
                                               child: Text(
                                                 "Action",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontFamily: 'Roboto-Bold',
-                                                    letterSpacing: 0.03,
-                                                    fontSize: 10.0,
-                                                    color: Colors.white),
+                                                style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
                                               ),
                                             ),
                                           ],
                                         ),
                                         ListView.builder(
                                           shrinkWrap: true,
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          padding: EdgeInsets.only(
-                                              top: 20, right: 20, left: 20),
+                                          physics: NeverScrollableScrollPhysics(),
+                                          padding: EdgeInsets.only(top: 20, left: 20, right: 20),
                                           itemBuilder: (context, index) {
                                             if (data[index]["status"] == "1") {
                                               checkstatus = true;
-                                            } else if (data[index]["status"] ==
-                                                "0") {
+                                            } else if (data[index]["status"] == "0") {
                                               checkstatus = false;
                                             }
 
@@ -726,132 +562,72 @@ class _CategoryFullState extends State<CategoryFull> {
                                             return Stack(
                                               children: [
                                                 Container(
-                                                  margin: EdgeInsets.only(
-                                                      top: 10, bottom: 10),
+                                                  margin: EdgeInsets.only(top: 10, bottom: 10),
                                                   child: Image(
-                                                    image: AssetImage(
-                                                        "assets/images/ellipse_4222.png"),
+                                                    image: AssetImage("assets/images/ellipse_4222.png"),
                                                     fit: BoxFit.cover,
                                                   ),
                                                 ),
                                                 Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
                                                     Container(
                                                       margin: EdgeInsets.only(
-                                                          left: 8, top: 10),
+                                                        left: 8,
+                                                      ),
                                                       child: Text(
-                                                        (index + 1).toString() +
-                                                            ".",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontFamily:
-                                                                'Roboto-Bold',
-                                                            letterSpacing: 0.03,
-                                                            fontSize: 12.0,
-                                                            color:
-                                                                Colors.black),
+                                                        (index + 1).toString() + ".",
+                                                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Colors.black),
                                                       ),
                                                     ),
                                                     Container(
-                                                      margin: EdgeInsets.only(
-                                                          left: 8, top: 23),
+                                                      margin: EdgeInsets.only(top: 15),
                                                       child: Text(
                                                         "Main Category",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontFamily:
-                                                                'Roboto-Bold',
-                                                            letterSpacing: 0.03,
-                                                            fontSize: 12.0,
-                                                            color:
-                                                                Colors.black),
+                                                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Colors.black),
                                                       ),
                                                     ),
                                                     Container(
                                                       width: 50,
                                                       height: 20,
-                                                      margin: EdgeInsets.only(
-                                                          left: 8, top: 23),
+                                                      margin: EdgeInsets.only(top: 15),
                                                       child: ScrollingText(
-                                                        ratioOfBlankToScreen:
-                                                            0.05,
-                                                        text: data[index]
-                                                            ["name"],
-                                                        textStyle: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontFamily:
-                                                                'Roboto-Bold',
-                                                            letterSpacing: 0.03,
-                                                            fontSize: 14.0,
-                                                            color:
-                                                                Colors.black),
+                                                        ratioOfBlankToScreen: 0.05,
+                                                        text: data[index]["name"],
+                                                        textStyle: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Colors.black),
                                                       ),
                                                     ),
                                                     GestureDetector(
                                                       onTap: () {
                                                         showDialog(
                                                             context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
+                                                            builder: (BuildContext context) {
                                                               return Container(
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
+                                                                alignment: Alignment.center,
                                                                 height: 50,
                                                                 width: 50,
-                                                                child:
-                                                                    CircularProgressIndicator(
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .cyan,
-                                                                  strokeWidth:
-                                                                      5,
+                                                                child: CircularProgressIndicator(
+                                                                  backgroundColor: Colors.cyan,
+                                                                  strokeWidth: 5,
                                                                 ),
                                                               );
                                                             });
 
-                                                        if (data[index]
-                                                                ["status"] ==
-                                                            "1") {
+                                                        if (data[index]["status"] == "1") {
                                                           checkstatus = true;
-                                                        } else if (data[index]
-                                                                ["status"] ==
-                                                            "0") {
+                                                        } else if (data[index]["status"] == "0") {
                                                           checkstatus = false;
                                                         }
 
                                                         if (checkstatus) {
                                                           challengemail = "0";
                                                           setState(() {
-                                                            getStringValuesSF().then((userid) => api
-                                                                .category_status_updatess(
-                                                                    data[index]
-                                                                        ["id"],
-                                                                    challengemail,
-                                                                    context)
-                                                                .then((value) =>
-                                                                    getSWData(
-                                                                        userid)));
+                                                            getStringValuesSF().then((userid) => api.category_status_updatess(data[index]["id"], challengemail, context).then((value) => getSWData(userid)));
                                                           });
                                                         } else {
                                                           challengemail = "1";
                                                           setState(() {
-                                                            getStringValuesSF().then((userid) => api
-                                                                .category_status_updatess(
-                                                                    data[index]
-                                                                        ["id"],
-                                                                    challengemail,
-                                                                    context)
-                                                                .then((value) =>
-                                                                    getSWData(
-                                                                        userid)));
+                                                            getStringValuesSF().then((userid) => api.category_status_updatess(data[index]["id"], challengemail, context).then((value) => getSWData(userid)));
                                                           });
                                                         }
                                                       },
@@ -862,69 +638,57 @@ class _CategoryFullState extends State<CategoryFull> {
                                                           children: <Widget>[
                                                             GestureDetector(
                                                               child: new Image(
-                                                                image: AssetImage(
-                                                                    "assets/images/rounded_rectangle_2_copy.png"),
+                                                                image: AssetImage("assets/images/rounded_rectangle_2_copy.png"),
                                                                 height: 50,
                                                                 width: 65,
                                                               ),
                                                             ),
                                                             Visibility(
-                                                                visible:
-                                                                    officon3,
-                                                                child:
-                                                                    Container(
-                                                                        margin:
-                                                                            EdgeInsets.all(
-                                                                                2),
-                                                                        child:
-                                                                            Row(
-                                                                          children: [
-                                                                            Image(
-                                                                              image: AssetImage("assets/images/ellipse_5_copy.png"),
-                                                                              height: 50,
-                                                                              width: 20,
-                                                                            ),
-                                                                            Container(
-                                                                              margin: EdgeInsets.only(left: 10),
-                                                                              child: Text(
-                                                                                "on",
-                                                                                style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Colors.black),
-                                                                              ),
-                                                                            )
-                                                                          ],
-                                                                        ))),
+                                                                visible: officon3,
+                                                                child: Container(
+                                                                    margin: EdgeInsets.all(2),
+                                                                    child: Row(
+                                                                      children: [
+                                                                        Image(
+                                                                          image: AssetImage("assets/images/ellipse_5_copy.png"),
+                                                                          height: 50,
+                                                                          width: 20,
+                                                                        ),
+                                                                        Container(
+                                                                          margin: EdgeInsets.only(left: 10),
+                                                                          child: Text(
+                                                                            "on",
+                                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 7.0, color: Colors.black),
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                                    ))),
                                                             Visibility(
-                                                                visible:
-                                                                    onicon3,
-                                                                child:
-                                                                    Container(
-                                                                        margin:
-                                                                            EdgeInsets.all(
-                                                                                2),
-                                                                        child:
-                                                                            Row(
-                                                                          children: [
-                                                                            Container(
-                                                                              margin: EdgeInsets.only(left: 4),
-                                                                              child: Text(
-                                                                                "off",
-                                                                                style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Colors.black),
-                                                                              ),
-                                                                            ),
-                                                                            Container(
-                                                                              margin: EdgeInsets.only(left: 9),
-                                                                              child: Image(
-                                                                                image: AssetImage("assets/images/ellipse_5_copy.png"),
-                                                                                height: 50,
-                                                                                width: 20,
-                                                                              ),
-                                                                            )
-                                                                          ],
-                                                                        ))),
+                                                                visible: onicon3,
+                                                                child: Container(
+                                                                    margin: EdgeInsets.all(2),
+                                                                    child: Row(
+                                                                      children: [
+                                                                        Container(
+                                                                          margin: EdgeInsets.only(left: 4),
+                                                                          child: Text(
+                                                                            "off",
+                                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 7.0, color: Colors.black),
+                                                                          ),
+                                                                        ),
+                                                                        Container(
+                                                                          margin: EdgeInsets.only(left: 9),
+                                                                          child: Image(
+                                                                            image: AssetImage("assets/images/ellipse_5_copy.png"),
+                                                                            height: 50,
+                                                                            width: 20,
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                                    ))),
                                                           ],
                                                         ),
-                                                        margin: EdgeInsets.only(
-                                                            left: 8, top: 20),
+                                                        margin: EdgeInsets.only(left: 8, top: 20),
                                                       ),
                                                     ),
                                                     Row(
@@ -932,29 +696,18 @@ class _CategoryFullState extends State<CategoryFull> {
                                                         InkWell(
                                                           onTap: () {
                                                             showDialog(
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
+                                                                context: context,
+                                                                builder: (BuildContext context) {
                                                                   return Dialog(
-                                                                    shape: RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(20.0)),
+                                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                                                     //this right here
-                                                                    child:
-                                                                        Container(
-                                                                      height:
-                                                                          250,
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                              color: Color(0xFF0a0f32)),
-                                                                      child:
-                                                                          Column(
+                                                                    child: Container(
+                                                                      height: 250,
+                                                                      decoration: BoxDecoration(color: Color(0xFF0a0f32)),
+                                                                      child: Column(
                                                                         children: [
                                                                           Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.spaceBetween,
+                                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                             children: [
                                                                               Container(
                                                                                 margin: EdgeInsets.only(left: 30, top: 20),
@@ -975,23 +728,13 @@ class _CategoryFullState extends State<CategoryFull> {
                                                                             ],
                                                                           ),
                                                                           Container(
-                                                                            height:
-                                                                                0.5,
-                                                                            margin: EdgeInsets.only(
-                                                                                right: 20,
-                                                                                left: 20,
-                                                                                top: 10),
-                                                                            color:
-                                                                                Colors.white,
+                                                                            height: 0.5,
+                                                                            margin: EdgeInsets.only(right: 20, left: 20, top: 10),
+                                                                            color: Colors.white,
                                                                           ),
                                                                           Container(
-                                                                            color:
-                                                                                Colors.black,
-                                                                            margin: EdgeInsets.fromLTRB(
-                                                                                30.0,
-                                                                                20.0,
-                                                                                30.0,
-                                                                                0.0),
+                                                                            color: Colors.black,
+                                                                            margin: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 0.0),
                                                                             child: Container(
                                                                                 margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
                                                                                 decoration: new BoxDecoration(border: Border.all(color: Color(0xFF00ffff))),
@@ -1000,17 +743,15 @@ class _CategoryFullState extends State<CategoryFull> {
                                                                                 )),
                                                                           ),
                                                                           InkWell(
-                                                                            onTap:
-                                                                                () {
+                                                                            onTap: () {
                                                                               if (edit_controller.text.length == 0) {
-                                                                                Fluttertoast.showToast(msg: "Enter Category", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
+                                                                                Fluttertoast.showToast(msg: "Enter Category", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 12, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
                                                                               } else {
                                                                                 getStringValuesSF().then((userid) => api.edit_cat(data[index]["id"], edit_controller.text, context).then((value) => getSWData(userid)));
                                                                               }
                                                                             },
-                                                                            child:
-                                                                                Container(
-                                                                              margin: EdgeInsets.only(bottom: 15, top: 20),
+                                                                            child: Container(
+                                                                              margin: EdgeInsets.only(bottom: 12, top: 20),
                                                                               child: Image(
                                                                                 image: AssetImage("assets/images/submit.png"),
                                                                                 height: 50,
@@ -1026,13 +767,9 @@ class _CategoryFullState extends State<CategoryFull> {
                                                                 });
                                                           },
                                                           child: Container(
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    right: 5,
-                                                                    top: 23),
+                                                            margin: EdgeInsets.only(right: 5, top: 23),
                                                             child: Image(
-                                                              image: AssetImage(
-                                                                  "assets/images/edit_2222.png"),
+                                                              image: AssetImage("assets/images/edit_2222.png"),
                                                               width: 13,
                                                               height: 13,
                                                               fit: BoxFit.cover,
@@ -1042,33 +779,21 @@ class _CategoryFullState extends State<CategoryFull> {
                                                         InkWell(
                                                           onTap: () {
                                                             showDialog(
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
+                                                                context: context,
+                                                                builder: (BuildContext context) {
                                                                   return Dialog(
-                                                                    shape: RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(20.0)),
+                                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                                                     //this right here
-                                                                    child:
-                                                                        Container(
-                                                                      height:
-                                                                          200,
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                              color: Color(0xFF0a0f32)),
-                                                                      child:
-                                                                          Column(
+                                                                    child: Container(
+                                                                      height: 200,
+                                                                      decoration: BoxDecoration(color: Color(0xFF0a0f32)),
+                                                                      child: Column(
                                                                         children: [
                                                                           InkWell(
-                                                                            onTap:
-                                                                                () {
+                                                                            onTap: () {
                                                                               Navigator.pop(context);
                                                                             },
-                                                                            child:
-                                                                                Container(
+                                                                            child: Container(
                                                                               alignment: Alignment.centerRight,
                                                                               margin: EdgeInsets.only(right: 30, top: 20),
                                                                               child: Image(
@@ -1080,8 +805,7 @@ class _CategoryFullState extends State<CategoryFull> {
                                                                             ),
                                                                           ),
                                                                           Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.spaceBetween,
+                                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                             children: [
                                                                               Container(
                                                                                 alignment: Alignment.center,
@@ -1094,29 +818,19 @@ class _CategoryFullState extends State<CategoryFull> {
                                                                             ],
                                                                           ),
                                                                           Container(
-                                                                            color:
-                                                                                Colors.black,
-                                                                            margin: EdgeInsets.fromLTRB(
-                                                                                30.0,
-                                                                                5.0,
-                                                                                30.0,
-                                                                                0.0),
+                                                                            color: Colors.black,
+                                                                            margin: EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 0.0),
                                                                           ),
                                                                           InkWell(
-                                                                            onTap:
-                                                                                () {
-                                                                              api.deletecat(data[index]["id"].toString()).then((value) => {
-                                                                                    Navigator.pop(context),
-                                                                                    getStringValuesSF().then((value) => getSWData(value))
-                                                                                  });
+                                                                            onTap: () {
+                                                                              api.deletecat(data[index]["id"].toString()).then((value) => {Navigator.pop(context), getStringValuesSF().then((value) => getSWData(value))});
                                                                             },
-                                                                            child:
-                                                                                Container(
-                                                                              margin: EdgeInsets.only(bottom: 15),
+                                                                            child: Container(
+                                                                              margin: EdgeInsets.only(bottom: 12),
                                                                               child: Image(
                                                                                 image: AssetImage("assets/images/submit.png"),
                                                                                 height: 60,
-                                                                                width: 150,
+                                                                                width: 120,
                                                                                 fit: BoxFit.cover,
                                                                               ),
                                                                             ),
@@ -1128,13 +842,9 @@ class _CategoryFullState extends State<CategoryFull> {
                                                                 });
                                                           },
                                                           child: Container(
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    right: 5,
-                                                                    top: 23),
+                                                            margin: EdgeInsets.only(right: 5, top: 23),
                                                             child: Image(
-                                                              image: AssetImage(
-                                                                  "assets/images/icons_8_delete_bin_24.png"),
+                                                              image: AssetImage("assets/images/icons_8_delete_bin_24.png"),
                                                               width: 13,
                                                               height: 13,
                                                               fit: BoxFit.cover,
@@ -1152,15 +862,12 @@ class _CategoryFullState extends State<CategoryFull> {
                                         ),
                                         ListView.builder(
                                           shrinkWrap: true,
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          padding: EdgeInsets.only(
-                                              bottom: 20, left: 20, right: 20),
+                                          physics: NeverScrollableScrollPhysics(),
+                                          padding: EdgeInsets.only(bottom: 20, left: 20, right: 20),
                                           itemBuilder: (context, index) {
                                             if (data2[index]["status"] == "1") {
                                               checkstatus = true;
-                                            } else if (data2[index]["status"] ==
-                                                "0") {
+                                            } else if (data2[index]["status"] == "0") {
                                               checkstatus = false;
                                             }
 
@@ -1175,132 +882,72 @@ class _CategoryFullState extends State<CategoryFull> {
                                             return Stack(
                                               children: [
                                                 Container(
-                                                  margin: EdgeInsets.only(
-                                                      top: 10, bottom: 10),
+                                                  margin: EdgeInsets.only(top: 10, bottom: 10),
                                                   child: Image(
-                                                    image: AssetImage(
-                                                        "assets/images/ellipse_4222.png"),
+                                                    image: AssetImage("assets/images/ellipse_4222.png"),
                                                     fit: BoxFit.cover,
                                                   ),
                                                 ),
                                                 Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
                                                     Container(
                                                       margin: EdgeInsets.only(
-                                                          left: 8, top: 10),
+                                                        left: 8,
+                                                      ),
                                                       child: Text(
-                                                        (index + 1).toString() +
-                                                            ".",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontFamily:
-                                                                'Roboto-Bold',
-                                                            letterSpacing: 0.03,
-                                                            fontSize: 12.0,
-                                                            color:
-                                                                Colors.black),
+                                                        (index + 1).toString() + ".",
+                                                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Colors.black),
                                                       ),
                                                     ),
                                                     Container(
-                                                      margin: EdgeInsets.only(
-                                                          left: 8, top: 23),
+                                                      margin: EdgeInsets.only(top: 15),
                                                       child: Text(
                                                         "Sub Category",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontFamily:
-                                                                'Roboto-Bold',
-                                                            letterSpacing: 0.03,
-                                                            fontSize: 12.0,
-                                                            color:
-                                                                Colors.black),
+                                                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Colors.black),
                                                       ),
                                                     ),
                                                     Container(
                                                       width: 50,
                                                       height: 20,
-                                                      margin: EdgeInsets.only(
-                                                          left: 8, top: 23),
+                                                      margin: EdgeInsets.only(top: 15),
                                                       child: ScrollingText(
-                                                        ratioOfBlankToScreen:
-                                                            0.05,
-                                                        text: data2[index]
-                                                            ["name"],
-                                                        textStyle: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontFamily:
-                                                                'Roboto-Bold',
-                                                            letterSpacing: 0.03,
-                                                            fontSize: 14.0,
-                                                            color:
-                                                                Colors.black),
+                                                        ratioOfBlankToScreen: 0.05,
+                                                        text: data2[index]["name"],
+                                                        textStyle: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Colors.black),
                                                       ),
                                                     ),
                                                     GestureDetector(
                                                       onTap: () {
                                                         showDialog(
                                                             context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
+                                                            builder: (BuildContext context) {
                                                               return Container(
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
+                                                                alignment: Alignment.center,
                                                                 height: 50,
                                                                 width: 50,
-                                                                child:
-                                                                    CircularProgressIndicator(
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .cyan,
-                                                                  strokeWidth:
-                                                                      5,
+                                                                child: CircularProgressIndicator(
+                                                                  backgroundColor: Colors.cyan,
+                                                                  strokeWidth: 5,
                                                                 ),
                                                               );
                                                             });
 
-                                                        if (data2[index]
-                                                                ["status"] ==
-                                                            "1") {
+                                                        if (data2[index]["status"] == "1") {
                                                           checkstatus = true;
-                                                        } else if (data[index]
-                                                                ["status"] ==
-                                                            "0") {
+                                                        } else if (data[index]["status"] == "0") {
                                                           checkstatus = false;
                                                         }
 
                                                         if (checkstatus) {
                                                           challengemail = "0";
                                                           setState(() {
-                                                            getStringValuesSF().then((userid) => api
-                                                                .category_status_updatess(
-                                                                    data2[index]
-                                                                        ["id"],
-                                                                    challengemail,
-                                                                    context)
-                                                                .then((value) =>
-                                                                    getSWData(
-                                                                        userid)));
+                                                            getStringValuesSF().then((userid) => api.category_status_updatess(data2[index]["id"], challengemail, context).then((value) => getSWData(userid)));
                                                           });
                                                         } else {
                                                           challengemail = "1";
                                                           setState(() {
-                                                            getStringValuesSF().then((userid) => api
-                                                                .category_status_updatess(
-                                                                    data2[index]
-                                                                        ["id"],
-                                                                    challengemail,
-                                                                    context)
-                                                                .then((value) =>
-                                                                    getSWData(
-                                                                        userid)));
+                                                            getStringValuesSF().then((userid) => api.category_status_updatess(data2[index]["id"], challengemail, context).then((value) => getSWData(userid)));
                                                           });
                                                         }
                                                       },
@@ -1311,69 +958,57 @@ class _CategoryFullState extends State<CategoryFull> {
                                                           children: <Widget>[
                                                             GestureDetector(
                                                               child: new Image(
-                                                                image: AssetImage(
-                                                                    "assets/images/rounded_rectangle_2_copy.png"),
+                                                                image: AssetImage("assets/images/rounded_rectangle_2_copy.png"),
                                                                 height: 50,
                                                                 width: 65,
                                                               ),
                                                             ),
                                                             Visibility(
-                                                                visible:
-                                                                    officon3,
-                                                                child:
-                                                                    Container(
-                                                                        margin:
-                                                                            EdgeInsets.all(
-                                                                                2),
-                                                                        child:
-                                                                            Row(
-                                                                          children: [
-                                                                            Image(
-                                                                              image: AssetImage("assets/images/ellipse_5_copy.png"),
-                                                                              height: 50,
-                                                                              width: 20,
-                                                                            ),
-                                                                            Container(
-                                                                              margin: EdgeInsets.only(left: 10),
-                                                                              child: Text(
-                                                                                "on",
-                                                                                style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Colors.black),
-                                                                              ),
-                                                                            )
-                                                                          ],
-                                                                        ))),
+                                                                visible: officon3,
+                                                                child: Container(
+                                                                    margin: EdgeInsets.all(2),
+                                                                    child: Row(
+                                                                      children: [
+                                                                        Image(
+                                                                          image: AssetImage("assets/images/ellipse_5_copy.png"),
+                                                                          height: 50,
+                                                                          width: 20,
+                                                                        ),
+                                                                        Container(
+                                                                          margin: EdgeInsets.only(left: 10),
+                                                                          child: Text(
+                                                                            "on",
+                                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 7.0, color: Colors.black),
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                                    ))),
                                                             Visibility(
-                                                                visible:
-                                                                    onicon3,
-                                                                child:
-                                                                    Container(
-                                                                        margin:
-                                                                            EdgeInsets.all(
-                                                                                2),
-                                                                        child:
-                                                                            Row(
-                                                                          children: [
-                                                                            Container(
-                                                                              margin: EdgeInsets.only(left: 4),
-                                                                              child: Text(
-                                                                                "off",
-                                                                                style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Colors.black),
-                                                                              ),
-                                                                            ),
-                                                                            Container(
-                                                                              margin: EdgeInsets.only(left: 9),
-                                                                              child: Image(
-                                                                                image: AssetImage("assets/images/ellipse_5_copy.png"),
-                                                                                height: 50,
-                                                                                width: 20,
-                                                                              ),
-                                                                            )
-                                                                          ],
-                                                                        ))),
+                                                                visible: onicon3,
+                                                                child: Container(
+                                                                    margin: EdgeInsets.all(2),
+                                                                    child: Row(
+                                                                      children: [
+                                                                        Container(
+                                                                          margin: EdgeInsets.only(left: 4),
+                                                                          child: Text(
+                                                                            "off",
+                                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 7.0, color: Colors.black),
+                                                                          ),
+                                                                        ),
+                                                                        Container(
+                                                                          margin: EdgeInsets.only(left: 9),
+                                                                          child: Image(
+                                                                            image: AssetImage("assets/images/ellipse_5_copy.png"),
+                                                                            height: 50,
+                                                                            width: 20,
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                                    ))),
                                                           ],
                                                         ),
-                                                        margin: EdgeInsets.only(
-                                                            left: 8, top: 20),
+                                                        margin: EdgeInsets.only(left: 8, top: 20),
                                                       ),
                                                     ),
                                                     Row(
@@ -1381,29 +1016,18 @@ class _CategoryFullState extends State<CategoryFull> {
                                                         InkWell(
                                                           onTap: () {
                                                             showDialog(
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
+                                                                context: context,
+                                                                builder: (BuildContext context) {
                                                                   return Dialog(
-                                                                    shape: RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(20.0)),
+                                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                                                     //this right here
-                                                                    child:
-                                                                        Container(
-                                                                      height:
-                                                                          250,
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                              color: Color(0xFF0a0f32)),
-                                                                      child:
-                                                                          Column(
+                                                                    child: Container(
+                                                                      height: 250,
+                                                                      decoration: BoxDecoration(color: Color(0xFF0a0f32)),
+                                                                      child: Column(
                                                                         children: [
                                                                           Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.spaceBetween,
+                                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                             children: [
                                                                               Container(
                                                                                 margin: EdgeInsets.only(left: 30, top: 20),
@@ -1412,35 +1036,30 @@ class _CategoryFullState extends State<CategoryFull> {
                                                                                   style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                                                                 ),
                                                                               ),
-                                                                              Container(
-                                                                                margin: EdgeInsets.only(right: 30, top: 20),
-                                                                                child: Image(
-                                                                                  image: AssetImage("assets/images/close_1.png"),
-                                                                                  width: 20,
-                                                                                  height: 20,
-                                                                                  fit: BoxFit.cover,
+                                                                              GestureDetector(
+                                                                                onTap: () {
+                                                                                  Navigator.pop(context);
+                                                                                },
+                                                                                child: Container(
+                                                                                  margin: EdgeInsets.only(right: 30, top: 20),
+                                                                                  child: Image(
+                                                                                    image: AssetImage("assets/images/close_1.png"),
+                                                                                    width: 20,
+                                                                                    height: 20,
+                                                                                    fit: BoxFit.cover,
+                                                                                  ),
                                                                                 ),
-                                                                              ),
+                                                                              )
                                                                             ],
                                                                           ),
                                                                           Container(
-                                                                            height:
-                                                                                0.5,
-                                                                            margin: EdgeInsets.only(
-                                                                                right: 20,
-                                                                                left: 20,
-                                                                                top: 10),
-                                                                            color:
-                                                                                Colors.white,
+                                                                            height: 0.5,
+                                                                            margin: EdgeInsets.only(right: 20, left: 20, top: 10),
+                                                                            color: Colors.white,
                                                                           ),
                                                                           Container(
-                                                                            color:
-                                                                                Colors.black,
-                                                                            margin: EdgeInsets.fromLTRB(
-                                                                                30.0,
-                                                                                20.0,
-                                                                                30.0,
-                                                                                0.0),
+                                                                            color: Colors.black,
+                                                                            margin: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 0.0),
                                                                             child: Container(
                                                                                 margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
                                                                                 decoration: new BoxDecoration(border: Border.all(color: Color(0xFF00ffff))),
@@ -1449,17 +1068,15 @@ class _CategoryFullState extends State<CategoryFull> {
                                                                                 )),
                                                                           ),
                                                                           InkWell(
-                                                                            onTap:
-                                                                                () {
+                                                                            onTap: () {
                                                                               if (edit_controller22.text.length == 0) {
-                                                                                Fluttertoast.showToast(msg: "Enter Category", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
+                                                                                Fluttertoast.showToast(msg: "Enter Category", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 12, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
                                                                               } else {
                                                                                 getStringValuesSF().then((userid) => api.edit_cat22(data2[index]["id"], data2[index]["parent_id"], edit_controller22.text, context).then((value) => getSWData(userid)));
                                                                               }
                                                                             },
-                                                                            child:
-                                                                                Container(
-                                                                              margin: EdgeInsets.only(bottom: 15, top: 20),
+                                                                            child: Container(
+                                                                              margin: EdgeInsets.only(bottom: 12, top: 20),
                                                                               child: Image(
                                                                                 image: AssetImage("assets/images/submit.png"),
                                                                                 height: 50,
@@ -1475,13 +1092,9 @@ class _CategoryFullState extends State<CategoryFull> {
                                                                 });
                                                           },
                                                           child: Container(
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    right: 5,
-                                                                    top: 23),
+                                                            margin: EdgeInsets.only(right: 5, top: 23),
                                                             child: Image(
-                                                              image: AssetImage(
-                                                                  "assets/images/edit_2222.png"),
+                                                              image: AssetImage("assets/images/edit_2222.png"),
                                                               width: 13,
                                                               height: 13,
                                                               fit: BoxFit.cover,
@@ -1491,33 +1104,21 @@ class _CategoryFullState extends State<CategoryFull> {
                                                         InkWell(
                                                           onTap: () {
                                                             showDialog(
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
+                                                                context: context,
+                                                                builder: (BuildContext context) {
                                                                   return Dialog(
-                                                                    shape: RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(20.0)),
+                                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                                                     //this right here
-                                                                    child:
-                                                                        Container(
-                                                                      height:
-                                                                          200,
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                              color: Color(0xFF0a0f32)),
-                                                                      child:
-                                                                          Column(
+                                                                    child: Container(
+                                                                      height: 200,
+                                                                      decoration: BoxDecoration(color: Color(0xFF0a0f32)),
+                                                                      child: Column(
                                                                         children: [
                                                                           InkWell(
-                                                                            onTap:
-                                                                                () {
+                                                                            onTap: () {
                                                                               Navigator.pop(context);
                                                                             },
-                                                                            child:
-                                                                                Container(
+                                                                            child: Container(
                                                                               alignment: Alignment.centerRight,
                                                                               margin: EdgeInsets.only(right: 30, top: 20),
                                                                               child: Image(
@@ -1529,8 +1130,7 @@ class _CategoryFullState extends State<CategoryFull> {
                                                                             ),
                                                                           ),
                                                                           Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.spaceBetween,
+                                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                             children: [
                                                                               Container(
                                                                                 alignment: Alignment.center,
@@ -1543,29 +1143,19 @@ class _CategoryFullState extends State<CategoryFull> {
                                                                             ],
                                                                           ),
                                                                           Container(
-                                                                            color:
-                                                                                Colors.black,
-                                                                            margin: EdgeInsets.fromLTRB(
-                                                                                30.0,
-                                                                                5.0,
-                                                                                30.0,
-                                                                                0.0),
+                                                                            color: Colors.black,
+                                                                            margin: EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 0.0),
                                                                           ),
                                                                           InkWell(
-                                                                            onTap:
-                                                                                () {
-                                                                              api.deletecat(data2[index]["id"].toString()).then((value) => {
-                                                                                    Navigator.pop(context),
-                                                                                    getStringValuesSF().then((value) => getSWData(value))
-                                                                                  });
+                                                                            onTap: () {
+                                                                              api.deletecat(data2[index]["id"].toString()).then((value) => {Navigator.pop(context), getStringValuesSF().then((value) => getSWData(value))});
                                                                             },
-                                                                            child:
-                                                                                Container(
-                                                                              margin: EdgeInsets.only(bottom: 15),
+                                                                            child: Container(
+                                                                              margin: EdgeInsets.only(bottom: 12),
                                                                               child: Image(
                                                                                 image: AssetImage("assets/images/submit.png"),
                                                                                 height: 60,
-                                                                                width: 150,
+                                                                                width: 120,
                                                                                 fit: BoxFit.cover,
                                                                               ),
                                                                             ),
@@ -1577,13 +1167,9 @@ class _CategoryFullState extends State<CategoryFull> {
                                                                 });
                                                           },
                                                           child: Container(
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    right: 5,
-                                                                    top: 23),
+                                                            margin: EdgeInsets.only(right: 5, top: 23),
                                                             child: Image(
-                                                              image: AssetImage(
-                                                                  "assets/images/icons_8_delete_bin_24.png"),
+                                                              image: AssetImage("assets/images/icons_8_delete_bin_24.png"),
                                                               width: 13,
                                                               height: 13,
                                                               fit: BoxFit.cover,
@@ -1611,8 +1197,7 @@ class _CategoryFullState extends State<CategoryFull> {
             ],
           ),
           onWillPop: () async {
-            return Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => Homescreen()));
+            return Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Homescreen()));
           }),
     );
   }
@@ -1624,10 +1209,7 @@ class _GradientPainter extends CustomPainter {
   final double strokeWidth;
   final Gradient gradient;
 
-  _GradientPainter(
-      {@required double strokeWidth,
-      @required double radius,
-      @required Gradient gradient})
+  _GradientPainter({@required double strokeWidth, @required double radius, @required Gradient gradient})
       : this.strokeWidth = strokeWidth,
         this.radius = radius,
         this.gradient = gradient;
@@ -1636,14 +1218,11 @@ class _GradientPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // create outer rectangle equals size
     Rect outerRect = Offset.zero & size;
-    var outerRRect =
-        RRect.fromRectAndRadius(outerRect, Radius.circular(radius));
+    var outerRRect = RRect.fromRectAndRadius(outerRect, Radius.circular(radius));
 
     // create inner rectangle smaller by strokeWidth
-    Rect innerRect = Rect.fromLTWH(strokeWidth, strokeWidth,
-        size.width - strokeWidth * 2, size.height - strokeWidth * 2);
-    var innerRRect = RRect.fromRectAndRadius(
-        innerRect, Radius.circular(radius - strokeWidth));
+    Rect innerRect = Rect.fromLTWH(strokeWidth, strokeWidth, size.width - strokeWidth * 2, size.height - strokeWidth * 2);
+    var innerRRect = RRect.fromRectAndRadius(innerRect, Radius.circular(radius - strokeWidth));
 
     // apply gradient shader
     _paint.shader = gradient.createShader(outerRect);

@@ -32,8 +32,7 @@ class SellProductPAGE extends StatefulWidget {
 var entervalue = TextEditingController();
 
 List<String> list = ["Fix Amount", "Percentage"];
-TextStyle hintstyle =
-    TextStyle(fontFamily: 'Roboto-Bold', fontSize: 14.0, color: Colors.white);
+TextStyle hintstyle = TextStyle(fontFamily: 'Roboto-Bold', fontSize: 14.0, color: Colors.white);
 
 class _SellProductPAGEState extends State<SellProductPAGE> {
   Color color1 = Color(0xFF06cdff);
@@ -53,8 +52,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
         return AlertDialog(
           backgroundColor: Color(0xFF0a0f32),
           content: StatefulBuilder(
-            builder: (BuildContext context,
-                void Function(void Function()) setState) {
+            builder: (BuildContext context, void Function(void Function()) setState) {
               return Container(
                 height: 300,
                 width: 250,
@@ -68,12 +66,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                           margin: EdgeInsets.only(left: 10, top: 20),
                           child: Text(
                             "Shipping Tax",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Roboto-Bold',
-                                letterSpacing: 0.03,
-                                fontSize: 12.0,
-                                color: Color(0xFFff5000)),
+                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                           ),
                         ),
                         InkWell(
@@ -102,10 +95,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                       margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
                       child: Text(
                         'International Fee',
-                        style: TextStyle(
-                            fontFamily: 'Roboto-Bold',
-                            fontSize: 14.0,
-                            color: Colors.white),
+                        style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 14.0, color: Colors.white),
                       ),
                     ),
                     Container(
@@ -116,8 +106,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                           Stack(
                             children: <Widget>[
                               Container(
-                                  margin: EdgeInsets.fromLTRB(
-                                      10.0, 10.0, 10.0, 10.0),
+                                  margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
                                   decoration: new BoxDecoration(
                                     image: new DecorationImage(
                                       image: borderimg,
@@ -128,16 +117,14 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                                     alignment: AlignmentDirectional.center,
                                     children: [
                                       Container(
-                                        margin: EdgeInsets.only(
-                                            right: 10.0, left: 10),
+                                        margin: EdgeInsets.only(right: 10.0, left: 10),
                                         child: Padding(
                                           padding: EdgeInsets.all(2.0),
                                           child: Theme(
                                               data: Theme.of(context).copyWith(
                                                 canvasColor: Color(0xFF0a0f32),
                                               ),
-                                              child:
-                                                  DropdownButtonHideUnderline(
+                                              child: DropdownButtonHideUnderline(
                                                 child: DropdownButton(
                                                   iconSize: 0.0,
                                                   isExpanded: true,
@@ -152,8 +139,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                                                     });
                                                   },
                                                   value: _mySelection,
-                                                  items:
-                                                      list.map((String item) {
+                                                  items: list.map((String item) {
                                                     return DropdownMenuItem(
                                                       child: new Text(
                                                         item,
@@ -183,9 +169,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                             margin: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
                             child: Container(
                                 margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                                decoration: new BoxDecoration(
-                                    border:
-                                        Border.all(color: Color(0xFF00ffff))),
+                                decoration: new BoxDecoration(border: Border.all(color: Color(0xFF00ffff))),
                                 child: Center(
                                   child: entercategoryname,
                                 )),
@@ -197,29 +181,16 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                       onTap: () {
                         String type = "";
 
-                        if (_mySelection == "Fix Amount" &&
-                            entervalue.text.length != 0) {
+                        if (_mySelection == "Fix Amount" && entervalue.text.length != 0) {
                           type = "1";
 
-                          getStringValuesSF().then((value) =>
-                              api.updateinternationaltax(
-                                  value, type, entervalue.text, context));
-                        } else if (_mySelection == "Percentage" &&
-                            entervalue.text.length != 0) {
+                          getStringValuesSF().then((value) => api.updateinternationaltax(value, type, entervalue.text, context));
+                        } else if (_mySelection == "Percentage" && entervalue.text.length != 0) {
                           type = "2";
 
-                          getStringValuesSF().then((value) =>
-                              api.updateinternationaltax(
-                                  value, type, entervalue.text, context));
+                          getStringValuesSF().then((value) => api.updateinternationaltax(value, type, entervalue.text, context));
                         } else {
-                          Fluttertoast.showToast(
-                              msg: "Please select international tax",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              fontSize: 15,
-                              timeInSecForIos: 1,
-                              backgroundColor: Colors.blue,
-                              textColor: Colors.white);
+                          Fluttertoast.showToast(msg: "Please select international tax", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 12, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
                         }
                       },
                       child: Container(
@@ -249,8 +220,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
         return AlertDialog(
           backgroundColor: Color(0xFF0a0f32),
           content: StatefulBuilder(
-            builder: (BuildContext context,
-                void Function(void Function()) setState) {
+            builder: (BuildContext context, void Function(void Function()) setState) {
               return Container(
                 height: 300,
                 width: 250,
@@ -264,12 +234,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                           margin: EdgeInsets.only(left: 10, top: 20),
                           child: Text(
                             "Shipping Tax",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Roboto-Bold',
-                                letterSpacing: 0.03,
-                                fontSize: 12.0,
-                                color: Color(0xFFff5000)),
+                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                           ),
                         ),
                         InkWell(
@@ -298,10 +263,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                       margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
                       child: Text(
                         'Local Fee',
-                        style: TextStyle(
-                            fontFamily: 'Roboto-Bold',
-                            fontSize: 14.0,
-                            color: Colors.white),
+                        style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 14.0, color: Colors.white),
                       ),
                     ),
                     Container(
@@ -312,8 +274,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                           Stack(
                             children: <Widget>[
                               Container(
-                                  margin: EdgeInsets.fromLTRB(
-                                      10.0, 10.0, 10.0, 10.0),
+                                  margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
                                   decoration: new BoxDecoration(
                                     image: new DecorationImage(
                                       image: borderimg,
@@ -324,16 +285,14 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                                     alignment: AlignmentDirectional.center,
                                     children: [
                                       Container(
-                                        margin: EdgeInsets.only(
-                                            right: 10.0, left: 10),
+                                        margin: EdgeInsets.only(right: 10.0, left: 10),
                                         child: Padding(
                                           padding: EdgeInsets.all(2.0),
                                           child: Theme(
                                               data: Theme.of(context).copyWith(
                                                 canvasColor: Color(0xFF0a0f32),
                                               ),
-                                              child:
-                                                  DropdownButtonHideUnderline(
+                                              child: DropdownButtonHideUnderline(
                                                 child: DropdownButton(
                                                   iconSize: 0.0,
                                                   isExpanded: true,
@@ -348,8 +307,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                                                     });
                                                   },
                                                   value: _mySelection,
-                                                  items:
-                                                      list.map((String item) {
+                                                  items: list.map((String item) {
                                                     return DropdownMenuItem(
                                                       child: new Text(
                                                         item,
@@ -379,9 +337,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                             margin: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
                             child: Container(
                                 margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                                decoration: new BoxDecoration(
-                                    border:
-                                        Border.all(color: Color(0xFF00ffff))),
+                                decoration: new BoxDecoration(border: Border.all(color: Color(0xFF00ffff))),
                                 child: Center(
                                   child: entercategoryname,
                                 )),
@@ -393,29 +349,16 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                       onTap: () {
                         String type = "";
 
-                        if (_mySelection == "Fix Amount" &&
-                            entervalue.text.length != 0) {
+                        if (_mySelection == "Fix Amount" && entervalue.text.length != 0) {
                           type = "1";
 
-                          getStringValuesSF().then((value) =>
-                              api.updatelocaltax(
-                                  value, type, entervalue.text, context));
-                        } else if (_mySelection == "Percentage" &&
-                            entervalue.text.length != 0) {
+                          getStringValuesSF().then((value) => api.updatelocaltax(value, type, entervalue.text, context));
+                        } else if (_mySelection == "Percentage" && entervalue.text.length != 0) {
                           type = "2";
 
-                          getStringValuesSF().then((value) =>
-                              api.updatelocaltax(
-                                  value, type, entervalue.text, context));
+                          getStringValuesSF().then((value) => api.updatelocaltax(value, type, entervalue.text, context));
                         } else {
-                          Fluttertoast.showToast(
-                              msg: "Please select tax",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              fontSize: 15,
-                              timeInSecForIos: 1,
-                              backgroundColor: Colors.blue,
-                              textColor: Colors.white);
+                          Fluttertoast.showToast(msg: "Please select tax", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
                         }
                       },
                       child: Container(
@@ -443,7 +386,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
     keyboardType: TextInputType.number,
     controller: entervalue,
     decoration: InputDecoration(
-      contentPadding: EdgeInsets.all(18),
+      contentPadding: EdgeInsets.all(15),
       hintText: "Value",
       border: InputBorder.none,
       hintStyle: hintstyle,
@@ -451,12 +394,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
   );
 
   Future<String> getProductList(String userid) async {
-    var res = await http.get(
-        Uri.encodeFull(RestDatasource.get_all_products + "/" + userid),
-        headers: {
-          "Accept": "application/json",
-          "content-type": "application/json"
-        });
+    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_products + "/" + userid), headers: {"Accept": "application/json", "content-type": "application/json"});
     var resBody = json.decode(res.body);
 
     setState(() {
@@ -484,8 +422,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
       return Container(
         color: Color(0xFF0a0f32),
         child: Center(
-          child: Loading(
-              indicator: BallPulseIndicator(), size: 100.0, color: color3),
+          child: Loading(indicator: BallPulseIndicator(), size: 100.0, color: color3),
         ),
       );
     }
@@ -512,32 +449,30 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                             child: Stack(
                               children: [
                                 Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Container(
-                                    margin: EdgeInsets.fromLTRB(
-                                        15.0, 10.0, 0.0, 0.0),
-                                    child: Image(
-                                      image: AssetImage(
-                                          'assets/images/back_12.png'),
-                                      height: 30,
-                                      width: 30,
-                                    ),
-                                  ),
-                                ),
+                                    alignment: Alignment.centerLeft,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                          builder: (context) => Homescreen(),
+                                        ));
+                                      },
+                                      child: Container(
+                                        margin: EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
+                                        child: Image(
+                                          image: AssetImage('assets/images/back_12.png'),
+                                          height: 30,
+                                          width: 30,
+                                        ),
+                                      ),
+                                    )),
                                 Align(
                                   alignment: Alignment.center,
                                   child: Container(
-                                    margin: EdgeInsets.fromLTRB(
-                                        0.0, 10.0, 0.0, 0.0),
+                                    margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
                                     alignment: Alignment.center,
                                     child: Text(
                                       "Sell Products",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Roboto-Bold',
-                                          letterSpacing: 0.03,
-                                          fontSize: 16.0,
-                                          color: Colors.white),
+                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Colors.white),
                                     ),
                                   ),
                                 )
@@ -553,12 +488,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                             margin: EdgeInsets.only(left: 20.0),
                             child: Text(
                               "My Selling Products",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Roboto-Bold',
-                                  letterSpacing: 0.03,
-                                  fontSize: 16.0,
-                                  color: Colors.white),
+                              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 14.0, color: Colors.white),
                             ),
                           ),
                           Padding(
@@ -577,21 +507,16 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                                 child: Stack(
                                   children: [
                                     Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         InkWell(
                                           onTap: () {
-                                            Navigator.of(context)
-                                                .pushReplacement(
-                                                    MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AddproductFull(),
+                                            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                              builder: (context) => AddproductFull(),
                                             ));
                                           },
                                           child: Image(
-                                            image: AssetImage(
-                                                "assets/images/invalid_name.png"),
+                                            image: AssetImage("assets/images/invalid_name.png"),
                                             height: 80,
                                             width: 150,
                                             fit: BoxFit.cover,
@@ -601,12 +526,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                                           margin: EdgeInsets.only(bottom: 20),
                                           child: Text(
                                             "Add product",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontFamily: 'Roboto-Bold',
-                                                letterSpacing: 0.03,
-                                                fontSize: 12.0,
-                                                color: Colors.white),
+                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                                           ),
                                         ),
                                       ],
@@ -614,8 +534,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                                     Align(
                                         alignment: Alignment.centerRight,
                                         child: Container(
-                                          margin: EdgeInsets.only(
-                                              right: 50, top: 10),
+                                          margin: EdgeInsets.only(right: 20, top: 10),
                                           child: Column(
                                             children: [
                                               InkWell(
@@ -624,8 +543,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                                                 },
                                                 child: Container(
                                                   child: Image(
-                                                    image: AssetImage(
-                                                        "assets/images/local_tax.png"),
+                                                    image: AssetImage("assets/images/local_tax.png"),
                                                     height: 50,
                                                     width: 140,
                                                     fit: BoxFit.scaleDown,
@@ -638,8 +556,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                                                 },
                                                 child: Container(
                                                   child: Image(
-                                                    image: AssetImage(
-                                                        "assets/images/international_tax.png"),
+                                                    image: AssetImage("assets/images/international_tax.png"),
                                                     height: 50,
                                                     width: 140,
                                                     fit: BoxFit.scaleDown,
@@ -658,8 +575,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                           GridView.builder(
                             shrinkWrap: true,
                             padding: EdgeInsets.all(20),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisSpacing: 10,
                               mainAxisSpacing: 10,
                               crossAxisCount: 2,
@@ -671,11 +587,9 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       Container(
-                                        margin:
-                                            EdgeInsets.only(right: 5, top: 5),
+                                        margin: EdgeInsets.only(right: 5, top: 5),
                                         child: Image(
-                                          image: AssetImage(
-                                              "assets/images/edit_2.png"),
+                                          image: AssetImage("assets/images/edit_2.png"),
                                           height: 15,
                                           width: 15,
                                         ),
@@ -686,33 +600,22 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                                               context: context,
                                               builder: (BuildContext context) {
                                                 return Dialog(
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20.0)),
+                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                                   //this right here
                                                   child: Container(
                                                     height: 200,
-                                                    decoration: BoxDecoration(
-                                                        color:
-                                                            Color(0xFF0a0f32)),
+                                                    decoration: BoxDecoration(color: Color(0xFF0a0f32)),
                                                     child: Column(
                                                       children: [
                                                         InkWell(
                                                           onTap: () {
-                                                            Navigator.pop(
-                                                                context);
+                                                            Navigator.pop(context);
                                                           },
                                                           child: Container(
-                                                            alignment: Alignment
-                                                                .centerRight,
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    right: 30,
-                                                                    top: 20),
+                                                            alignment: Alignment.centerRight,
+                                                            margin: EdgeInsets.only(right: 30, top: 20),
                                                             child: Image(
-                                                              image: AssetImage(
-                                                                  "assets/images/close_1.png"),
+                                                              image: AssetImage("assets/images/close_1.png"),
                                                               width: 20,
                                                               height: 20,
                                                               fit: BoxFit.cover,
@@ -720,68 +623,30 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                                                           ),
                                                         ),
                                                         Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                           children: [
                                                             Container(
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      left: 30,
-                                                                      top: 20),
+                                                              alignment: Alignment.center,
+                                                              margin: EdgeInsets.only(left: 30, top: 20),
                                                               child: Text(
                                                                 "Do you want to delete product ?",
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    fontFamily:
-                                                                        'Roboto-Bold',
-                                                                    letterSpacing:
-                                                                        0.03,
-                                                                    fontSize:
-                                                                        16.0,
-                                                                    color: Color(
-                                                                        0xFFff5000)),
+                                                                style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Color(0xFFff5000)),
                                                               ),
                                                             ),
                                                           ],
                                                         ),
                                                         Container(
                                                           color: Colors.black,
-                                                          margin: EdgeInsets
-                                                              .fromLTRB(
-                                                                  30.0,
-                                                                  5.0,
-                                                                  30.0,
-                                                                  0.0),
+                                                          margin: EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 0.0),
                                                         ),
                                                         InkWell(
                                                           onTap: () {
-                                                            api
-                                                                .deleteproduct(
-                                                                    snapshotproductlist[index]
-                                                                            [
-                                                                            "id"]
-                                                                        .toString())
-                                                                .then(
-                                                                    (value) => {
-                                                                          Navigator.pop(
-                                                                              context),
-                                                                          getStringValuesSF().then((value) =>
-                                                                              getProductList(value))
-                                                                        });
+                                                            api.deleteproduct(snapshotproductlist[index]["id"].toString()).then((value) => {Navigator.pop(context), getStringValuesSF().then((value) => getProductList(value))});
                                                           },
                                                           child: Container(
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    bottom: 15),
+                                                            margin: EdgeInsets.only(bottom: 15),
                                                             child: Image(
-                                                              image: AssetImage(
-                                                                  "assets/images/submit.png"),
+                                                              image: AssetImage("assets/images/submit.png"),
                                                               height: 60,
                                                               width: 150,
                                                               fit: BoxFit.cover,
@@ -795,11 +660,9 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                                               });
                                         },
                                         child: Container(
-                                          margin:
-                                              EdgeInsets.only(right: 5, top: 5),
+                                          margin: EdgeInsets.only(right: 5, top: 5),
                                           child: Image(
-                                            image: AssetImage(
-                                                "assets/images/icons_8_delete_bin_24.png"),
+                                            image: AssetImage("assets/images/icons_8_delete_bin_24.png"),
                                             height: 15,
                                             width: 15,
                                           ),
@@ -812,87 +675,45 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                                     margin: EdgeInsets.only(top: 5.0),
                                     child: Text(
                                       snapshotproductlist[index]["name"],
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Roboto-Bold',
-                                          letterSpacing: 0.03,
-                                          fontSize: 12.0,
-                                          color: Color(0xFF0a0f32)),
+                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 8.0, color: Color(0xFF0a0f32)),
                                     ),
                                   ),
                                   Card(
                                     elevation: 5.0,
-                                    margin: EdgeInsets.only(
-                                        top: 5.0,
-                                        right: 5.0,
-                                        left: 5.0,
-                                        bottom: 5.0),
+                                    margin: EdgeInsets.only(top: 5.0, right: 5.0, left: 5.0, bottom: 5.0),
                                     child: Column(
                                       children: [
                                         Container(
                                           alignment: Alignment.centerRight,
                                           child: Text(
-                                            "Qty-" +
-                                                snapshotproductlist[index]
-                                                    ["qty"],
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontFamily: 'Roboto-Bold',
-                                                letterSpacing: 0.03,
-                                                fontSize: 10.0,
-                                                color: Color(0xFF0a0f32)),
+                                            "Qty-" + snapshotproductlist[index]["qty"],
+                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 8.0, color: Color(0xFF0a0f32)),
                                           ),
                                         ),
                                         Align(
                                           child: Container(
                                             height: 70,
-                                            margin:
-                                                EdgeInsets.only(bottom: 5.0),
+                                            margin: EdgeInsets.only(bottom: 5.0),
                                             alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                    image: AssetImage(
-                                                        "assets/images/img.png"))),
+                                            decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(snapshotproductlist[index]["image"]))),
                                           ),
                                         ),
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             Row(
                                               children: [
                                                 Container(
-                                                  margin: EdgeInsets.only(
-                                                      left: 5.0),
+                                                  margin: EdgeInsets.only(left: 5.0),
                                                   child: Text(
                                                     "Amount :",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontFamily:
-                                                            'Roboto-Bold',
-                                                        letterSpacing: 0.03,
-                                                        fontSize: 10.0,
-                                                        color:
-                                                            Color(0xFF0a0f32)),
+                                                    style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 8.0, color: Color(0xFF0a0f32)),
                                                   ),
                                                 ),
                                                 Container(
                                                   child: Text(
-                                                    new String.fromCharCodes(
-                                                            new Runes(
-                                                                '\u0024')) +
-                                                        snapshotproductlist[
-                                                            index]["price"],
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontFamily:
-                                                            'Roboto-Bold',
-                                                        letterSpacing: 0.03,
-                                                        fontSize: 10.0,
-                                                        color:
-                                                            Color(0xFF8616d3)),
+                                                    new String.fromCharCodes(new Runes('\u0024')) + snapshotproductlist[index]["price"],
+                                                    style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 8.0, color: Color(0xFF8616d3)),
                                                   ),
                                                 ),
                                               ],
@@ -902,35 +723,14 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                                                 Container(
                                                   child: Text(
                                                     "Fee :",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontFamily:
-                                                            'Roboto-Bold',
-                                                        letterSpacing: 0.03,
-                                                        fontSize: 10.0,
-                                                        color:
-                                                            Color(0xFF0a0f32)),
+                                                    style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 8.0, color: Color(0xFF0a0f32)),
                                                   ),
                                                 ),
                                                 Container(
-                                                  margin: EdgeInsets.only(
-                                                      right: 5.0),
+                                                  margin: EdgeInsets.only(right: 5.0),
                                                   child: Text(
-                                                    new String.fromCharCodes(
-                                                            new Runes(
-                                                                '\u0024')) +
-                                                        snapshotproductlist[
-                                                            index]["fee"],
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontFamily:
-                                                            'Roboto-Bold',
-                                                        letterSpacing: 0.03,
-                                                        fontSize: 10.0,
-                                                        color:
-                                                            Color(0xFF8616d3)),
+                                                    new String.fromCharCodes(new Runes('\u0024')) + snapshotproductlist[index]["fee"],
+                                                    style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 8.0, color: Color(0xFF8616d3)),
                                                   ),
                                                 ),
                                               ],
@@ -942,9 +742,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                                   )
                                 ],
                               ),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10.0)),
+                              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
                             ),
                             itemCount: snapshotproductlist.length,
                           ),
@@ -957,8 +755,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
             ],
           ),
           onWillPop: () async {
-            return Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => Homescreen()));
+            return Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Homescreen()));
           }),
     );
   }
@@ -970,10 +767,7 @@ class _GradientPainter extends CustomPainter {
   final double strokeWidth;
   final Gradient gradient;
 
-  _GradientPainter(
-      {@required double strokeWidth,
-      @required double radius,
-      @required Gradient gradient})
+  _GradientPainter({@required double strokeWidth, @required double radius, @required Gradient gradient})
       : this.strokeWidth = strokeWidth,
         this.radius = radius,
         this.gradient = gradient;
@@ -982,14 +776,11 @@ class _GradientPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // create outer rectangle equals size
     Rect outerRect = Offset.zero & size;
-    var outerRRect =
-        RRect.fromRectAndRadius(outerRect, Radius.circular(radius));
+    var outerRRect = RRect.fromRectAndRadius(outerRect, Radius.circular(radius));
 
     // create inner rectangle smaller by strokeWidth
-    Rect innerRect = Rect.fromLTWH(strokeWidth, strokeWidth,
-        size.width - strokeWidth * 2, size.height - strokeWidth * 2);
-    var innerRRect = RRect.fromRectAndRadius(
-        innerRect, Radius.circular(radius - strokeWidth));
+    Rect innerRect = Rect.fromLTWH(strokeWidth, strokeWidth, size.width - strokeWidth * 2, size.height - strokeWidth * 2);
+    var innerRRect = RRect.fromRectAndRadius(innerRect, Radius.circular(radius - strokeWidth));
 
     // apply gradient shader
     _paint.shader = gradient.createShader(outerRect);

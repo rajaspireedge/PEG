@@ -74,9 +74,7 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
   List<dynamic> optlbl = List();
 
   Future<String> getSWData(String id) async {
-    var res = await http.get(
-        Uri.encodeFull(RestDatasource.get_all_cart_products + id),
-        headers: {"Accept": "application/json"});
+    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_cart_products + id), headers: {"Accept": "application/json"});
 
     setState(() {
       getStringValuesSF().then((value) => {
@@ -91,21 +89,13 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
         });
       }
 
-      Fluttertoast.showToast(
-          msg: json.decode(res.body)["message"],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          fontSize: 15,
-          timeInSecForIos: 1,
-          backgroundColor: Colors.blue,
-          textColor: Colors.white);
+      Fluttertoast.showToast(msg: json.decode(res.body)["message"], toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
       throw new Exception(json.decode(res.body));
     } else {
       try {
         setState(() {
           snapshotitemlist.clear();
-          snapshotitemlist = List<Map<String, dynamic>>.from(
-              json.decode(res.body)['cart_list']);
+          snapshotitemlist = List<Map<String, dynamic>>.from(json.decode(res.body)['cart_list']);
         });
       } on Exception catch (_) {}
     }
@@ -117,23 +107,15 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
 
     for (int i = 0; i < snapshotitemlist.length; i++) {
       double total;
-      total = (double.parse(snapshotitemlist[i]["amount"].toString()) +
-              double.parse(snapshotitemlist[i]["product_fee"].toString())) *
-          double.parse(snapshotitemlist[i]["qty"].toString());
+      total = (double.parse(snapshotitemlist[i]["amount"].toString()) + double.parse(snapshotitemlist[i]["product_fee"].toString())) * double.parse(snapshotitemlist[i]["qty"].toString());
 
       sumtotal = sumtotal + total;
     }
 
     return Container(
       child: Text(
-        new String.fromCharCodes(new Runes('\u0024')) +
-            sumtotal.toStringAsFixed(2),
-        style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Roboto-Bold',
-            letterSpacing: 0.03,
-            fontSize: 16.0,
-            color: Colors.white),
+        new String.fromCharCodes(new Runes('\u0024')) + sumtotal.toStringAsFixed(2),
+        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Colors.white),
       ),
     );
   }
@@ -167,19 +149,14 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          Homescreen()));
+                              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Homescreen()), (Route<dynamic> route) => false);
                             },
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Container(
-                                margin:
-                                    EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
+                                margin: EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
                                 child: Image(
-                                  image:
-                                      AssetImage('assets/images/back_12.png'),
+                                  image: AssetImage('assets/images/back_12.png'),
                                   height: 30,
                                   width: 30,
                                 ),
@@ -193,12 +170,7 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                               alignment: Alignment.center,
                               child: Text(
                                 "Cart",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Roboto-Bold',
-                                    letterSpacing: 0.03,
-                                    fontSize: 16.0,
-                                    color: Colors.white),
+                                style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Colors.white),
                               ),
                             ),
                           )
@@ -214,16 +186,13 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          atrlbl = snapshotitemlist[index]["sel_variation"]
-                              ["atrlbl"];
-                          optlbl = snapshotitemlist[index]["sel_variation"]
-                              ["optlbl"];
+                          atrlbl = snapshotitemlist[index]["sel_variation"]["atrlbl"];
+                          optlbl = snapshotitemlist[index]["sel_variation"]["optlbl"];
 
                           print(atrlbl);
                           print(optlbl);
                           return Container(
-                            margin: EdgeInsets.only(
-                                right: 30, left: 30, bottom: 10),
+                            margin: EdgeInsets.only(right: 30, left: 30, bottom: 10),
                             child: Stack(
                               children: [
                                 Align(
@@ -233,8 +202,7 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                         Stack(
                                           children: [
                                             Image(
-                                              image: AssetImage(
-                                                  "assets/images/rounded_rectangle_4.png"),
+                                              image: AssetImage("assets/images/rounded_rectangle_4.png"),
                                               fit: BoxFit.fill,
                                               height: 335,
                                             ),
@@ -242,117 +210,58 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                               onTap: () {
                                                 showDialog(
                                                     context: context,
-                                                    builder:
-                                                        (BuildContext context) {
+                                                    builder: (BuildContext context) {
                                                       return Dialog(
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        20.0)),
+                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                                         //this right here
                                                         child: Container(
                                                           height: 200,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                                  color: Color(
-                                                                      0xFF0a0f32)),
+                                                          decoration: BoxDecoration(color: Color(0xFF0a0f32)),
                                                           child: Column(
                                                             children: [
                                                               InkWell(
                                                                 onTap: () {
-                                                                  Navigator.pop(
-                                                                      context);
+                                                                  Navigator.pop(context);
                                                                 },
-                                                                child:
-                                                                    Container(
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .centerRight,
-                                                                  margin: EdgeInsets
-                                                                      .only(
-                                                                          right:
-                                                                              30,
-                                                                          top:
-                                                                              20),
+                                                                child: Container(
+                                                                  alignment: Alignment.centerRight,
+                                                                  margin: EdgeInsets.only(right: 30, top: 20),
                                                                   child: Image(
-                                                                    image: AssetImage(
-                                                                        "assets/images/close_1.png"),
+                                                                    image: AssetImage("assets/images/close_1.png"),
                                                                     width: 20,
                                                                     height: 20,
-                                                                    fit: BoxFit
-                                                                        .cover,
+                                                                    fit: BoxFit.cover,
                                                                   ),
                                                                 ),
                                                               ),
                                                               Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
+                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                 children: [
                                                                   Container(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .center,
-                                                                    margin: EdgeInsets.only(
-                                                                        left:
-                                                                            30,
-                                                                        top:
-                                                                            20),
+                                                                    alignment: Alignment.center,
+                                                                    margin: EdgeInsets.only(left: 30, top: 20),
                                                                     child: Text(
                                                                       "Do you want to delete cart product ?",
-                                                                      style: TextStyle(
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          fontFamily:
-                                                                              'Roboto-Bold',
-                                                                          letterSpacing:
-                                                                              0.03,
-                                                                          fontSize:
-                                                                              16.0,
-                                                                          color:
-                                                                              Color(0xFFff5000)),
+                                                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Color(0xFFff5000)),
                                                                     ),
                                                                   ),
                                                                 ],
                                                               ),
                                                               Container(
-                                                                color: Colors
-                                                                    .black,
-                                                                margin: EdgeInsets
-                                                                    .fromLTRB(
-                                                                        30.0,
-                                                                        5.0,
-                                                                        30.0,
-                                                                        0.0),
+                                                                color: Colors.black,
+                                                                margin: EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 0.0),
                                                               ),
                                                               InkWell(
                                                                 onTap: () {
-                                                                  api
-                                                                      .deletecart(
-                                                                          userid,
-                                                                          snapshotitemlist[index]["id"]
-                                                                              .toString())
-                                                                      .then(
-                                                                          (value) =>
-                                                                              {
-                                                                                Navigator.pop(context),
-                                                                                onChange()
-                                                                              });
+                                                                  api.deletecart(userid, snapshotitemlist[index]["id"].toString()).then((value) => {Navigator.pop(context), onChange()});
                                                                 },
-                                                                child:
-                                                                    Container(
-                                                                  margin: EdgeInsets
-                                                                      .only(
-                                                                          bottom:
-                                                                              15),
+                                                                child: Container(
+                                                                  margin: EdgeInsets.only(bottom: 15),
                                                                   child: Image(
-                                                                    image: AssetImage(
-                                                                        "assets/images/submit.png"),
+                                                                    image: AssetImage("assets/images/submit.png"),
                                                                     height: 60,
                                                                     width: 150,
-                                                                    fit: BoxFit
-                                                                        .cover,
+                                                                    fit: BoxFit.cover,
                                                                   ),
                                                                 ),
                                                               )
@@ -365,16 +274,8 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                               child: Align(
                                                 alignment: Alignment.topRight,
                                                 child: Container(
-                                                  margin: EdgeInsets.only(
-                                                      right: 10,
-                                                      left: 30,
-                                                      top: 20),
-                                                  child: Image(
-                                                      image: AssetImage(
-                                                          "assets/images/icons_8_delete_bin_24.png"),
-                                                      height: 25,
-                                                      width: 20,
-                                                      fit: BoxFit.fill),
+                                                  margin: EdgeInsets.only(right: 10, left: 30, top: 20),
+                                                  child: Image(image: AssetImage("assets/images/icons_8_delete_bin_24.png"), height: 25, width: 20, fit: BoxFit.fill),
                                                 ),
                                               ),
                                             ),
@@ -387,219 +288,100 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                     height: 30,
                                                     child: Container(
                                                       child: Align(
-                                                        alignment: Alignment
-                                                            .centerLeft,
+                                                        alignment: Alignment.centerLeft,
                                                         child: Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  left: 30),
+                                                          margin: EdgeInsets.only(left: 30),
                                                           child: Text(
-                                                            snapshotitemlist[
-                                                                        index][
-                                                                    "product_name"]
-                                                                .toString(),
-                                                            style: TextStyle(
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 12.0,
-                                                                color: Colors
-                                                                    .white),
+                                                            snapshotitemlist[index]["product_name"].toString(),
+                                                            style: TextStyle(fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                                                           ),
                                                         ),
                                                       ),
                                                     ),
-                                                    margin: EdgeInsets.only(
-                                                        right: 30, top: 20),
+                                                    margin: EdgeInsets.only(right: 30, top: 20),
                                                   ),
                                                 ),
                                                 Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
                                                     Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  left: 30,
-                                                                  top: 20),
-                                                          child: Image(
-                                                              image: NetworkImage(
-                                                                  snapshotitemlist[
-                                                                          index]
-                                                                      [
-                                                                      "product_image"]),
-                                                              height: 80,
-                                                              width: 80,
-                                                              fit: BoxFit
-                                                                  .scaleDown),
+                                                          margin: EdgeInsets.only(left: 30, top: 20),
+                                                          child: Image(image: NetworkImage(snapshotitemlist[index]["product_image"]), height: 80, width: 80, fit: BoxFit.scaleDown),
                                                         ),
                                                         Align(
-                                                          alignment:
-                                                              Alignment.center,
+                                                          alignment: Alignment.center,
                                                           child: Container(
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    left: 30,
-                                                                    top: 20),
+                                                            margin: EdgeInsets.only(left: 30, top: 20),
                                                             child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
+                                                              mainAxisAlignment: MainAxisAlignment.center,
                                                               children: [
                                                                 GestureDetector(
                                                                   onTap: () {
-                                                                    print("chechuserid" +
-                                                                        userid
-                                                                            .toString());
+                                                                    print("chechuserid" + userid.toString());
 
-                                                                    int qtyys = int.parse(
-                                                                        snapshotitemlist[index]
-                                                                            [
-                                                                            "qty"]);
-                                                                    qtyys =
-                                                                        qtyys -
-                                                                            1;
+                                                                    int qtyys = int.parse(snapshotitemlist[index]["qty"]);
+                                                                    qtyys = qtyys - 1;
 
-                                                                    apimap["user_id"] =
-                                                                        userid;
-                                                                    apimap[
-                                                                        "product_id"] = snapshotitemlist[index]
-                                                                            [
-                                                                            "product_id"]
-                                                                        .toString();
-                                                                    apimap[
-                                                                        "cart_item_id"] = snapshotitemlist[index]
-                                                                            [
-                                                                            "id"]
-                                                                        .toString();
-                                                                    apimap["prdct_qty"] =
-                                                                        qtyys
-                                                                            .toString();
-                                                                    apimap["extra_amount"] =
-                                                                        "0";
+                                                                    apimap["user_id"] = userid;
+                                                                    apimap["product_id"] = snapshotitemlist[index]["product_id"].toString();
+                                                                    apimap["cart_item_id"] = snapshotitemlist[index]["id"].toString();
+                                                                    apimap["prdct_qty"] = qtyys.toString();
+                                                                    apimap["extra_amount"] = "0";
 
-                                                                    api
-                                                                        .cart_product_qty_updatess(
-                                                                            apimap)
-                                                                        .then((value) =>
-                                                                            {
-                                                                              onChange()
-                                                                            });
+                                                                    api.cart_product_qty_updatess(apimap).then((value) => {onChange()});
                                                                   },
                                                                   child: Container(
                                                                       height: 30,
                                                                       width: 30,
                                                                       color: Colors.orange,
                                                                       child: Padding(
-                                                                        padding:
-                                                                            const EdgeInsets.all(10),
-                                                                        child:
-                                                                            Image(
-                                                                          image:
-                                                                              AssetImage("assets/images/minus.png"),
-                                                                          height:
-                                                                              20,
-                                                                          width:
-                                                                              20,
-                                                                          fit: BoxFit
-                                                                              .cover,
+                                                                        padding: const EdgeInsets.all(10),
+                                                                        child: Image(
+                                                                          image: AssetImage("assets/images/minus.png"),
+                                                                          height: 20,
+                                                                          width: 20,
+                                                                          fit: BoxFit.cover,
                                                                         ),
                                                                       )),
                                                                 ),
                                                                 Container(
                                                                   width: 60,
                                                                   height: 30,
-                                                                  margin: EdgeInsets
-                                                                      .only(
-                                                                          right:
-                                                                              5,
-                                                                          left:
-                                                                              5),
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .center,
+                                                                  margin: EdgeInsets.only(right: 5, left: 5),
+                                                                  alignment: Alignment.center,
                                                                   child: Text(
-                                                                    snapshotitemlist[index]
-                                                                            [
-                                                                            "qty"]
-                                                                        .toString(),
-                                                                    style: TextStyle(
-                                                                        fontFamily:
-                                                                            'Roboto-Bold',
-                                                                        fontSize:
-                                                                            16.0,
-                                                                        color: Colors
-                                                                            .white),
+                                                                    snapshotitemlist[index]["qty"].toString(),
+                                                                    style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 16.0, color: Colors.white),
                                                                   ),
-                                                                  decoration: BoxDecoration(
-                                                                      border: Border.all(
-                                                                          color: Colors
-                                                                              .orange),
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              2.0)),
+                                                                  decoration: BoxDecoration(border: Border.all(color: Colors.orange), borderRadius: BorderRadius.circular(2.0)),
                                                                 ),
                                                                 GestureDetector(
                                                                   onTap: () {
-                                                                    print("chechuserid" +
-                                                                        userid
-                                                                            .toString());
+                                                                    print("chechuserid" + userid.toString());
 
-                                                                    int qtyys = int.parse(
-                                                                        snapshotitemlist[index]
-                                                                            [
-                                                                            "qty"]);
-                                                                    qtyys =
-                                                                        qtyys +
-                                                                            1;
+                                                                    int qtyys = int.parse(snapshotitemlist[index]["qty"]);
+                                                                    qtyys = qtyys + 1;
 
-                                                                    apimap["user_id"] =
-                                                                        userid;
-                                                                    apimap[
-                                                                        "product_id"] = snapshotitemlist[index]
-                                                                            [
-                                                                            "product_id"]
-                                                                        .toString();
-                                                                    apimap[
-                                                                        "cart_item_id"] = snapshotitemlist[index]
-                                                                            [
-                                                                            "id"]
-                                                                        .toString();
-                                                                    apimap["prdct_qty"] =
-                                                                        qtyys
-                                                                            .toString();
-                                                                    apimap["extra_amount"] =
-                                                                        "0";
-                                                                    api
-                                                                        .cart_product_qty_updatess(
-                                                                            apimap)
-                                                                        .then((value) =>
-                                                                            {
-                                                                              onChange()
-                                                                            });
+                                                                    apimap["user_id"] = userid;
+                                                                    apimap["product_id"] = snapshotitemlist[index]["product_id"].toString();
+                                                                    apimap["cart_item_id"] = snapshotitemlist[index]["id"].toString();
+                                                                    apimap["prdct_qty"] = qtyys.toString();
+                                                                    apimap["extra_amount"] = "0";
+                                                                    api.cart_product_qty_updatess(apimap).then((value) => {onChange()});
                                                                   },
                                                                   child: Container(
                                                                       height: 30,
                                                                       width: 30,
                                                                       color: Colors.orange,
                                                                       child: Padding(
-                                                                        padding:
-                                                                            const EdgeInsets.all(10),
-                                                                        child:
-                                                                            Image(
-                                                                          image:
-                                                                              AssetImage("assets/images/add.png"),
-                                                                          height:
-                                                                              30,
-                                                                          width:
-                                                                              30,
+                                                                        padding: const EdgeInsets.all(10),
+                                                                        child: Image(
+                                                                          image: AssetImage("assets/images/add.png"),
+                                                                          height: 30,
+                                                                          width: 30,
                                                                         ),
                                                                       )),
                                                                 )
@@ -608,201 +390,73 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  left: 30,
-                                                                  top: 20),
+                                                          margin: EdgeInsets.only(left: 30, top: 20),
                                                           child: Text(
                                                             "Price :",
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Color(
-                                                                    0xFFff5000)),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 15.0, color: Color(0xFFff5000)),
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  left: 30,
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(left: 30, top: 10),
                                                           child: Text(
                                                             "Processing :",
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Color(
-                                                                    0xFFff5000)),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 15.0, color: Color(0xFFff5000)),
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  left: 30,
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(left: 30, top: 10),
                                                           child: Text(
                                                             "Total :",
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Color(
-                                                                    0xFFff5000)),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 15.0, color: Color(0xFFff5000)),
                                                           ),
                                                         ),
                                                       ],
                                                     ),
                                                     Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
                                                         Container(
                                                             width: 100,
                                                             height: 90,
-                                                            margin:
-                                                                EdgeInsets.only(
-                                                                    right: 10,
-                                                                    top: 20,
-                                                                    bottom: 50),
+                                                            margin: EdgeInsets.only(right: 10, top: 20, bottom: 50),
                                                             child: Row(
                                                               children: [
                                                                 Expanded(
-                                                                  child: ListView
-                                                                      .builder(
-                                                                    shrinkWrap:
-                                                                        true,
-                                                                    physics:
-                                                                        NeverScrollableScrollPhysics(),
-                                                                    itemBuilder:
-                                                                        (context,
-                                                                            index) {
+                                                                  child: ListView.builder(
+                                                                    shrinkWrap: true,
+                                                                    physics: NeverScrollableScrollPhysics(),
+                                                                    itemBuilder: (context, index) {
                                                                       return Container(
-                                                                        child:
-                                                                            Text(
-                                                                          atrlbl[index] +
-                                                                              ": " +
-                                                                              optlbl[index],
-                                                                          style: TextStyle(
-                                                                              fontWeight: FontWeight.bold,
-                                                                              fontFamily: 'Roboto-Medium',
-                                                                              letterSpacing: 0.03,
-                                                                              fontSize: 15.0,
-                                                                              color: Colors.white),
+                                                                        child: Text(
+                                                                          atrlbl[index] + ": " + optlbl[index],
+                                                                          style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 15.0, color: Colors.white),
                                                                         ),
                                                                       );
                                                                     },
-                                                                    itemCount:
-                                                                        atrlbl
-                                                                            .length,
+                                                                    itemCount: atrlbl.length,
                                                                   ),
                                                                 )
                                                               ],
                                                             )),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  right: 10,
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(right: 10, top: 10),
                                                           child: Text(
-                                                            new String.fromCharCodes(
-                                                                    new Runes(
-                                                                        '\u0024')) +
-                                                                snapshotitemlist[
-                                                                            index]
-                                                                        [
-                                                                        "amount"]
-                                                                    .toString(),
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Colors
-                                                                    .white),
+                                                            new String.fromCharCodes(new Runes('\u0024')) + snapshotitemlist[index]["amount"].toString(),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 15.0, color: Colors.white),
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  right: 10,
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(right: 10, top: 10),
                                                           child: Text(
-                                                            new String.fromCharCodes(
-                                                                    new Runes(
-                                                                        '\u0024')) +
-                                                                snapshotitemlist[
-                                                                            index]
-                                                                        [
-                                                                        "product_fee"]
-                                                                    .toString(),
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Colors
-                                                                    .white),
+                                                            new String.fromCharCodes(new Runes('\u0024')) + snapshotitemlist[index]["product_fee"].toString(),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 15.0, color: Colors.white),
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  right: 10,
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(right: 10, top: 10),
                                                           child: Text(
-                                                            new String.fromCharCodes(
-                                                                    new Runes(
-                                                                        '\u0024')) +
-                                                                totalamunt(
-                                                                    double.parse(
-                                                                        snapshotitemlist[index]
-                                                                            [
-                                                                            "amount"]),
-                                                                    double.parse(
-                                                                        snapshotitemlist[index]
-                                                                            [
-                                                                            "product_fee"]),
-                                                                    double.parse(
-                                                                        snapshotitemlist[index]
-                                                                            [
-                                                                            "qty"])),
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Colors
-                                                                    .white),
+                                                            new String.fromCharCodes(new Runes('\u0024')) + totalamunt(double.parse(snapshotitemlist[index]["amount"]), double.parse(snapshotitemlist[index]["product_fee"]), double.parse(snapshotitemlist[index]["qty"])),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 15.0, color: Colors.white),
                                                           ),
                                                         ),
                                                       ],
@@ -823,8 +477,7 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                       ),
                     ),
                     Padding(
-                        padding: const EdgeInsets.only(
-                            top: 20, right: 30, left: 30, bottom: 20),
+                        padding: const EdgeInsets.only(top: 20, right: 30, left: 30, bottom: 20),
                         child: Column(
                           children: [
                             CustomPaint(
@@ -840,23 +493,16 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                               child: Container(
                                   height: 100,
                                   alignment: Alignment.topCenter,
-                                  margin: EdgeInsets.only(
-                                      right: 30, left: 30, top: 20),
+                                  margin: EdgeInsets.only(right: 30, left: 30, top: 20),
                                   child: Column(
                                     children: [
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Container(
                                             child: Text(
                                               "CART TOTAL",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontFamily: 'Roboto-Bold',
-                                                  letterSpacing: 0.03,
-                                                  fontSize: 16.0,
-                                                  color: Colors.white),
+                                              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Colors.white),
                                             ),
                                           ),
                                           gettotal()
@@ -868,163 +514,86 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                               context: context,
                                               builder: (BuildContext context) {
                                                 return Dialog(
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20.0)),
+                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                                   //this right here
                                                   child: Container(
                                                     height: 200,
-                                                    decoration: BoxDecoration(
-                                                        color:
-                                                            Color(0xFF0a0f32)),
+                                                    decoration: BoxDecoration(color: Color(0xFF0a0f32)),
                                                     child: Column(
                                                       children: [
                                                         Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                           children: [
                                                             Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      left: 30,
-                                                                      top: 20),
+                                                              margin: EdgeInsets.only(left: 30, top: 20),
                                                               child: Text(
                                                                 "Select shipping address location",
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    fontFamily:
-                                                                        'Roboto-Bold',
-                                                                    letterSpacing:
-                                                                        0.03,
-                                                                    fontSize:
-                                                                        12.0,
-                                                                    color: Color(
-                                                                        0xFFff5000)),
+                                                                style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                                               ),
                                                             ),
                                                             Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      right: 30,
-                                                                      top: 20),
+                                                              margin: EdgeInsets.only(right: 30, top: 20),
                                                               child: Image(
-                                                                image: AssetImage(
-                                                                    "assets/images/close_1.png"),
+                                                                image: AssetImage("assets/images/close_1.png"),
                                                                 width: 20,
                                                                 height: 20,
-                                                                fit: BoxFit
-                                                                    .cover,
+                                                                fit: BoxFit.cover,
                                                               ),
                                                             ),
                                                           ],
                                                         ),
                                                         Container(
                                                           height: 0.5,
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  right: 20,
-                                                                  left: 20,
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(right: 20, left: 20, top: 10),
                                                           color: Colors.white,
                                                         ),
                                                         Container(
                                                             color: Colors.black,
-                                                            margin: EdgeInsets
-                                                                .fromLTRB(
-                                                                    30.0,
-                                                                    20.0,
-                                                                    30.0,
-                                                                    0.0),
+                                                            margin: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 0.0),
                                                             child: Padding(
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .fromLTRB(
-                                                                          40,
-                                                                          10,
-                                                                          40,
-                                                                          10),
+                                                              padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
                                                               child: Column(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
+                                                                mainAxisAlignment: MainAxisAlignment.center,
                                                                 children: [
                                                                   Container(
-                                                                      alignment:
-                                                                          Alignment
-                                                                              .center,
-                                                                      margin: EdgeInsets.only(
-                                                                          top:
-                                                                              10),
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                              color: Color(
-                                                                                  0xFFff5000)),
-                                                                      child:
-                                                                          InkWell(
-                                                                        onTap:
-                                                                            () {
-                                                                          Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                                                              builder: (context) => Checkout(
-                                                                                    checkinsideoutside: "inside",
-                                                                                  )));
+                                                                      alignment: Alignment.center,
+                                                                      margin: EdgeInsets.only(top: 10),
+                                                                      decoration: BoxDecoration(color: Color(0xFFff5000)),
+                                                                      child: InkWell(
+                                                                        onTap: () {
+                                                                          Navigator.of(context).pushAndRemoveUntil(
+                                                                              MaterialPageRoute(
+                                                                                  builder: (context) => Checkout(
+                                                                                        checkinsideoutside: "inside",
+                                                                                      )),
+                                                                              (Route<dynamic> route) => false);
                                                                         },
-                                                                        child:
-                                                                            Padding(
-                                                                          padding:
-                                                                              EdgeInsets.all(5),
-                                                                          child:
-                                                                              Text(
+                                                                        child: Padding(
+                                                                          padding: EdgeInsets.all(5),
+                                                                          child: Text(
                                                                             "INSIDE UNITED STATES",
-                                                                            style: TextStyle(
-                                                                                fontWeight: FontWeight.bold,
-                                                                                fontFamily: 'Roboto-Bold',
-                                                                                letterSpacing: 0.03,
-                                                                                fontSize: 12.0,
-                                                                                color: Colors.white),
+                                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                                                                           ),
                                                                         ),
                                                                       )),
                                                                   Container(
-                                                                      alignment:
-                                                                          Alignment
-                                                                              .center,
-                                                                      margin: EdgeInsets.only(
-                                                                          top:
-                                                                              10,
-                                                                          bottom:
-                                                                              10),
-                                                                      decoration: BoxDecoration(
-                                                                          border: Border.all(
-                                                                              color: Colors
-                                                                                  .blue),
-                                                                          color: Colors
-                                                                              .black),
-                                                                      child:
-                                                                          InkWell(
-                                                                        onTap:
-                                                                            () {
-                                                                          Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                                                              builder: (context) => Checkout(
-                                                                                    checkinsideoutside: "outside",
-                                                                                  )));
+                                                                      alignment: Alignment.center,
+                                                                      margin: EdgeInsets.only(top: 10, bottom: 10),
+                                                                      decoration: BoxDecoration(border: Border.all(color: Colors.blue), color: Colors.black),
+                                                                      child: InkWell(
+                                                                        onTap: () {
+                                                                          Navigator.of(context).pushAndRemoveUntil(
+                                                                              MaterialPageRoute(
+                                                                                  builder: (context) => Checkout(
+                                                                                        checkinsideoutside: "outside",
+                                                                                      )),
+                                                                              (Route<dynamic> route) => false);
                                                                         },
-                                                                        child:
-                                                                            Padding(
-                                                                          padding:
-                                                                              EdgeInsets.all(5),
-                                                                          child:
-                                                                              Text(
+                                                                        child: Padding(
+                                                                          padding: EdgeInsets.all(5),
+                                                                          child: Text(
                                                                             "OUTSIDE UNITED STATES",
-                                                                            style: TextStyle(
-                                                                                fontWeight: FontWeight.bold,
-                                                                                fontFamily: 'Roboto-Bold',
-                                                                                letterSpacing: 0.03,
-                                                                                fontSize: 12.0,
-                                                                                color: Colors.white),
+                                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                                                                           ),
                                                                         ),
                                                                       )),
@@ -1041,16 +610,10 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                           height: 30,
                                           margin: EdgeInsets.only(top: 20),
                                           alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                              color: Color(0xFFff5000)),
+                                          decoration: BoxDecoration(color: Color(0xFFff5000)),
                                           child: Text(
                                             "Proceed to Checkout",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontFamily: 'Roboto-Bold',
-                                                letterSpacing: 0.03,
-                                                fontSize: 12.0,
-                                                color: Colors.white),
+                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                                           ),
                                         ),
                                       ),
@@ -1064,17 +627,13 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                       alignment: Alignment.bottomCenter,
                                       child: Container(
                                         child: new Image(
-                                          image: AssetImage(
-                                              'assets/images/group_2_copy_25689.png'),
+                                          image: AssetImage('assets/images/group_2_copy_25689.png'),
                                           height: 100,
                                           fit: BoxFit.cover,
                                         ),
                                       )),
                                   onTap: () {
-                                    Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                Homescreen()));
+                                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Homescreen()), (Route<dynamic> route) => false);
                                   },
                                 ),
                                 Align(
@@ -1083,12 +642,7 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                     margin: EdgeInsets.only(bottom: 10),
                                     child: Text(
                                       "Clear Cart",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Roboto-Medium',
-                                          letterSpacing: 0.03,
-                                          fontSize: 15.0,
-                                          color: Color(0xFFff5000)),
+                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 15.0, color: Color(0xFFff5000)),
                                     ),
                                   ),
                                 ),
@@ -1102,8 +656,7 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
             ],
           ),
           onWillPop: () async {
-            return Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => Homescreen()));
+            return Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => Homescreen()), (Route<dynamic> route) => false);
           }),
     );
   }
@@ -1129,10 +682,7 @@ class _GradientPainter extends CustomPainter {
   final double strokeWidth;
   final Gradient gradient;
 
-  _GradientPainter(
-      {@required double strokeWidth,
-      @required double radius,
-      @required Gradient gradient})
+  _GradientPainter({@required double strokeWidth, @required double radius, @required Gradient gradient})
       : this.strokeWidth = strokeWidth,
         this.radius = radius,
         this.gradient = gradient;
@@ -1141,14 +691,11 @@ class _GradientPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // create outer rectangle equals size
     Rect outerRect = Offset.zero & size;
-    var outerRRect =
-        RRect.fromRectAndRadius(outerRect, Radius.circular(radius));
+    var outerRRect = RRect.fromRectAndRadius(outerRect, Radius.circular(radius));
 
     // create inner rectangle smaller by strokeWidth
-    Rect innerRect = Rect.fromLTWH(strokeWidth, strokeWidth,
-        size.width - strokeWidth * 2, size.height - strokeWidth * 2);
-    var innerRRect = RRect.fromRectAndRadius(
-        innerRect, Radius.circular(radius - strokeWidth));
+    Rect innerRect = Rect.fromLTWH(strokeWidth, strokeWidth, size.width - strokeWidth * 2, size.height - strokeWidth * 2);
+    var innerRRect = RRect.fromRectAndRadius(innerRect, Radius.circular(radius - strokeWidth));
 
     // apply gradient shader
     _paint.shader = gradient.createShader(outerRect);

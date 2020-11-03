@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:peg/MyOrder.dart';
 import 'package:peg/PaypalPayment.dart';
 import 'package:peg/homescreen.dart';
+import 'package:peg/main.dart';
 import 'package:peg/makePayment.dart';
 
 class Payment extends StatelessWidget {
@@ -41,11 +43,14 @@ class _PaymentFullState extends State<PaymentFull> {
 
   _PaymentFullState(this.map);
 
+
+  String userid;
+
   @override
   Widget build(BuildContext context) {
+    print("zdklmkmxc" + map.toString());
 
-    print("zdklmkmxc"+map.toString());
-
+    getStringValuesSF().then((value) => userid = value);
 
     return Scaffold(
       body: WillPopScope(
@@ -84,12 +89,7 @@ class _PaymentFullState extends State<PaymentFull> {
                               alignment: Alignment.center,
                               child: Text(
                                 "Checkout",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Roboto-Bold',
-                                    letterSpacing: 0.03,
-                                    fontSize: 16.0,
-                                    color: Colors.white),
+                                style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Colors.white),
                               ),
                             ),
                           )
@@ -120,12 +120,7 @@ class _PaymentFullState extends State<PaymentFull> {
                                     margin: EdgeInsets.only(left: 20),
                                     child: Text(
                                       "Order Summary ",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Roboto-Medium',
-                                          letterSpacing: 0.03,
-                                          fontSize: 16.0,
-                                          color: Colors.white),
+                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 16.0, color: Colors.white),
                                     ),
                                   ),
                                 ),
@@ -152,12 +147,7 @@ class _PaymentFullState extends State<PaymentFull> {
                             margin: EdgeInsets.only(left: 20),
                             child: Text(
                               "Logged in",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Roboto-Medium',
-                                  letterSpacing: 0.03,
-                                  fontSize: 18.0,
-                                  color: Color(0xFFff5000)),
+                              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 18.0, color: Color(0xFFff5000)),
                             ),
                           ),
                           Container(
@@ -182,12 +172,7 @@ class _PaymentFullState extends State<PaymentFull> {
                             margin: EdgeInsets.only(left: 20),
                             child: Text(
                               "Contact and Billing Information",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Roboto-Medium',
-                                  letterSpacing: 0.03,
-                                  fontSize: 18.0,
-                                  color: Color(0xFFff5000)),
+                              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 18.0, color: Color(0xFFff5000)),
                             ),
                           ),
                           Container(
@@ -212,12 +197,7 @@ class _PaymentFullState extends State<PaymentFull> {
                             margin: EdgeInsets.only(left: 20),
                             child: Text(
                               "Payment Information",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Roboto-Medium',
-                                  letterSpacing: 0.03,
-                                  fontSize: 18.0,
-                                  color: Color(0xFFff5000)),
+                              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 18.0, color: Color(0xFFff5000)),
                             ),
                           ),
                           Container(
@@ -233,8 +213,7 @@ class _PaymentFullState extends State<PaymentFull> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(
-                          top: 20, right: 30, left: 30, bottom: 20),
+                      padding: const EdgeInsets.only(top: 20, right: 30, left: 30, bottom: 20),
                       child: CustomPaint(
                         painter: _GradientPainter(
                           strokeWidth: 1,
@@ -246,17 +225,73 @@ class _PaymentFullState extends State<PaymentFull> {
                           ),
                         ),
                         child: Container(
-                            height: 100,
                             alignment: Alignment.topCenter,
-                            margin:
-                                EdgeInsets.only(right: 30, left: 30, top: 20),
+                            margin: EdgeInsets.only(right: 30, left: 30, top: 20),
                             child: Column(
                               children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    /* Container(
+                                Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        child: Text(
+                                          "Shipping Charge",
+                                          style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Text(
+                                          new String.fromCharCodes(new Runes('\u0024')) + map["shipping_charge"].toString(),
+                                          style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        child: Text(
+                                          "Total variation amount",
+                                          style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Text(
+                                          new String.fromCharCodes(new Runes('\u0024')) + map["total_variation_amount"].toString(),
+                                          style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        child: Text(
+                                          "Total",
+                                          style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Text(
+                                          new String.fromCharCodes(new Runes('\u0024')) + map["subscribe_amount"].toString(),
+                                          style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(bottom: 20, top: 10),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      /* Container(
                                       alignment: Alignment.centerRight,
                                       child: Image(
                                         image: AssetImage(
@@ -265,26 +300,21 @@ class _PaymentFullState extends State<PaymentFull> {
                                         width: 20,
                                       ),
                                     ),*/
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "Pay with Paypal",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'Roboto-Medium',
-                                            letterSpacing: 0.03,
-                                            fontSize: 16.0,
-                                            color: Colors.white),
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Pay with Paypal",
+                                          style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
+                                        ),
                                       ),
-                                    ),
-                                    Container(
-                                        child: Image(
-                                      image: AssetImage(
-                                          "assets/images/paypal_buttons_peg.png"),
-                                      width: 80,
-                                      height: 20,
-                                    ))
-                                  ],
+                                      Container(
+                                          child: Image(
+                                        image: AssetImage("assets/images/paypal_buttons_peg.png"),
+                                        width: 80,
+                                        height: 20,
+                                      ))
+                                    ],
+                                  ),
                                 ),
                               ],
                             )),
@@ -297,20 +327,13 @@ class _PaymentFullState extends State<PaymentFull> {
                           // make PayPal payment
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  PaypalPayment(map,
-                                    onFinish: (number) async {
-                                      // payment done44
-                                      String transactions_id =
-                                      number["transactions"][0]
-                                      ["related_resources"][0]
-                                      ["sale"]["id"]
-                                          .toString();
-                                      String payer_id = number["payer"]
-                                      ["payer_info"]["payer_id"]
-                                          .toString();
-                                    },
-                                  ),
+                              builder: (BuildContext context) => PaypalPayment(
+                                map,
+                                onFinish: (number) async {
+                                  // payment done44
+
+                                },
+                              ),
                             ),
                           );
                         },
@@ -319,8 +342,7 @@ class _PaymentFullState extends State<PaymentFull> {
                             Align(
                               alignment: Alignment.topCenter,
                               child: new Image(
-                                image: AssetImage(
-                                    'assets/images/group_2_copy_2966.png'),
+                                image: AssetImage('assets/images/group_2_copy_2966.png'),
                                 height: 150,
                                 fit: BoxFit.cover,
                               ),
@@ -348,10 +370,7 @@ class _GradientPainter extends CustomPainter {
   final double strokeWidth;
   final Gradient gradient;
 
-  _GradientPainter(
-      {@required double strokeWidth,
-      @required double radius,
-      @required Gradient gradient})
+  _GradientPainter({@required double strokeWidth, @required double radius, @required Gradient gradient})
       : this.strokeWidth = strokeWidth,
         this.radius = radius,
         this.gradient = gradient;
@@ -360,14 +379,11 @@ class _GradientPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // create outer rectangle equals size
     Rect outerRect = Offset.zero & size;
-    var outerRRect =
-        RRect.fromRectAndRadius(outerRect, Radius.circular(radius));
+    var outerRRect = RRect.fromRectAndRadius(outerRect, Radius.circular(radius));
 
     // create inner rectangle smaller by strokeWidth
-    Rect innerRect = Rect.fromLTWH(strokeWidth, strokeWidth,
-        size.width - strokeWidth * 2, size.height - strokeWidth * 2);
-    var innerRRect = RRect.fromRectAndRadius(
-        innerRect, Radius.circular(radius - strokeWidth));
+    Rect innerRect = Rect.fromLTWH(strokeWidth, strokeWidth, size.width - strokeWidth * 2, size.height - strokeWidth * 2);
+    var innerRRect = RRect.fromRectAndRadius(innerRect, Radius.circular(radius - strokeWidth));
 
     // apply gradient shader
     _paint.shader = gradient.createShader(outerRect);

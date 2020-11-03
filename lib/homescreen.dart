@@ -39,6 +39,8 @@ class MyHome extends StatelessWidget {
   }
 }
 
+final username_controllerhome = TextEditingController();
+
 class Homescreen extends StatefulWidget {
   Homescreen({Key key}) : super(key: key);
 
@@ -47,7 +49,7 @@ class Homescreen extends StatefulWidget {
 }
 
 RestDatasource api = new RestDatasource();
-TextStyle style = TextStyle(fontFamily: 'Roboto-Bold', fontSize: 14.0, color: Colors.white);
+TextStyle style = TextStyle(fontFamily: 'Roboto-Bold', fontSize: 12.0, color: Colors.white);
 bool product_list = true;
 
 class _HomescreenState extends State<Homescreen> {
@@ -98,6 +100,18 @@ class _HomescreenState extends State<Homescreen> {
     });
 
     return "Success";
+  }
+
+  Future<String> getProductListBySearch(String category_id, String sub_category_id, String product_name, BuildContext context) async {
+    api.productbysearch(_mySelection, _mySelection2, product_name, context).then((value) => {
+          onChange(value),
+        });
+  }
+
+  void onChange(dynamic res) {
+    setState(() {
+      snapshotproductlist = res;
+    });
   }
 
   Future<String> getPlayer() async {
@@ -187,15 +201,18 @@ class _HomescreenState extends State<Homescreen> {
     Color color2 = Color(0xFF000001);
     Color color3 = Color(0xFF6ae7e0);
 
-    TextStyle hintstyle = TextStyle(fontFamily: 'Roboto-Bold', fontSize: 14.0, color: Colors.white);
+    TextStyle hintstyle = TextStyle(fontFamily: 'Roboto-Bold', fontSize: 12.0, color: Colors.white);
 
-    final username_controller = TextEditingController();
+    final playerusername_controller = TextEditingController();
 
     getStringValuesSF().then((value) => {userid = value});
 
     final searchproduct = TextField(
+      onChanged: (value) {
+        getProductListBySearch(_mySelection, _mySelection2, username_controllerhome.text, context);
+      },
       style: style,
-      controller: username_controller,
+      controller: username_controllerhome,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.all(18),
         hintText: "Search product",
@@ -206,7 +223,7 @@ class _HomescreenState extends State<Homescreen> {
 
     final searchaccount = TextField(
       style: style,
-      controller: username_controller,
+      controller: playerusername_controller,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.all(18),
         hintText: "Search Account",
@@ -710,7 +727,7 @@ class _HomescreenState extends State<Homescreen> {
                                                       image: shape_1,
                                                     ),
                                                     Container(
-                                                      child: Text(snapshotproductlist[index]["name"] ?? 'Name', style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 10.0, color: Colors.black)),
+                                                      child: Text(snapshotproductlist[index]["name"] ?? 'Name', style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 7.0, color: Colors.black)),
                                                       margin: EdgeInsets.fromLTRB(5.0, 0.0, 0.0, 0.0),
                                                       width: 140,
                                                     ),
@@ -959,7 +976,7 @@ class _HomescreenState extends State<Homescreen> {
                           margin: EdgeInsets.all(6.0),
                           child: Text(
                             "Available balance : 0.00",
-                            style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 12.0, color: color1),
+                            style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 10.0, color: color1),
                           ),
                         ),
                       )

@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:peg/MyOrder.dart';
 import 'package:peg/ProductResp.dart';
 import 'package:peg/homescreen.dart';
 import 'package:peg/productlist.dart';
@@ -35,6 +36,7 @@ class RestDatasource {
   static final cart_product_delete = BASE_URL + "cart/cart_product_delete/";
   static final delete_wishlist_product = BASE_URL + "wishlist/delete_wishlist_product/";
   static final paypal_requestapi = BASE_URL + "checkout/paypal_request";
+  static final paypal_responseapi = BASE_URL + "checkout/paypal_response";
   static final get_store_overview = BASE_URL + "store/get_store_overview/";
   static final get_store_level = BASE_URL + "store/get_store_level/";
   static final update_store_banner = BASE_URL + "store/update_store_banner";
@@ -45,6 +47,7 @@ class RestDatasource {
   static final add_category_api = BASE_URL + "category/add_category";
   static final add_subcategory = BASE_URL + "category/add_subcategory";
   static final edit_category = BASE_URL + "category/edit_category";
+  static final get_product_list_by_search = BASE_URL + "product/get_product_list_by_search";
   static final update_tacking_info = BASE_URL + "order/update_tacking_info";
   static final cancel_my_order = BASE_URL + "order/cancel_my_order";
   static final add_to_cart_from_wishlist_product = BASE_URL + "wishlist/add_to_cart_from_wishlist_product/";
@@ -244,6 +247,31 @@ class RestDatasource {
     });
   }
 
+  Future<List<dynamic>> productbysearch(String category_id, String sub_category_id, String product_name, BuildContext context) {
+    if (category_id == null) {
+      category_id = "";
+    }
+    if (sub_category_id == null) {
+      sub_category_id = "";
+    }
+
+    return _netUtil.post(get_product_list_by_search, body: {
+      "category_id": category_id,
+      "sub_category_id": sub_category_id,
+      "product_name": product_name,
+    }).then((dynamic res) {
+      print(res);
+      if (res["status_code"] == 200) {
+        return res['product_list'];
+      }
+      if (res["status_code"] == 400) {
+        Fluttertoast.showToast(msg: res["error_message"], toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
+        throw new Exception(res);
+      }
+      return res['product_list'];
+    });
+  }
+
   Future<User> updateinternationaltax(String userid, String type, String value, BuildContext context) {
     return _netUtil.post(update_player_international_tax, body: {"user_id": userid, "type": type, "value": value}).then((dynamic res) {
       print(res);
@@ -276,8 +304,24 @@ class RestDatasource {
 
   Future<dynamic> paypal_request(Map<String, String> map) {
     return _netUtil.post(paypal_requestapi, body: map).then((dynamic res) {
+      print(res);
       if (res["status_code"] == 200) {
         Fluttertoast.showToast(msg: "Order is placed", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
+      }
+      if (res["status_code"] == 400) {
+        Fluttertoast.showToast(msg: res["error_message"], toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
+        throw new Exception(res);
+      }
+      return res;
+    });
+  }
+
+  Future<dynamic> paypal_response(Map<String, String> map, BuildContext context) {
+    return _netUtil.post(paypal_responseapi, body: map).then((dynamic res) {
+      print(res);
+      getStringValuesSF().then((value) => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MyOrder(value)), (Route<dynamic> route) => false));
+      if (res["status_code"] == 200) {
+        Fluttertoast.showToast(msg: res["message"], toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
       }
       if (res["status_code"] == 400) {
         Fluttertoast.showToast(msg: res["error_message"], toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
@@ -319,7 +363,6 @@ class RestDatasource {
     });
   }
 
-
   Future<List<Map<String, dynamic>>> fetchSellProductList(String user_id) async {
     http.Response response = await http.get(get_all_products + "/" + user_id);
     if (response.statusCode != 200) return null;
@@ -349,7 +392,7 @@ class RestDatasource {
     }
   }
 
-  Future<Map<String, dynamic>> deletewishlist(String userid, String cartid , BuildContext context) async {
+  Future<Map<String, dynamic>> deletewishlist(String userid, String cartid, BuildContext context) async {
     http.Response res = await http.delete(delete_wishlist_product + cartid);
 
     Navigator.pop(context);

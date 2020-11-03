@@ -6,6 +6,7 @@ import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:peg/MyOrder.dart';
 import 'package:peg/RestDatasource.dart';
+import 'package:peg/homescreen.dart';
 import 'package:peg/main.dart';
 import 'package:http/http.dart' as http;
 
@@ -35,8 +36,7 @@ class MyOrderDetailFull extends StatefulWidget {
   MyOrderDetailFull(this.userid, this.orderid);
 
   @override
-  _MyOrderDetailFullState createState() =>
-      _MyOrderDetailFullState(userid, orderid);
+  _MyOrderDetailFullState createState() => _MyOrderDetailFullState(userid, orderid);
 }
 
 class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
@@ -50,16 +50,12 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
   List<dynamic> optlbl = List();
 
   Future<String> getSWData(String id, String orderid) async {
-    var res = await http.get(
-        Uri.encodeFull(
-            RestDatasource.get_my_order_details + id + "/" + orderid),
-        headers: {"Accept": "application/json"});
+    var res = await http.get(Uri.encodeFull(RestDatasource.get_my_order_details + id + "/" + orderid), headers: {"Accept": "application/json"});
 
     getStringValuesSF().then((value) => {userid = value});
 
     setState(() {
-      snapshotitemlist = List<Map<String, dynamic>>.from(
-          json.decode(res.body)['order_details']);
+      snapshotitemlist = List<Map<String, dynamic>>.from(json.decode(res.body)['order_details']);
     });
     return "Success";
   }
@@ -76,8 +72,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
       return Container(
         color: Color(0xFF0a0f32),
         child: Center(
-          child: Loading(
-              indicator: BallPulseIndicator(), size: 100.0, color: color3),
+          child: Loading(indicator: BallPulseIndicator(), size: 100.0, color: color3),
         ),
       );
     }
@@ -99,16 +94,20 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                     child: Stack(
                       children: [
                         Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            margin: EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
-                            child: Image(
-                              image: AssetImage('assets/images/back_12.png'),
-                              height: 30,
-                              width: 30,
-                            ),
-                          ),
-                        ),
+                            alignment: Alignment.centerLeft,
+                            child: GestureDetector(
+                              onTap: () {
+                                getStringValuesSF().then((value) => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MyOrder(value)), (Route<dynamic> route) => false));
+                              },
+                              child: Container(
+                                margin: EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
+                                child: Image(
+                                  image: AssetImage('assets/images/back_12.png'),
+                                  height: 30,
+                                  width: 30,
+                                ),
+                              ),
+                            )),
                         Align(
                           alignment: Alignment.center,
                           child: Container(
@@ -116,12 +115,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                             alignment: Alignment.center,
                             child: Text(
                               "My Order Detail",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Roboto-Bold',
-                                  letterSpacing: 0.03,
-                                  fontSize: 16.0,
-                                  color: Colors.white),
+                              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Colors.white),
                             ),
                           ),
                         )
@@ -141,15 +135,12 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
-                              atrlbl = snapshotitemlist[index]
-                                  ["product_attributes"]["atrlbl"];
-                              optlbl = snapshotitemlist[index]
-                                  ["product_attributes"]["optlbl"];
+                              atrlbl = snapshotitemlist[index]["product_attributes"]["atrlbl"];
+                              optlbl = snapshotitemlist[index]["product_attributes"]["optlbl"];
 
                               String payment = "Paypal";
 
-                              if (snapshotitemlist[index]["payment_method"] ==
-                                  "0") {
+                              if (snapshotitemlist[index]["payment_method"] == "0") {
                                 payment = "Wallet";
                               }
 
@@ -157,32 +148,20 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                               print(optlbl);
 
                               String trackingid = "";
-                              if (snapshotitemlist[index]["tracking_id"] ==
-                                  null) {
+                              if (snapshotitemlist[index]["tracking_id"] == null) {
                                 trackingid = "N/A";
                               } else {
-                                trackingid =
-                                    snapshotitemlist[index]["tracking_id"];
+                                trackingid = snapshotitemlist[index]["tracking_id"];
                               }
 
                               return Column(
                                 children: [
                                   Container(
-                                    margin: EdgeInsets.only(
-                                        right: 30, left: 30, bottom: 10),
+                                    margin: EdgeInsets.only(right: 30, left: 30, bottom: 10),
                                     child: Stack(
                                       children: [
-                                        Image(
-                                            image: AssetImage(
-                                                "assets/images/rectangle_12.png"),
-                                            height: 470,
-                                            width: double.infinity,
-                                            fit: BoxFit.fill),
-                                        Image(
-                                            image: AssetImage(
-                                                "assets/images/ellipse_42.png"),
-                                            width: 200,
-                                            fit: BoxFit.fill),
+                                        Image(image: AssetImage("assets/images/rectangle_12.png"), height: 470, width: double.infinity, fit: BoxFit.fill),
+                                        Image(image: AssetImage("assets/images/ellipse_42.png"), width: 200, fit: BoxFit.fill),
                                         Align(
                                             alignment: Alignment.topCenter,
                                             child: Column(
@@ -190,546 +169,200 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                 Stack(
                                                   children: [
                                                     Align(
-                                                      alignment:
-                                                          Alignment.topLeft,
+                                                      alignment: Alignment.topLeft,
                                                       child: Container(
-                                                        margin: EdgeInsets.only(
-                                                            left: 10, top: 10),
+                                                        margin: EdgeInsets.only(left: 10, top: 10),
                                                         child: Text(
-                                                          snapshotitemlist[
-                                                              index]["id"],
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontFamily:
-                                                                  'Roboto-Medium',
-                                                              letterSpacing:
-                                                                  0.03,
-                                                              fontSize: 16.0,
-                                                              color: Color(
-                                                                  0xFFff5000)),
+                                                          snapshotitemlist[index]["id"],
+                                                          style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 14.0, color: Color(0xFFff5000)),
                                                         ),
                                                       ),
                                                     ),
                                                     Align(
-                                                      alignment:
-                                                          Alignment.centerLeft,
+                                                      alignment: Alignment.centerLeft,
                                                       child: Container(
-                                                        margin: EdgeInsets.only(
-                                                            left: 55, top: 20),
+                                                        margin: EdgeInsets.only(left: 55, top: 20),
                                                         child: Text(
-                                                          snapshotitemlist[
-                                                                  index]
-                                                              ["product_name"],
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  'Roboto-Bold',
-                                                              letterSpacing:
-                                                                  0.03,
-                                                              fontSize: 10.0,
-                                                              color:
-                                                                  Colors.white),
+                                                          snapshotitemlist[index]["product_name"],
+                                                          style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 8.0, color: Colors.white),
                                                         ),
                                                       ),
                                                     ),
                                                     Align(
-                                                      alignment:
-                                                          Alignment.topRight,
+                                                      alignment: Alignment.topRight,
                                                       child: Container(
-                                                        margin: EdgeInsets.only(
-                                                            right: 6, top: 6),
+                                                        margin: EdgeInsets.only(right: 6, top: 6),
                                                         child: Text(
-                                                          snapshotitemlist[
-                                                                  index]
-                                                              ["created_at"],
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontFamily:
-                                                                  'Roboto-Medium',
-                                                              letterSpacing:
-                                                                  0.03,
-                                                              fontSize: 12.0,
-                                                              color: Color(
-                                                                  0xFFff5000)),
+                                                          snapshotitemlist[index]["created_at"],
+                                                          style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 7.0, color: Color(0xFFff5000)),
                                                         ),
                                                       ),
                                                     ),
                                                   ],
                                                 ),
                                                 Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
                                                     Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  left: 30,
-                                                                  top: 40,
-                                                                  bottom: 30),
-                                                          child: Image(
-                                                              image: NetworkImage(
-                                                                  snapshotitemlist[
-                                                                          index]
-                                                                      [
-                                                                      "product_image"]),
-                                                              height: 80,
-                                                              width: 80,
-                                                              fit: BoxFit
-                                                                  .scaleDown),
+                                                          margin: EdgeInsets.only(left: 30, top: 40, bottom: 30),
+                                                          child: Image(image: NetworkImage(snapshotitemlist[index]["product_image"]), height: 80, width: 80, fit: BoxFit.scaleDown),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  left: 30,
-                                                                  top: 20),
+                                                          margin: EdgeInsets.only(left: 30, top: 20),
                                                           child: Text(
                                                             "Quantity :",
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Color(
-                                                                    0xFFff5000)),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFFff5000)),
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  left: 30,
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(left: 30, top: 10),
                                                           child: Text(
                                                             "Tracking ID :",
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Color(
-                                                                    0xFFff5000)),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFFff5000)),
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  left: 30,
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(left: 30, top: 10),
                                                           child: Text(
                                                             "Payment Method :",
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Color(
-                                                                    0xFFff5000)),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFFff5000)),
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  left: 30,
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(left: 30, top: 10),
                                                           child: Text(
                                                             "Shipping Fee :",
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Color(
-                                                                    0xFFff5000)),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFFff5000)),
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  left: 30,
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(left: 30, top: 10),
                                                           child: Text(
                                                             "Wallet Deducted :",
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Color(
-                                                                    0xFFff5000)),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFFff5000)),
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  left: 30,
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(left: 30, top: 10),
                                                           child: Text(
                                                             "Paypal Deducted :",
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Color(
-                                                                    0xFFff5000)),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFFff5000)),
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  left: 30,
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(left: 30, top: 10),
                                                           child: Text(
                                                             "Amount :",
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Color(
-                                                                    0xFFff5000)),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFFff5000)),
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  left: 30,
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(left: 30, top: 10),
                                                           child: Text(
                                                             "Processing :",
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Color(
-                                                                    0xFFff5000)),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFFff5000)),
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  left: 30,
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(left: 30, top: 10),
                                                           child: Text(
                                                             "Gross Total :",
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Color(
-                                                                    0xFFff5000)),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFFff5000)),
                                                           ),
                                                         ),
                                                       ],
                                                     ),
                                                     Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
                                                         Container(
                                                           width: 100,
                                                           height: 90,
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  right: 10,
-                                                                  top: 40,
-                                                                  bottom: 30),
+                                                          margin: EdgeInsets.only(right: 10, top: 40, bottom: 30),
                                                           child: Row(
                                                             children: [
                                                               Expanded(
-                                                                child: ListView
-                                                                    .builder(
-                                                                  shrinkWrap:
-                                                                      true,
-                                                                  physics:
-                                                                      NeverScrollableScrollPhysics(),
-                                                                  itemBuilder:
-                                                                      (context,
-                                                                          index) {
+                                                                child: ListView.builder(
+                                                                  shrinkWrap: true,
+                                                                  physics: NeverScrollableScrollPhysics(),
+                                                                  itemBuilder: (context, index) {
                                                                     return Container(
-                                                                      child:
-                                                                          Text(
-                                                                        atrlbl[index] +
-                                                                            ": " +
-                                                                            optlbl[index],
-                                                                        style: TextStyle(
-                                                                            fontWeight: FontWeight
-                                                                                .bold,
-                                                                            fontFamily:
-                                                                                'Roboto-Medium',
-                                                                            letterSpacing:
-                                                                                0.03,
-                                                                            fontSize:
-                                                                                15.0,
-                                                                            color:
-                                                                                Colors.white),
+                                                                      child: Text(
+                                                                        atrlbl[index] + ": " + optlbl[index],
+                                                                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
                                                                       ),
                                                                     );
                                                                   },
-                                                                  itemCount:
-                                                                      atrlbl
-                                                                          .length,
+                                                                  itemCount: atrlbl.length,
                                                                 ),
                                                               )
                                                             ],
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  right: 10,
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(right: 10, top: 10),
                                                           child: Text(
-                                                            snapshotitemlist[
-                                                                index]["qty"],
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Colors
-                                                                    .white),
+                                                            snapshotitemlist[index]["qty"],
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  right: 10,
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(right: 10, top: 10),
                                                           child: Text(
                                                             trackingid,
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Colors
-                                                                    .white),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  right: 10,
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(right: 10, top: 10),
                                                           child: Text(
                                                             payment,
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Colors
-                                                                    .white),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  right: 10,
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(right: 10, top: 10),
                                                           child: Text(
-                                                            new String.fromCharCodes(
-                                                                    new Runes(
-                                                                        '\u0024')) +
-                                                                snapshotitemlist[
-                                                                        index][
-                                                                    "shipping_charge"],
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Colors
-                                                                    .white),
+                                                            new String.fromCharCodes(new Runes('\u0024')) + snapshotitemlist[index]["shipping_charge"],
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  right: 10,
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(right: 10, top: 10),
                                                           child: Text(
-                                                            new String.fromCharCodes(
-                                                                    new Runes(
-                                                                        '\u0024')) +
-                                                                snapshotitemlist[
-                                                                        index][
-                                                                    "wallet_deducted"],
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Colors
-                                                                    .white),
+                                                            new String.fromCharCodes(new Runes('\u0024')) + snapshotitemlist[index]["wallet_deducted"],
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  right: 10,
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(right: 10, top: 10),
                                                           child: Text(
-                                                                  new String.fromCharCodes(
-                                                                  new Runes(
-                                                                  '\u0024')) +
-                                                                  snapshotitemlist[
-                                                                  index][
-                                                                  "paypal_deducted"],
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Colors
-                                                                    .white),
+                                                            new String.fromCharCodes(new Runes('\u0024')) + snapshotitemlist[index]["paypal_deducted"],
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  right: 10,
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(right: 10, top: 10),
                                                           child: Text(
-                                                            new String.fromCharCodes(
-                                                                new Runes(
-                                                                    '\u0024')) +
-                                                                snapshotitemlist[
-                                                                index][
-                                                                "amount"],
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Colors
-                                                                    .white),
+                                                            new String.fromCharCodes(new Runes('\u0024')) + snapshotitemlist[index]["amount"],
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  right: 10,
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(right: 10, top: 10),
                                                           child: Text(
-                                                            new String.fromCharCodes(
-                                                                new Runes(
-                                                                    '\u0024')) +
-                                                                snapshotitemlist[
-                                                                index][
-                                                                "product_fee"],
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Colors
-                                                                    .white),
+                                                            new String.fromCharCodes(new Runes('\u0024')) + snapshotitemlist[index]["product_fee"],
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
                                                           ),
                                                         ),
                                                         Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  right: 10,
-                                                                  top: 10),
+                                                          margin: EdgeInsets.only(right: 10, top: 10),
                                                           child: Text(
-                                                            new String.fromCharCodes(
-                                                                new Runes(
-                                                                    '\u0024')) +
-                                                                snapshotitemlist[
-                                                                index][
-                                                                "sub_total"],
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Roboto-Medium',
-                                                                letterSpacing:
-                                                                    0.03,
-                                                                fontSize: 15.0,
-                                                                color: Colors
-                                                                    .white),
+                                                            new String.fromCharCodes(new Runes('\u0024')) + snapshotitemlist[index]["sub_total"],
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
                                                           ),
                                                         ),
                                                       ],
@@ -755,9 +388,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
             ],
           ),
           onWillPop: () async {
-            return getStringValuesSF().then((value) => Navigator.of(context)
-                .pushReplacement(MaterialPageRoute(
-                    builder: (BuildContext context) => MyOrder(value))));
+            return getStringValuesSF().then((value) => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MyOrder(value)), (Route<dynamic> route) => false));
           }),
     );
   }

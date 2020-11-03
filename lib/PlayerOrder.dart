@@ -110,14 +110,21 @@ class _PlayerOrderFullState extends State<PlayerOrderFull> {
                       children: [
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: Container(
-                            margin: EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
-                            child: Image(
-                              image: AssetImage('assets/images/back_12.png'),
-                              height: 30,
-                              width: 30,
+                          child:GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                builder: (context) => Homescreen(),
+                              ));
+                            },
+                            child: Container(
+                              margin: EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
+                              child: Image(
+                                image: AssetImage('assets/images/back_12.png'),
+                                height: 30,
+                                width: 30,
+                              ),
                             ),
-                          ),
+                          )
                         ),
                         Align(
                           alignment: Alignment.center,
@@ -130,7 +137,7 @@ class _PlayerOrderFullState extends State<PlayerOrderFull> {
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Roboto-Bold',
                                   letterSpacing: 0.03,
-                                  fontSize: 16.0,
+                                  fontSize: 12.0,
                                   color: Colors.white),
                             ),
                           ),
@@ -200,7 +207,7 @@ class _PlayerOrderFullState extends State<PlayerOrderFull> {
                                                         fontFamily:
                                                             'Roboto-Medium',
                                                         letterSpacing: 0.03,
-                                                        fontSize: 16.0,
+                                                        fontSize: 12.0,
                                                         color:
                                                             Color(0xFFff5000)),
                                                   ),
@@ -239,7 +246,7 @@ class _PlayerOrderFullState extends State<PlayerOrderFull> {
                                                 children: [
                                                   Container(
                                                     margin: EdgeInsets.only(
-                                                        right: 80, top: 20),
+                                                        right: 80,),
                                                     child: Text(
                                                       "Tracking ID :",
                                                       style: TextStyle(
@@ -248,7 +255,7 @@ class _PlayerOrderFullState extends State<PlayerOrderFull> {
                                                           fontFamily:
                                                               'Roboto-Medium',
                                                           letterSpacing: 0.03,
-                                                          fontSize: 15.0,
+                                                          fontSize: 12.0,
                                                           color: Color(
                                                               0xFFff5000)),
                                                     ),
@@ -264,7 +271,7 @@ class _PlayerOrderFullState extends State<PlayerOrderFull> {
                                                           fontFamily:
                                                               'Roboto-Medium',
                                                           letterSpacing: 0.03,
-                                                          fontSize: 15.0,
+                                                          fontSize: 12.0,
                                                           color: Color(
                                                               0xFFff5000)),
                                                     ),
@@ -284,7 +291,7 @@ class _PlayerOrderFullState extends State<PlayerOrderFull> {
                                                                 Radius.circular(
                                                                     3))),
                                                     margin: EdgeInsets.only(
-                                                        right: 10, top: 25),
+                                                        right: 10, top: 10),
                                                     child: Text(
                                                       snapshotitemlist[index]
                                                               ["tracking_id"]
@@ -295,7 +302,7 @@ class _PlayerOrderFullState extends State<PlayerOrderFull> {
                                                           fontFamily:
                                                               'Roboto-Medium',
                                                           letterSpacing: 0.03,
-                                                          fontSize: 15.0,
+                                                          fontSize: 12.0,
                                                           color: Colors.white),
                                                     ),
                                                   ),
@@ -312,7 +319,7 @@ class _PlayerOrderFullState extends State<PlayerOrderFull> {
                                                           fontFamily:
                                                               'Roboto-Medium',
                                                           letterSpacing: 0.03,
-                                                          fontSize: 15.0,
+                                                          fontSize: 12.0,
                                                           color: Colors.white),
                                                     ),
                                                   )
@@ -403,7 +410,7 @@ class _PlayerOrderFullState extends State<PlayerOrderFull> {
                                                                                   margin: EdgeInsets.only(left: 30, top: 20),
                                                                                   child: Text(
                                                                                     "Do you want to cancel order ?",
-                                                                                    style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Color(0xFFff5000)),
+                                                                                    style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                                                                   ),
                                                                                 ),
                                                                               ],

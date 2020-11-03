@@ -172,16 +172,22 @@ class _MyStoreState extends State<MyStore> {
                         child: Stack(
                           children: [
                             Align(
-                              alignment: Alignment.centerLeft,
-                              child: Container(
-                                margin: EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
-                                child: Image(
-                                  image: AssetImage('assets/images/back_12.png'),
-                                  height: 30,
-                                  width: 30,
-                                ),
-                              ),
-                            ),
+                                alignment: Alignment.centerLeft,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                      builder: (context) => Homescreen(),
+                                    ));
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
+                                    child: Image(
+                                      image: AssetImage('assets/images/back_12.png'),
+                                      height: 30,
+                                      width: 30,
+                                    ),
+                                  ),
+                                )),
                             Align(
                               alignment: Alignment.center,
                               child: Container(
@@ -225,7 +231,7 @@ class _MyStoreState extends State<MyStore> {
                                           margin: EdgeInsets.only(right: 10, top: 5),
                                           child: Text(
                                             map["total_gross_selling"].toString(),
-                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
+                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFFff5000)),
                                           ),
                                         ),
                                       ),
@@ -262,7 +268,7 @@ class _MyStoreState extends State<MyStore> {
                                           margin: EdgeInsets.only(right: 10, top: 5),
                                           child: Text(
                                             map["total_items_sold"].toString(),
-                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
+                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFFff5000)),
                                           ),
                                         ),
                                       ),
@@ -290,7 +296,7 @@ class _MyStoreState extends State<MyStore> {
                                 ],
                               )),
                           Padding(
-                              padding: const EdgeInsets.only(top: 20, right: 30),
+                              padding: const EdgeInsets.only(top: 20, right: 20),
                               child: Column(
                                 children: [
                                   CustomPaint(
@@ -301,7 +307,7 @@ class _MyStoreState extends State<MyStore> {
                                           margin: EdgeInsets.only(right: 10, top: 5),
                                           child: Text(
                                             map["total_orders"].toString(),
-                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
+                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFFff5000)),
                                           ),
                                         ),
                                       ),
@@ -338,15 +344,16 @@ class _MyStoreState extends State<MyStore> {
                       Container(
                         margin: EdgeInsets.only(right: 30, left: 30, top: 20),
                         height: 80,
-                        child: Stack(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Container(
-                                margin: EdgeInsets.only(left: 27),
+                                margin: EdgeInsets.only(left:25),
                                 child: Text(
                                   currentlevel["current_level"]["level"].toString(),
-                                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 16.0, color: Color(0xFFff5000)),
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 13.0, color: Color(0xFFff5000)),
                                 ),
                               ),
                             ),
@@ -375,10 +382,10 @@ class _MyStoreState extends State<MyStore> {
                             Align(
                               alignment: Alignment.centerRight,
                               child: Container(
-                                margin: EdgeInsets.only(right: 27),
+                                margin: EdgeInsets.only(right: 25),
                                 child: Text(
                                   currentlevel["current_level"]["level"].toString(),
-                                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 16.0, color: Color(0xFFff5000)),
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 13.0, color: Color(0xFFff5000)),
                                 ),
                               ),
                             ),
@@ -394,10 +401,10 @@ class _MyStoreState extends State<MyStore> {
                           children: [
                             Container(
                               alignment: Alignment.topLeft,
-                              margin: EdgeInsets.only(left: 30, top: 10),
+                              margin: EdgeInsets.only( top: 5),
                               child: Text(
                                 "Current Levels",
-                                style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 18.0, color: Colors.white),
+                                style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Colors.white),
                               ),
                             ),
                             InkWell(
@@ -444,7 +451,7 @@ class _MyStoreState extends State<MyStore> {
                             margin: EdgeInsets.only(left: 30, top: 20),
                             child: Text(
                               "Store Banner",
-                              style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 18.0, color: Colors.white),
+                              style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Colors.white),
                             ),
                           ),
                           Container(
@@ -603,7 +610,7 @@ class _MyStoreState extends State<MyStore> {
                             margin: EdgeInsets.only(left: 30, top: 20),
                             child: Text(
                               "Change Your Store Link",
-                              style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 18.0, color: Colors.white),
+                              style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Colors.white),
                             ),
                           ),
                           Container(
@@ -662,7 +669,7 @@ class _MyStoreState extends State<MyStore> {
                             margin: EdgeInsets.only(left: 30, top: 20),
                             child: Text(
                               "Default Link : " + map["store_link"],
-                              style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 18.0, color: Colors.white),
+                              style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Colors.white),
                             ),
                           ),
                           Container(
@@ -802,7 +809,7 @@ class CustomFontSizeAndColor extends StatelessWidget {
 
               // Tick and Label styling here.
               labelStyle: new charts.TextStyleSpec(
-                  fontSize: 18, // size in Pts.
+                  fontSize: 16, // size in Pts.
                   color: charts.MaterialPalette.white),
 
               // Change the line colors to match text color.
@@ -814,7 +821,7 @@ class CustomFontSizeAndColor extends StatelessWidget {
 
               // Tick and Label styling here.
               labelStyle: new charts.TextStyleSpec(
-                  fontSize: 18, // size in Pts.
+                  fontSize: 16, // size in Pts.
                   color: charts.MaterialPalette.white),
 
               // Change the line colors to match text color.

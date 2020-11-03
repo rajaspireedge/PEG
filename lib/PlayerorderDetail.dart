@@ -101,14 +101,21 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                       children: [
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: Container(
-                            margin: EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
-                            child: Image(
-                              image: AssetImage('assets/images/back_12.png'),
-                              height: 30,
-                              width: 30,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                builder: (context) => PlayerOrder(userid),
+                              ));
+                            },
+                            child: Container(
+                              margin: EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
+                              child: Image(
+                                image: AssetImage('assets/images/back_12.png'),
+                                height: 30,
+                                width: 30,
+                              ),
                             ),
-                          ),
+                          )
                         ),
                         Align(
                           alignment: Alignment.center,
@@ -116,12 +123,12 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                             margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
                             alignment: Alignment.center,
                             child: Text(
-                              "My Order Detail",
+                              "My Player order Detail",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Roboto-Bold',
                                   letterSpacing: 0.03,
-                                  fontSize: 16.0,
+                                  fontSize: 12.0,
                                   color: Colors.white),
                             ),
                           ),
@@ -207,7 +214,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                   'Roboto-Medium',
                                                                   letterSpacing:
                                                                   0.03,
-                                                                  fontSize: 16.0,
+                                                                  fontSize: 12.0,
                                                                   color: Color(
                                                                       0xFFff5000)),
                                                             ),
@@ -228,7 +235,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                   'Roboto-Bold',
                                                                   letterSpacing:
                                                                   0.03,
-                                                                  fontSize: 10.0,
+                                                                  fontSize: 8.0,
                                                                   color:
                                                                   Colors.white),
                                                             ),
@@ -252,7 +259,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                   'Roboto-Medium',
                                                                   letterSpacing:
                                                                   0.03,
-                                                                  fontSize: 12.0,
+                                                                  fontSize: 6.0,
                                                                   color: Color(
                                                                       0xFFff5000)),
                                                             ),
@@ -302,7 +309,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                     'Roboto-Medium',
                                                                     letterSpacing:
                                                                     0.03,
-                                                                    fontSize: 15.0,
+                                                                    fontSize: 12.0,
                                                                     color: Color(
                                                                         0xFFff5000)),
                                                               ),
@@ -322,7 +329,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                     'Roboto-Medium',
                                                                     letterSpacing:
                                                                     0.03,
-                                                                    fontSize: 15.0,
+                                                                    fontSize: 12.0,
                                                                     color: Color(
                                                                         0xFFff5000)),
                                                               ),
@@ -342,7 +349,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                     'Roboto-Medium',
                                                                     letterSpacing:
                                                                     0.03,
-                                                                    fontSize: 15.0,
+                                                                    fontSize: 12.0,
                                                                     color: Color(
                                                                         0xFFff5000)),
                                                               ),
@@ -362,7 +369,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                     'Roboto-Medium',
                                                                     letterSpacing:
                                                                     0.03,
-                                                                    fontSize: 15.0,
+                                                                    fontSize: 12.0,
                                                                     color: Color(
                                                                         0xFFff5000)),
                                                               ),
@@ -382,7 +389,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                     'Roboto-Medium',
                                                                     letterSpacing:
                                                                     0.03,
-                                                                    fontSize: 15.0,
+                                                                    fontSize: 12.0,
                                                                     color: Color(
                                                                         0xFFff5000)),
                                                               ),
@@ -402,7 +409,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                     'Roboto-Medium',
                                                                     letterSpacing:
                                                                     0.03,
-                                                                    fontSize: 15.0,
+                                                                    fontSize: 12.0,
                                                                     color: Color(
                                                                         0xFFff5000)),
                                                               ),
@@ -422,7 +429,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                     'Roboto-Medium',
                                                                     letterSpacing:
                                                                     0.03,
-                                                                    fontSize: 15.0,
+                                                                    fontSize: 12.0,
                                                                     color: Color(
                                                                         0xFFff5000)),
                                                               ),
@@ -442,7 +449,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                     'Roboto-Medium',
                                                                     letterSpacing:
                                                                     0.03,
-                                                                    fontSize: 15.0,
+                                                                    fontSize: 12.0,
                                                                     color: Color(
                                                                         0xFFff5000)),
                                                               ),
@@ -462,7 +469,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                     'Roboto-Medium',
                                                                     letterSpacing:
                                                                     0.03,
-                                                                    fontSize: 15.0,
+                                                                    fontSize: 12.0,
                                                                     color: Color(
                                                                         0xFFff5000)),
                                                               ),
@@ -508,7 +515,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                                 letterSpacing:
                                                                                 0.03,
                                                                                 fontSize:
-                                                                                15.0,
+                                                                                12.0,
                                                                                 color:
                                                                                 Colors.white),
                                                                           ),
@@ -538,7 +545,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                     'Roboto-Medium',
                                                                     letterSpacing:
                                                                     0.03,
-                                                                    fontSize: 15.0,
+                                                                    fontSize: 12.0,
                                                                     color: Colors
                                                                         .white),
                                                               ),
@@ -558,7 +565,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                     'Roboto-Medium',
                                                                     letterSpacing:
                                                                     0.03,
-                                                                    fontSize: 15.0,
+                                                                    fontSize: 12.0,
                                                                     color: Colors
                                                                         .white),
                                                               ),
@@ -578,7 +585,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                     'Roboto-Medium',
                                                                     letterSpacing:
                                                                     0.03,
-                                                                    fontSize: 15.0,
+                                                                    fontSize: 12.0,
                                                                     color: Colors
                                                                         .white),
                                                               ),
@@ -603,7 +610,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                     'Roboto-Medium',
                                                                     letterSpacing:
                                                                     0.03,
-                                                                    fontSize: 15.0,
+                                                                    fontSize: 12.0,
                                                                     color: Colors
                                                                         .white),
                                                               ),
@@ -628,7 +635,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                     'Roboto-Medium',
                                                                     letterSpacing:
                                                                     0.03,
-                                                                    fontSize: 15.0,
+                                                                    fontSize: 12.0,
                                                                     color: Colors
                                                                         .white),
                                                               ),
@@ -653,7 +660,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                     'Roboto-Medium',
                                                                     letterSpacing:
                                                                     0.03,
-                                                                    fontSize: 15.0,
+                                                                    fontSize: 12.0,
                                                                     color: Colors
                                                                         .white),
                                                               ),
@@ -678,7 +685,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                     'Roboto-Medium',
                                                                     letterSpacing:
                                                                     0.03,
-                                                                    fontSize: 15.0,
+                                                                    fontSize: 12.0,
                                                                     color: Colors
                                                                         .white),
                                                               ),
@@ -703,7 +710,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                     'Roboto-Medium',
                                                                     letterSpacing:
                                                                     0.03,
-                                                                    fontSize: 15.0,
+                                                                    fontSize: 12.0,
                                                                     color: Colors
                                                                         .white),
                                                               ),
@@ -728,7 +735,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                     'Roboto-Medium',
                                                                     letterSpacing:
                                                                     0.03,
-                                                                    fontSize: 15.0,
+                                                                    fontSize: 12.0,
                                                                     color: Colors
                                                                         .white),
                                                               ),

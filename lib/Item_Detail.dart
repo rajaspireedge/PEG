@@ -128,7 +128,7 @@ class _ItemDetailState extends State<ItemDetail> {
           }
         }
         if (key.contains("[") && key.contains("sel_variation")) {
-          if (key.substring(14, 15) == list[arrayindex]["attr_id"]) {
+          if (key.substring(14, 12) == list[arrayindex]["attr_id"]) {
             selvartion = key;
           }
         }
@@ -190,7 +190,7 @@ class _ItemDetailState extends State<ItemDetail> {
                     margin: EdgeInsets.all(10),
                     child: Text(
                       snapshotitemlist[index]["option_label"],
-                      style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white),
+                      style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 12.0, color: Colors.white),
                     ),
                   ),
                 ],
@@ -226,7 +226,7 @@ class _ItemDetailState extends State<ItemDetail> {
                     margin: EdgeInsets.all(10),
                     child: Text(
                       snapshotitemlist[index]["option_label"],
-                      style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white),
+                      style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 12.0, color: Colors.white),
                     ),
                   ),
                 ],
@@ -281,7 +281,7 @@ class _ItemDetailState extends State<ItemDetail> {
                                       }
                                     }
                                     if (key.contains("[") && key.contains("sel_variation")) {
-                                      if (key.substring(14, 15) == snapshotitemlist[arrayindex]["attr_id"]) {
+                                      if (key.substring(14, 12) == snapshotitemlist[arrayindex]["attr_id"]) {
                                         selvartion = key;
                                       }
                                     }
@@ -424,12 +424,19 @@ class _ItemDetailState extends State<ItemDetail> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Container(
-                                  margin: EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
-                                  child: Image(
-                                    image: AssetImage('assets/images/back_12.png'),
-                                    height: 30,
-                                    width: 30,
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                      builder: (context) => Homescreen(),
+                                    ));
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.fromLTRB(12.0, 10.0, 0.0, 0.0),
+                                    child: Image(
+                                      image: AssetImage('assets/images/back_12.png'),
+                                      height: 30,
+                                      width: 30,
+                                    ),
                                   ),
                                 )
                               ],
@@ -445,7 +452,7 @@ class _ItemDetailState extends State<ItemDetail> {
                                     margin: EdgeInsets.only(left: 50, right: 50),
                                     child: Text(
                                       snapshotitemlist["product_detail"]["name"],
-                                      style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 16.0, color: Colors.white),
+                                      style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 12.0, color: Colors.white),
                                     )),
                                 Container(
                                   margin: EdgeInsets.only(right: 50, left: 50, top: 20, bottom: 20),
@@ -513,7 +520,7 @@ class _ItemDetailState extends State<ItemDetail> {
                                         ),
                                         child: Text(
                                           new String.fromCharCodes(new Runes('\u0024')) + snapshotitemlist["product_detail"]["price"],
-                                          style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.4, fontSize: 16.0, color: Colors.white),
+                                          style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.4, fontSize: 12.0, color: Colors.white),
                                         ),
                                       ),
                                       Align(
@@ -551,7 +558,7 @@ class _ItemDetailState extends State<ItemDetail> {
                                               alignment: Alignment.center,
                                               child: Text(
                                                 realqty.toString(),
-                                                style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 16.0, color: Colors.white),
+                                                style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 12.0, color: Colors.white),
                                               ),
                                               decoration: BoxDecoration(border: Border.all(color: Colors.orange), borderRadius: BorderRadius.circular(2.0)),
                                             ),
@@ -589,11 +596,11 @@ class _ItemDetailState extends State<ItemDetail> {
                                               children: [
                                                 InkWell(
                                                   child: Container(
-                                                    margin: EdgeInsets.only(right: 10),
+                                                    margin: EdgeInsets.only(right: 5),
                                                     child: Image(
                                                       image: AssetImage("assets/images/cart.png"),
-                                                      height: 30,
-                                                      width: 30,
+                                                      height: 25,
+                                                      width: 25,
                                                     ),
                                                   ),
                                                 ),
@@ -612,8 +619,8 @@ class _ItemDetailState extends State<ItemDetail> {
                                                   child: Container(
                                                     child: Image(
                                                       image: AssetImage("assets/images/post.png"),
-                                                      height: 30,
-                                                      width: 30,
+                                                      height: 25,
+                                                      width: 25,
                                                     ),
                                                   ),
                                                 ),
@@ -643,7 +650,7 @@ class _ItemDetailState extends State<ItemDetail> {
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
                                                   snapshotitemlistattl[index]["title"],
-                                                  style: TextStyle(letterSpacing: 0.02, fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white),
+                                                  style: TextStyle(letterSpacing: 0.02, fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', fontSize: 12.0, color: Colors.white),
                                                 ),
                                               ),
                                               _MyCheckBOXLISTview(snapshotitemlistattl[index]["attribute_id"], context, snapshotitemlistattl[index]["type"], snapshotitemlistattl[index]["option_list"], index),
@@ -714,18 +721,18 @@ class _ItemDetailState extends State<ItemDetail> {
                                                           InkWell(
                                                             onTap: () {
                                                               if (username_controller.text.length == 0) {
-                                                                Fluttertoast.showToast(msg: "Enter Tag", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
+                                                                Fluttertoast.showToast(msg: "Enter Tag", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 12, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
                                                               } else {
                                                                 Custom_Tag = username_controller.text;
                                                                 Navigator.pop(context);
                                                               }
                                                             },
                                                             child: Container(
-                                                              margin: EdgeInsets.only(bottom: 15, top: 20),
+                                                              margin: EdgeInsets.only(bottom: 12, top: 20),
                                                               child: Image(
                                                                 image: AssetImage("assets/images/submit.png"),
                                                                 height: 50,
-                                                                width: 150,
+                                                                width: 120,
                                                                 fit: BoxFit.cover,
                                                               ),
                                                             ),

@@ -94,16 +94,20 @@ class _MyOrderFullState extends State<MyOrderFull> {
                             children: [
                               Align(
                                 alignment: Alignment.centerLeft,
-                                child: Container(
-                                  margin: EdgeInsets.fromLTRB(
-                                      15.0, 10.0, 0.0, 0.0),
-                                  child: Image(
-                                    image: AssetImage(
-                                        'assets/images/back_12.png'),
-                                    height: 30,
-                                    width: 30,
+                                child:GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                                        Homescreen()), (Route<dynamic> route) => false);
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
+                                    child: Image(
+                                      image: AssetImage('assets/images/back_12.png'),
+                                      height: 30,
+                                      width: 30,
+                                    ),
                                   ),
-                                ),
+                                )
                               ),
                               Align(
                                 alignment: Alignment.center,
@@ -183,7 +187,7 @@ class _MyOrderFullState extends State<MyOrderFull> {
                                                             .bold,
                                                         fontFamily: 'Roboto-Medium',
                                                         letterSpacing: 0.03,
-                                                        fontSize: 16.0,
+                                                        fontSize: 10.0,
                                                         color: Color(
                                                             0xFFff5000)),
                                                   ),
@@ -203,7 +207,7 @@ class _MyOrderFullState extends State<MyOrderFull> {
                                                             .bold,
                                                         fontFamily: 'Roboto-Medium',
                                                         letterSpacing: 0.03,
-                                                        fontSize: 12.0,
+                                                        fontSize: 10.0,
                                                         color: Color(
                                                             0xFFff5000)),
                                                   ),
@@ -230,7 +234,7 @@ class _MyOrderFullState extends State<MyOrderFull> {
                                                           fontFamily:
                                                           'Roboto-Medium',
                                                           letterSpacing: 0.03,
-                                                          fontSize: 15.0,
+                                                          fontSize: 10.0,
                                                           color: Color(
                                                               0xFFff5000)),
                                                     ),
@@ -246,7 +250,7 @@ class _MyOrderFullState extends State<MyOrderFull> {
                                                           fontFamily:
                                                           'Roboto-Medium',
                                                           letterSpacing: 0.03,
-                                                          fontSize: 15.0,
+                                                          fontSize: 10.0,
                                                           color: Color(
                                                               0xFFff5000)),
                                                     ),
@@ -259,7 +263,7 @@ class _MyOrderFullState extends State<MyOrderFull> {
                                                 children: [
                                                   Container(
                                                     margin: EdgeInsets.only(
-                                                        right: 10, top: 25),
+                                                        right: 10, top: 10),
                                                     child: Text(
                                                       trackingid,
                                                       style: TextStyle(
@@ -268,7 +272,7 @@ class _MyOrderFullState extends State<MyOrderFull> {
                                                           fontFamily:
                                                           'Roboto-Medium',
                                                           letterSpacing: 0.03,
-                                                          fontSize: 15.0,
+                                                          fontSize: 10.0,
                                                           color: Colors.white),
                                                     ),
                                                   ),
@@ -287,7 +291,7 @@ class _MyOrderFullState extends State<MyOrderFull> {
                                                           fontFamily:
                                                           'Roboto-Medium',
                                                           letterSpacing: 0.03,
-                                                          fontSize: 15.0,
+                                                          fontSize: 10.0,
                                                           color: Colors.white),
                                                     ),
                                                   )
@@ -339,8 +343,8 @@ class _MyOrderFullState extends State<MyOrderFull> {
             ],
           ),
           onWillPop: () async {
-            return Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => Homescreen()));
+            return Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                Homescreen()), (Route<dynamic> route) => false);
           }),
     );
   }

@@ -43,7 +43,7 @@ class _WishListFullState extends State<WishListFull> {
         });
       }
 
-      Fluttertoast.showToast(msg: json.decode(res.body)["message"], toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
+      Fluttertoast.showToast(msg: json.decode(res.body)["message"], toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 12, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
 
       throw new Exception(json.decode(res.body));
     } else {
@@ -61,11 +61,11 @@ class _WishListFullState extends State<WishListFull> {
 
     Navigator.pop(context);
     if (json.decode(res.body)["status_code"] == 400) {
-      Fluttertoast.showToast(msg: json.decode(res.body)["error_message"], toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
+      Fluttertoast.showToast(msg: json.decode(res.body)["error_message"], toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 12, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
       getStringValuesSF().then((value) => getSWData(value));
       throw new Exception(json.decode(res.body));
     } else {
-      Fluttertoast.showToast(msg: json.decode(res.body)["message"], toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
+      Fluttertoast.showToast(msg: json.decode(res.body)["message"], toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 12, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
       getStringValuesSF().then((value) => getSWData(value));
     }
 
@@ -108,12 +108,19 @@ class _WishListFullState extends State<WishListFull> {
                       children: [
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: Container(
-                            margin: EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
-                            child: Image(
-                              image: AssetImage('assets/images/back_12.png'),
-                              height: 30,
-                              width: 30,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                builder: (context) => Homescreen(),
+                              ));
+                            },
+                            child: Container(
+                              margin: EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
+                              child: Image(
+                                image: AssetImage('assets/images/back_12.png'),
+                                height: 30,
+                                width: 30,
+                              ),
                             ),
                           ),
                         ),
@@ -124,7 +131,7 @@ class _WishListFullState extends State<WishListFull> {
                             alignment: Alignment.center,
                             child: Text(
                               "Wishlist",
-                              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Colors.white),
+                              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                             ),
                           ),
                         )
@@ -215,7 +222,7 @@ class _WishListFullState extends State<WishListFull> {
                                                                       margin: EdgeInsets.only(left: 30, top: 20),
                                                                       child: Text(
                                                                         "Do you want to add to cart ?",
-                                                                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Color(0xFFff5000)),
+                                                                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                                                       ),
                                                                     ),
                                                                   ],
@@ -229,11 +236,11 @@ class _WishListFullState extends State<WishListFull> {
                                                                     getStringValuesSF().then((userid) => addcarttowishlist(snapshotitemlist[index]["id"], context));
                                                                   },
                                                                   child: Container(
-                                                                    margin: EdgeInsets.only(bottom: 15),
+                                                                    margin: EdgeInsets.only(bottom: 12),
                                                                     child: Image(
                                                                       image: AssetImage("assets/images/submit.png"),
                                                                       height: 60,
-                                                                      width: 150,
+                                                                      width: 120,
                                                                       fit: BoxFit.cover,
                                                                     ),
                                                                   ),
@@ -249,7 +256,7 @@ class _WishListFullState extends State<WishListFull> {
                                                   child: Container(
                                                     width: 25,
                                                     height: 25,
-                                                    margin: EdgeInsets.only(left: 30, top: 20),
+                                                    margin: EdgeInsets.only(top: 10),
                                                     child: Image(image: AssetImage("assets/images/plus.png"), height: 25, width: 25, fit: BoxFit.fill),
                                                   ),
                                                 ),
@@ -290,7 +297,7 @@ class _WishListFullState extends State<WishListFull> {
                                                                       margin: EdgeInsets.only(left: 30, top: 20),
                                                                       child: Text(
                                                                         "Do you want to delete wishlist\nproduct ?",
-                                                                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Color(0xFFff5000)),
+                                                                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                                                       ),
                                                                     ),
                                                                   ],
@@ -304,11 +311,11 @@ class _WishListFullState extends State<WishListFull> {
                                                                     getStringValuesSF().then((userid) => api.deletewishlist(userid, snapshotitemlist[index]["id"].toString(), context).then((value) => {getSWData(userid)}));
                                                                   },
                                                                   child: Container(
-                                                                    margin: EdgeInsets.only(bottom: 15),
+                                                                    margin: EdgeInsets.only(bottom: 12),
                                                                     child: Image(
                                                                       image: AssetImage("assets/images/submit.png"),
                                                                       height: 60,
-                                                                      width: 150,
+                                                                      width: 120,
                                                                       fit: BoxFit.cover,
                                                                     ),
                                                                   ),
@@ -324,7 +331,7 @@ class _WishListFullState extends State<WishListFull> {
                                                   child: Container(
                                                     width: 20,
                                                     height: 25,
-                                                    margin: EdgeInsets.only(right: 10, left: 30, top: 20),
+                                                    margin: EdgeInsets.only(right: 10, top: 10),
                                                     child: Image(image: AssetImage("assets/images/icons_8_delete_bin_24.png"), height: 25, width: 20, fit: BoxFit.fill),
                                                   ),
                                                 ),
@@ -347,12 +354,12 @@ class _WishListFullState extends State<WishListFull> {
                                                     margin: EdgeInsets.only(left: 30),
                                                     child: Text(
                                                       snapshotitemlist[index]["product_name"],
-                                                      style: TextStyle(fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
+                                                      style: TextStyle(fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 8.0, color: Colors.white),
                                                     ),
                                                   ),
                                                 ),
                                               ),
-                                              margin: EdgeInsets.only(right: 30, top: 20),
+                                              margin: EdgeInsets.only(right: 30, top: 15),
                                             ),
                                           ),
                                           Row(
@@ -362,35 +369,35 @@ class _WishListFullState extends State<WishListFull> {
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Container(
-                                                    margin: EdgeInsets.only(left: 30, top: 20, bottom: 10),
+                                                    margin: EdgeInsets.only(left: 30, top: 5, bottom: 10),
                                                     child: Image(image: NetworkImage(snapshotitemlist[index]["product_image"]), height: 80, width: 80, fit: BoxFit.scaleDown),
                                                   ),
                                                   Container(
                                                     margin: EdgeInsets.only(left: 30, top: 20),
                                                     child: Text(
                                                       "Quantity :",
-                                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 15.0, color: Color(0xFFff5000)),
+                                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                                     ),
                                                   ),
                                                   Container(
-                                                    margin: EdgeInsets.only(left: 30, top: 10),
+                                                    margin: EdgeInsets.only(left: 30, top: 5),
                                                     child: Text(
                                                       "Amount :",
-                                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 15.0, color: Color(0xFFff5000)),
+                                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                                     ),
                                                   ),
                                                   Container(
-                                                    margin: EdgeInsets.only(left: 30, top: 10),
+                                                    margin: EdgeInsets.only(left: 30, top: 5),
                                                     child: Text(
                                                       "Processing :",
-                                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 15.0, color: Color(0xFFff5000)),
+                                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                                     ),
                                                   ),
                                                   Container(
-                                                    margin: EdgeInsets.only(left: 30, top: 10),
+                                                    margin: EdgeInsets.only(left: 30, top: 5),
                                                     child: Text(
                                                       "Gross Total :",
-                                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 15.0, color: Color(0xFFff5000)),
+                                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                                     ),
                                                   ),
                                                 ],
@@ -401,7 +408,7 @@ class _WishListFullState extends State<WishListFull> {
                                                   Container(
                                                     width: 100,
                                                     height: 90,
-                                                    margin: EdgeInsets.only(right: 10, top: 20, bottom: 10),
+                                                    margin: EdgeInsets.only(right: 10, top: 5, bottom: 10),
                                                     child: Row(
                                                       children: [
                                                         Expanded(
@@ -412,7 +419,7 @@ class _WishListFullState extends State<WishListFull> {
                                                               return Container(
                                                                 child: Text(
                                                                   atrlbl[index] + ": " + optlbl[index],
-                                                                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 15.0, color: Colors.white),
+                                                                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                                                                 ),
                                                               );
                                                             },
@@ -426,28 +433,28 @@ class _WishListFullState extends State<WishListFull> {
                                                     margin: EdgeInsets.only(right: 10, top: 10),
                                                     child: Text(
                                                       snapshotitemlist[index]["qty"],
-                                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 15.0, color: Colors.white),
+                                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                                                     ),
                                                   ),
                                                   Container(
-                                                    margin: EdgeInsets.only(right: 10, top: 10),
+                                                    margin: EdgeInsets.only(right: 10, top: 5),
                                                     child: Text(
                                                       snapshotitemlist[index]["amount"],
-                                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 15.0, color: Colors.white),
+                                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                                                     ),
                                                   ),
                                                   Container(
-                                                    margin: EdgeInsets.only(right: 10, top: 10),
+                                                    margin: EdgeInsets.only(right: 10, top: 5),
                                                     child: Text(
                                                       snapshotitemlist[index]["product_fee"],
-                                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 15.0, color: Colors.white),
+                                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                                                     ),
                                                   ),
                                                   Container(
-                                                    margin: EdgeInsets.only(right: 10, top: 10),
+                                                    margin: EdgeInsets.only(right: 10, top: 5),
                                                     child: Text(
                                                       grandtotal.toString(),
-                                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 15.0, color: Colors.white),
+                                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                                                     ),
                                                   ),
                                                 ],
