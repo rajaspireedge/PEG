@@ -216,6 +216,7 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                         //this right here
                                                         child: Container(
                                                           height: 200,
+                                                          width: 50,
                                                           decoration: BoxDecoration(color: Color(0xFF0a0f32)),
                                                           child: Column(
                                                             children: [
@@ -238,18 +239,15 @@ class _AddtoCARTfullState extends State<AddtoCARTfull> {
                                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                 children: [
                                                                   Container(
+                                                                    width: 200,
                                                                     alignment: Alignment.center,
                                                                     margin: EdgeInsets.only(left: 30, top: 20),
                                                                     child: Text(
                                                                       "Do you want to delete cart product ?",
-                                                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Color(0xFFff5000)),
+                                                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                                                     ),
                                                                   ),
                                                                 ],
-                                                              ),
-                                                              Container(
-                                                                color: Colors.black,
-                                                                margin: EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 0.0),
                                                               ),
                                                               InkWell(
                                                                 onTap: () {

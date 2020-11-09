@@ -47,6 +47,8 @@ class RestDatasource {
   static final add_category_api = BASE_URL + "category/add_category";
   static final add_subcategory = BASE_URL + "category/add_subcategory";
   static final edit_category = BASE_URL + "category/edit_category";
+  static final get_membership_list = BASE_URL + "membership/get_membership_list";
+  static final get_user_membership = BASE_URL + "membership/get_user_membership/";
   static final get_product_list_by_search = BASE_URL + "product/get_product_list_by_search";
   static final update_tacking_info = BASE_URL + "order/update_tacking_info";
   static final cancel_my_order = BASE_URL + "order/cancel_my_order";
