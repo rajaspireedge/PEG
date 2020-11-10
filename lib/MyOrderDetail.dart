@@ -184,7 +184,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                         margin: EdgeInsets.only(left: 55, top: 20),
                                                         child: Text(
                                                           snapshotitemlist[index]["product_name"],
-                                                          style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 8.0, color: Colors.white),
+                                                          style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
                                                         ),
                                                       ),
                                                     ),
@@ -214,63 +214,63 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                           margin: EdgeInsets.only(left: 30, top: 20),
                                                           child: Text(
                                                             "Quantity :",
-                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFFff5000)),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                                           ),
                                                         ),
                                                         Container(
                                                           margin: EdgeInsets.only(left: 30, top: 10),
                                                           child: Text(
                                                             "Tracking ID :",
-                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFFff5000)),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                                           ),
                                                         ),
                                                         Container(
                                                           margin: EdgeInsets.only(left: 30, top: 10),
                                                           child: Text(
                                                             "Payment Method :",
-                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFFff5000)),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                                           ),
                                                         ),
                                                         Container(
                                                           margin: EdgeInsets.only(left: 30, top: 10),
                                                           child: Text(
                                                             "Shipping Fee :",
-                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFFff5000)),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                                           ),
                                                         ),
                                                         Container(
                                                           margin: EdgeInsets.only(left: 30, top: 10),
                                                           child: Text(
                                                             "Wallet Deducted :",
-                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFFff5000)),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                                           ),
                                                         ),
                                                         Container(
                                                           margin: EdgeInsets.only(left: 30, top: 10),
                                                           child: Text(
                                                             "Paypal Deducted :",
-                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFFff5000)),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                                           ),
                                                         ),
                                                         Container(
                                                           margin: EdgeInsets.only(left: 30, top: 10),
                                                           child: Text(
                                                             "Amount :",
-                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFFff5000)),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                                           ),
                                                         ),
                                                         Container(
                                                           margin: EdgeInsets.only(left: 30, top: 10),
                                                           child: Text(
                                                             "Processing :",
-                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFFff5000)),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                                           ),
                                                         ),
                                                         Container(
                                                           margin: EdgeInsets.only(left: 30, top: 10),
                                                           child: Text(
                                                             "Gross Total :",
-                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFFff5000)),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
                                                           ),
                                                         ),
                                                       ],
@@ -292,7 +292,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                     return Container(
                                                                       child: Text(
                                                                         atrlbl[index] + ": " + optlbl[index],
-                                                                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
+                                                                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                                                                       ),
                                                                     );
                                                                   },
@@ -306,63 +306,63 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                           margin: EdgeInsets.only(right: 10, top: 10),
                                                           child: Text(
                                                             snapshotitemlist[index]["qty"],
-                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                                                           ),
                                                         ),
                                                         Container(
                                                           margin: EdgeInsets.only(right: 10, top: 10),
                                                           child: Text(
                                                             trackingid,
-                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                                                           ),
                                                         ),
                                                         Container(
                                                           margin: EdgeInsets.only(right: 10, top: 10),
                                                           child: Text(
                                                             payment,
-                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                                                           ),
                                                         ),
                                                         Container(
                                                           margin: EdgeInsets.only(right: 10, top: 10),
                                                           child: Text(
                                                             new String.fromCharCodes(new Runes('\u0024')) + snapshotitemlist[index]["shipping_charge"],
-                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                                                           ),
                                                         ),
                                                         Container(
                                                           margin: EdgeInsets.only(right: 10, top: 10),
                                                           child: Text(
                                                             new String.fromCharCodes(new Runes('\u0024')) + snapshotitemlist[index]["wallet_deducted"],
-                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                                                           ),
                                                         ),
                                                         Container(
                                                           margin: EdgeInsets.only(right: 10, top: 10),
                                                           child: Text(
                                                             new String.fromCharCodes(new Runes('\u0024')) + snapshotitemlist[index]["paypal_deducted"],
-                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                                                           ),
                                                         ),
                                                         Container(
                                                           margin: EdgeInsets.only(right: 10, top: 10),
                                                           child: Text(
                                                             new String.fromCharCodes(new Runes('\u0024')) + snapshotitemlist[index]["amount"],
-                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                                                           ),
                                                         ),
                                                         Container(
                                                           margin: EdgeInsets.only(right: 10, top: 10),
                                                           child: Text(
                                                             new String.fromCharCodes(new Runes('\u0024')) + snapshotitemlist[index]["product_fee"],
-                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                                                           ),
                                                         ),
                                                         Container(
                                                           margin: EdgeInsets.only(right: 10, top: 10),
                                                           child: Text(
                                                             new String.fromCharCodes(new Runes('\u0024')) + snapshotitemlist[index]["sub_total"],
-                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 10.0, color: Colors.white),
+                                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                                                           ),
                                                         ),
                                                       ],

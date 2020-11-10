@@ -49,7 +49,7 @@ class Homescreen extends StatefulWidget {
 }
 
 RestDatasource api = new RestDatasource();
-TextStyle style = TextStyle(fontFamily: 'Roboto-Bold', fontSize: 12.0, color: Colors.white);
+TextStyle style = TextStyle(fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white);
 bool product_list = true;
 
 class _HomescreenState extends State<Homescreen> {
@@ -197,11 +197,11 @@ class _HomescreenState extends State<Homescreen> {
     var edit = new AssetImage('assets/images/icons_8_edit_64.png');
     var gotostore = new AssetImage('assets/images/gotostore.png');
 
-    Color color1 = Color(0xFF06cdff);
+    Color color1 = Color(0xFFfc4d20);
     Color color2 = Color(0xFF000001);
-    Color color3 = Color(0xFF6ae7e0);
+    Color color3 = Color(0xFFfc4d00);
 
-    TextStyle hintstyle = TextStyle(fontFamily: 'Roboto-Bold', fontSize: 12.0, color: Colors.white);
+    TextStyle hintstyle = TextStyle(fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white);
 
     final playerusername_controller = TextEditingController();
 
@@ -261,11 +261,16 @@ class _HomescreenState extends State<Homescreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Image(
-                        image: download_1,
-                        height: 70,
-                        width: 70,
-                      ),
+                      Container(
+                          width: 70.0,
+                          height: 70.0,
+                          decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                fit: BoxFit.fill,
+                                image: NetworkImage(userdata["image"]),
+                              )
+                          )),
                       Container(
                         transform: Matrix4.translationValues(0.0, -20.0, 0.0),
                         width: 100,
@@ -453,7 +458,7 @@ class _HomescreenState extends State<Homescreen> {
                           margin: EdgeInsets.all(6.0),
                           child: Text(
                             "Available balance : 0.00",
-                            style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 12.0, color: color1),
+                            style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 15.0, color: color1),
                           ),
                         ),
                       )
@@ -721,23 +726,24 @@ class _HomescreenState extends State<Homescreen> {
                                             type: MaterialType.transparency,
                                             child: Container(
                                                 margin: EdgeInsets.only(right: 30),
+                                                height: 25,
                                                 child: Stack(
                                                   children: [
                                                     Image(
-                                                      image: shape_1,
+                                                      image: shape_1, fit: BoxFit.cover,color: Color(0xFFfc4d00),
                                                     ),
                                                     Container(
-                                                      child: Text(snapshotproductlist[index]["name"] ?? 'Name', style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 7.0, color: Colors.black)),
-                                                      margin: EdgeInsets.fromLTRB(5.0, 0.0, 0.0, 0.0),
+                                                      alignment: Alignment.centerLeft,
+                                                      child: Text(snapshotproductlist[index]["name"] ?? 'Name', overflow: TextOverflow.ellipsis, style: TextStyle(fontFamily: 'Roboto-Bold',fontWeight: FontWeight.bold ,fontSize: 10.0, color: Colors.black)),
                                                       width: 140,
+                                                      margin: EdgeInsets.only(left: 1),
                                                     ),
                                                   ],
                                                 ))),
                                       ),
                                       Align(
                                         child: Container(
-                                          height: 80,
-                                          margin: EdgeInsets.only(right: 10, left: 10),
+                                          margin: EdgeInsets.only(top: 30, bottom: 45 , left: 10 , right: 10),
                                           alignment: Alignment.center,
                                           decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(snapshotproductlist[index]["image"]), fit: BoxFit.cover)),
                                         ),
@@ -789,11 +795,16 @@ class _HomescreenState extends State<Homescreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Image(
-                        image: download_1,
-                        height: 70,
-                        width: 70,
-                      ),
+                       Container(
+                          width: 70.0,
+                          height: 70.0,
+                          decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                  fit: BoxFit.fill,
+                                image: NetworkImage(userdata["image"]),
+                              )
+                          )),
                       Container(
                         transform: Matrix4.translationValues(0.0, -20.0, 0.0),
                         width: 100,
@@ -805,11 +816,11 @@ class _HomescreenState extends State<Homescreen> {
                         ),
                       ),
                       Text(
-                        'George Doe',
+                        userdata["name"],
                         style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 16.0, color: Colors.white),
                       ),
                       Text(
-                        'Account # 28',
+                        'Account # ' + userdata["account_no"],
                         style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 13.0, color: Colors.white),
                       ),
                     ],
@@ -1113,13 +1124,13 @@ class _HomescreenState extends State<Homescreen> {
                                 margin: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
                                 child: Text(
                                   "Account # " + snapshotplayerlist[index]["id"] ?? 'id',
-                                  style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 12.0, color: Colors.deepOrange),
+                                  style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.deepOrange),
                                 ),
                               ),
                               Container(
                                 child: Text(
                                   snapshotplayerlist[index]["display_name"] ?? 'Name',
-                                  style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 12.0, fontWeight: FontWeight.bold, color: Colors.white),
+                                  style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.white),
                                 ),
                               ),
                               Container(

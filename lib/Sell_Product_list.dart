@@ -692,7 +692,7 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                                         ),
                                         Align(
                                           child: Container(
-                                            height: 70,
+                                            height: 100,
                                             margin: EdgeInsets.only(bottom: 5.0),
                                             alignment: Alignment.center,
                                             decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(snapshotproductlist[index]["image"]))),

@@ -235,7 +235,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                   'Roboto-Bold',
                                                                   letterSpacing:
                                                                   0.03,
-                                                                  fontSize: 8.0,
+                                                                  fontSize: 10.0,
                                                                   color:
                                                                   Colors.white),
                                                             ),
@@ -248,9 +248,8 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                             margin: EdgeInsets.only(
                                                                 right: 6, top: 6),
                                                             child: Text(
-                                                              snapshotitemlist[
-                                                              index]
-                                                              ["created_at"],
+                                                              snapshotitemlist[index]["created_at"].toString().substring(0, 10),
+
                                                               style: TextStyle(
                                                                   fontWeight:
                                                                   FontWeight
@@ -259,7 +258,7 @@ class _MyOrderDetailFullState extends State<MyOrderDetailFull> {
                                                                   'Roboto-Medium',
                                                                   letterSpacing:
                                                                   0.03,
-                                                                  fontSize: 6.0,
+                                                                  fontSize: 10.0,
                                                                   color: Color(
                                                                       0xFFff5000)),
                                                             ),

@@ -179,7 +179,6 @@ class _WishListFullState extends State<WishListFull> {
                                   margin: EdgeInsets.only(bottom: 10),
                                   child: Stack(
                                     children: [
-                                      Image(image: AssetImage("assets/images/rounded_rectangle_4.png"), fit: BoxFit.fill),
                                       Align(
                                         alignment: Alignment.topRight,
                                         child: Container(
