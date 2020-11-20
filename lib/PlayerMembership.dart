@@ -7,6 +7,7 @@ import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 
 import 'package:peg/MyOrderDetail.dart';
+import 'package:peg/PaypalPaymentmembership.dart';
 import 'package:peg/RestDatasource.dart';
 import 'package:peg/homescreen.dart';
 import 'package:peg/main.dart';
@@ -58,7 +59,7 @@ class _PlayerMembershipFullState extends State<PlayerMembershipFull> {
 
       if (idlist.contains(usersnapshotitemlist["plan_id"].toString())) {
         for (int i = 0; i < snapshotitemlist.length; i++) {
-          if (usersnapshotitemlist["plan_id"].toString() == snapshotitemlist[i]["id"].toString()){
+          if (usersnapshotitemlist["plan_id"].toString() == snapshotitemlist[i]["id"].toString()) {
             setState(() {
               dynamicbools[i] = true;
               print(dynamicbools[i]);
@@ -179,10 +180,88 @@ class _PlayerMembershipFullState extends State<PlayerMembershipFull> {
                                                 style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                                               ),
                                             ),
-                                            Container(
-                                              margin: EdgeInsets.only(left: 10, top: 10),
-                                              child: Image(image: dynamicbools[index] ? AssetImage("assets/images/subscribe2.png") : AssetImage("assets/images/subscribe.png"), height: 25, width: 100, fit: BoxFit.cover),
-                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (BuildContext context) {
+                                                      return Dialog(
+                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                                                        //this right here
+                                                        child: Container(
+                                                          height: 200,
+                                                          decoration: BoxDecoration(color: Color(0xFF0a0f32)),
+                                                          child: Column(
+                                                            children: [
+                                                              InkWell(
+                                                                onTap: () {
+                                                                  Navigator.pop(context);
+                                                                },
+                                                                child: Container(
+                                                                  alignment: Alignment.centerRight,
+                                                                  margin: EdgeInsets.only(right: 30, top: 20),
+                                                                  child: Image(
+                                                                    image: AssetImage("assets/images/close_1.png"),
+                                                                    width: 20,
+                                                                    height: 20,
+                                                                    fit: BoxFit.cover,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Row(
+                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                children: [
+                                                                  Container(
+                                                                    alignment: Alignment.center,
+                                                                    margin: EdgeInsets.only(left: 30, top: 20),
+                                                                    child: Text(
+                                                                      "Do you want subscribe ?",
+                                                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Color(0xFFff5000)),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Container(
+                                                                color: Colors.black,
+                                                                margin: EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 0.0),
+                                                              ),
+                                                              InkWell(
+                                                                onTap: () {
+                                                                  int total = int.parse(snapshotitemlist[index]["amount"]) + int.parse(snapshotitemlist[index]["fees"]);
+                                                                  print(total);
+                                                                  Navigator.of(context).push(
+                                                                    MaterialPageRoute(
+                                                                      builder: (BuildContext context) => PaypalPaymentmembership(
+                                                                        total,
+                                                                        onFinish: (number) async {
+                                                                          // payment done44
+
+                                                                        },
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                                child: Container(
+                                                                  margin: EdgeInsets.only(bottom: 12),
+                                                                  child: Image(
+                                                                    image: AssetImage("assets/images/submit.png"),
+                                                                    height: 60,
+                                                                    width: 120,
+                                                                    fit: BoxFit.cover,
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    });
+                                              },
+                                              child: Container(
+                                                margin: EdgeInsets.only(left: 10, top: 10),
+                                                child: Image(image: dynamicbools[index] ? AssetImage("assets/images/subscribe2.png") : AssetImage("assets/images/subscribe.png"), height: 25, width: 100, fit: BoxFit.cover),
+                                              ),
+                                            )
                                           ],
                                         ),
                                       ],

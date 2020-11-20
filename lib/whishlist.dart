@@ -178,7 +178,10 @@ class _WishListFullState extends State<WishListFull> {
                                 return Container(
                                   margin: EdgeInsets.only(bottom: 10),
                                   child: Stack(
+
                                     children: [
+                                      Image(image: AssetImage("assets/images/rounded_rectangle_4.png"), fit: BoxFit.fill),
+
                                       Align(
                                         alignment: Alignment.topRight,
                                         child: Container(
@@ -187,75 +190,13 @@ class _WishListFullState extends State<WishListFull> {
                                             children: [
                                               InkWell(
                                                 onTap: () {
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext context) {
-                                                        return Dialog(
-                                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                                                          //this right here
-                                                          child: Container(
-                                                            height: 200,
-                                                            decoration: BoxDecoration(color: Color(0xFF0a0f32)),
-                                                            child: Column(
-                                                              children: [
-                                                                InkWell(
-                                                                  onTap: () {
-                                                                    Navigator.pop(context);
-                                                                  },
-                                                                  child: Container(
-                                                                    alignment: Alignment.centerRight,
-                                                                    margin: EdgeInsets.only(right: 30, top: 20),
-                                                                    child: Image(
-                                                                      image: AssetImage("assets/images/close_1.png"),
-                                                                      width: 20,
-                                                                      height: 20,
-                                                                      fit: BoxFit.cover,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                                Row(
-                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                  children: [
-                                                                    Container(
-                                                                      alignment: Alignment.center,
-                                                                      margin: EdgeInsets.only(left: 30, top: 20),
-                                                                      child: Text(
-                                                                        "Do you want to add to cart ?",
-                                                                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 12.0, color: Color(0xFFff5000)),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                Container(
-                                                                  color: Colors.black,
-                                                                  margin: EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 0.0),
-                                                                ),
-                                                                InkWell(
-                                                                  onTap: () {
-                                                                    getStringValuesSF().then((userid) => addcarttowishlist(snapshotitemlist[index]["id"], context));
-                                                                  },
-                                                                  child: Container(
-                                                                    margin: EdgeInsets.only(bottom: 12),
-                                                                    child: Image(
-                                                                      image: AssetImage("assets/images/submit.png"),
-                                                                      height: 60,
-                                                                      width: 120,
-                                                                      fit: BoxFit.cover,
-                                                                    ),
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        );
-                                                      });
                                                 },
                                                 child: Align(
                                                   alignment: Alignment.topRight,
                                                   child: Container(
                                                     width: 25,
                                                     height: 25,
-                                                    margin: EdgeInsets.only(top: 10),
+                                                    margin: EdgeInsets.only(top: 10 , right: 10),
                                                     child: Image(image: AssetImage("assets/images/plus.png"), height: 25, width: 25, fit: BoxFit.fill),
                                                   ),
                                                 ),
@@ -342,23 +283,22 @@ class _WishListFullState extends State<WishListFull> {
                                       Column(
                                         children: [
                                           Align(
-                                            alignment: Alignment.topLeft,
+                                            alignment: Alignment.centerLeft,
                                             child: Container(
                                               width: 200,
-                                              height: 30,
+                                              height: 40,
                                               child: Container(
                                                 child: Align(
-                                                  alignment: Alignment.centerLeft,
+                                                  alignment: Alignment.bottomLeft,
                                                   child: Container(
                                                     margin: EdgeInsets.only(left: 30),
                                                     child: Text(
                                                       snapshotitemlist[index]["product_name"],
-                                                      style: TextStyle(fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 8.0, color: Colors.white),
+                                                      style: TextStyle(fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
                                                     ),
                                                   ),
                                                 ),
                                               ),
-                                              margin: EdgeInsets.only(right: 30, top: 15),
                                             ),
                                           ),
                                           Row(
