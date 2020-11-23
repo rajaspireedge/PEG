@@ -26,9 +26,12 @@ class AddproductFull extends StatefulWidget {
 
 class _AddproductFullState extends State<AddproductFull> {
   final username_controller = TextEditingController();
+  final username_controller2 = TextEditingController();
+  final username_controller3 = TextEditingController();
+  final username_controller4 = TextEditingController();
+  Map<String, String> apimap = new Map();
 
-  TextStyle hintstyle =
-      TextStyle(fontFamily: 'Roboto-Bold', fontSize: 10.0, color: Colors.white);
+  TextStyle hintstyle = TextStyle(fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white);
   var back_1 = new AssetImage('assets/images/back_1.png');
 
   String _mySelection;
@@ -41,8 +44,7 @@ class _AddproductFullState extends State<AddproductFull> {
   List data2 = List(); //edited line
 
   Future<String> getSWData() async {
-    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_categories),
-        headers: {"Accept": "application/json"});
+    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_categories), headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
 
     setState(() {
@@ -65,9 +67,7 @@ class _AddproductFullState extends State<AddproductFull> {
   }
 
   Future<String> getsubData(String id) async {
-    var res = await http.get(
-        Uri.encodeFull(RestDatasource.get_all_subcategories + id),
-        headers: {"Accept": "application/json"});
+    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_subcategories + id), headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
 
     setState(() {
@@ -87,12 +87,7 @@ class _AddproductFullState extends State<AddproductFull> {
           Container(
             child: Text(
               "Product Basic Details",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Roboto-Medium',
-                  letterSpacing: 0.03,
-                  fontSize: 20.0,
-                  color: Colors.white),
+              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 20.0, color: Colors.white),
             ),
           ),
           Container(
@@ -100,22 +95,18 @@ class _AddproductFullState extends State<AddproductFull> {
               children: [
                 Container(
                     margin: EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 0.0),
-                    decoration: new BoxDecoration(
-                        color: Color(0xFF0a0f32),
-                        borderRadius: BorderRadius.circular(40),
-                        border: Border.all(color: Color(0xFF00a99d))),
+                    decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(40), border: Border.all(color: Color(0xFF00a99d))),
                     child: Stack(
                       alignment: AlignmentDirectional.center,
                       children: [
                         Container(
-                          margin: EdgeInsets.only(right: 30.0),
                           child: Padding(
                             padding: EdgeInsets.all(2.0),
                             child: TextField(
                               style: style,
                               controller: username_controller,
                               decoration: InputDecoration(
-                                contentPadding: EdgeInsets.all(18),
+                                contentPadding: EdgeInsets.all(15),
                                 hintText: "Product Title",
                                 border: InputBorder.none,
                                 hintStyle: hintstyle,
@@ -129,10 +120,7 @@ class _AddproductFullState extends State<AddproductFull> {
                   children: <Widget>[
                     Container(
                         margin: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
-                        decoration: new BoxDecoration(
-                            color: Color(0xFF0a0f32),
-                            borderRadius: BorderRadius.circular(40),
-                            border: Border.all(color: Color(0xFF00a99d))),
+                        decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(40), border: Border.all(color: Color(0xFF00a99d))),
                         child: Stack(
                           alignment: AlignmentDirectional.center,
                           children: [
@@ -188,10 +176,7 @@ class _AddproductFullState extends State<AddproductFull> {
                   children: <Widget>[
                     Container(
                         margin: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
-                        decoration: new BoxDecoration(
-                            color: Color(0xFF0a0f32),
-                            borderRadius: BorderRadius.circular(40),
-                            border: Border.all(color: Color(0xFF00a99d))),
+                        decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(40), border: Border.all(color: Color(0xFF00a99d))),
                         child: Stack(
                           alignment: AlignmentDirectional.center,
                           children: [
@@ -245,10 +230,7 @@ class _AddproductFullState extends State<AddproductFull> {
                     height: 200,
                     alignment: Alignment.topLeft,
                     margin: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 30.0),
-                    decoration: new BoxDecoration(
-                        color: Color(0xFF0a0f32),
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Color(0xFF00a99d))),
+                    decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(10), border: Border.all(color: Color(0xFF00a99d))),
                     child: Stack(
                       alignment: AlignmentDirectional.center,
                       children: [
@@ -258,10 +240,10 @@ class _AddproductFullState extends State<AddproductFull> {
                             padding: EdgeInsets.all(2.0),
                             child: TextField(
                               style: style,
-                              controller: username_controller,
+                              controller: username_controller4,
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.all(18),
-                                hintText: "Product Title",
+                                hintText: "Description",
                                 border: InputBorder.none,
                                 hintStyle: hintstyle,
                               ),
@@ -292,15 +274,24 @@ class _AddproductFullState extends State<AddproductFull> {
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Container(
-                  transform: Matrix4.translationValues(25, 0, 0),
-                  child: Image(
-                    image: AssetImage("assets/images/group_2_copy_2_234.png"),
-                    fit: BoxFit.cover,
-                    width: 150,
-                    height: 80,
+              GestureDetector(
+                onTap: () {
+                  apimap["product_name"] = username_controller.text.toString();
+                  apimap["category_id"] = _mySelection.toString();
+                  apimap["subcategory_id"] = _mySelection2.toString();
+                  apimap["description"] = username_controller4.text.toString();
+                  print(apimap);
+                },
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Container(
+                    transform: Matrix4.translationValues(25, 0, 0),
+                    child: Image(
+                      image: AssetImage("assets/images/group_2_copy_2_234.png"),
+                      fit: BoxFit.cover,
+                      width: 150,
+                      height: 80,
+                    ),
                   ),
                 ),
               )
@@ -321,12 +312,7 @@ class _AddproductFullState extends State<AddproductFull> {
           Container(
             child: Text(
               "Product Price Details",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Roboto-Medium',
-                  letterSpacing: 0.03,
-                  fontSize: 20.0,
-                  color: Colors.white),
+              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 20.0, color: Colors.white),
             ),
           ),
           Container(
@@ -334,10 +320,7 @@ class _AddproductFullState extends State<AddproductFull> {
               children: [
                 Container(
                     margin: EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 0.0),
-                    decoration: new BoxDecoration(
-                        color: Color(0xFF0a0f32),
-                        borderRadius: BorderRadius.circular(40),
-                        border: Border.all(color: Color(0xFF00a99d))),
+                    decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(40), border: Border.all(color: Color(0xFF00a99d))),
                     child: Stack(
                       alignment: AlignmentDirectional.center,
                       children: [
@@ -347,7 +330,7 @@ class _AddproductFullState extends State<AddproductFull> {
                             padding: EdgeInsets.all(2.0),
                             child: TextField(
                               style: style,
-                              controller: username_controller,
+                              controller: username_controller2,
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.all(18),
                                 hintText: "Please Enter Price",
@@ -361,10 +344,7 @@ class _AddproductFullState extends State<AddproductFull> {
                     )),
                 Container(
                     margin: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 30.0),
-                    decoration: new BoxDecoration(
-                        color: Color(0xFF0a0f32),
-                        borderRadius: BorderRadius.circular(40),
-                        border: Border.all(color: Color(0xFF00a99d))),
+                    decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(40), border: Border.all(color: Color(0xFF00a99d))),
                     child: Stack(
                       alignment: AlignmentDirectional.center,
                       children: [
@@ -374,7 +354,7 @@ class _AddproductFullState extends State<AddproductFull> {
                             padding: EdgeInsets.all(2.0),
                             child: TextField(
                               style: style,
-                              controller: username_controller,
+                              controller: username_controller3,
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.all(18),
                                 hintText: "Please Enter Qty",
@@ -437,12 +417,7 @@ class _AddproductFullState extends State<AddproductFull> {
           Container(
             child: Text(
               "Product Images Details",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Roboto-Medium',
-                  letterSpacing: 0.03,
-                  fontSize: 20.0,
-                  color: Colors.white),
+              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 20.0, color: Colors.white),
             ),
           ),
           Container(
@@ -453,20 +428,13 @@ class _AddproductFullState extends State<AddproductFull> {
                   margin: EdgeInsets.only(left: 30, top: 20),
                   child: Text(
                     "Store Banner",
-                    style: TextStyle(
-                        fontFamily: 'Roboto-Bold',
-                        letterSpacing: 0.03,
-                        fontSize: 18.0,
-                        color: Colors.white),
+                    style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 18.0, color: Colors.white),
                   ),
                 ),
                 Container(
                   height: 50,
                   margin: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 30.0),
-                  decoration: new BoxDecoration(
-                      color: Color(0xFF0a0f32),
-                      borderRadius: BorderRadius.circular(40),
-                      border: Border.all(color: Color(0xFF00a99d))),
+                  decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(40), border: Border.all(color: Color(0xFF00a99d))),
                   child: Row(
                     children: [
                       Container(
@@ -475,30 +443,20 @@ class _AddproductFullState extends State<AddproductFull> {
                           height: 30,
                           decoration: BoxDecoration(
                             color: Color(0xFF101a6f),
-                            borderRadius:
-                                BorderRadius.all(const Radius.circular(20)),
+                            borderRadius: BorderRadius.all(const Radius.circular(20)),
                           ),
                           child: Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                            padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                             child: Text(
                               "Choose File",
-                              style: TextStyle(
-                                  fontFamily: 'Roboto-Bold',
-                                  letterSpacing: 0.03,
-                                  fontSize: 15.0,
-                                  color: Colors.white),
+                              style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 15.0, color: Colors.white),
                             ),
                           )),
                       Container(
                         margin: EdgeInsets.only(left: 10.0),
                         child: Text(
                           "No file chosen",
-                          style: TextStyle(
-                              fontFamily: 'Roboto-Bold',
-                              letterSpacing: 0.03,
-                              fontSize: 10.0,
-                              color: Color(0xFF3aa2a2a2)),
+                          style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFF3aa2a2a2)),
                         ),
                       )
                     ],
@@ -579,11 +537,9 @@ class _AddproductFullState extends State<AddproductFull> {
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Container(
-                                    margin: EdgeInsets.fromLTRB(
-                                        15.0, 10.0, 0.0, 0.0),
+                                    margin: EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
                                     child: Image(
-                                      image: AssetImage(
-                                          'assets/images/back_12.png'),
+                                      image: AssetImage('assets/images/back_12.png'),
                                       height: 30,
                                       width: 30,
                                     ),
@@ -592,17 +548,11 @@ class _AddproductFullState extends State<AddproductFull> {
                                 Align(
                                   alignment: Alignment.center,
                                   child: Container(
-                                    margin: EdgeInsets.fromLTRB(
-                                        0.0, 10.0, 0.0, 0.0),
+                                    margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
                                     alignment: Alignment.center,
                                     child: Text(
                                       "Add Products",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Roboto-Bold',
-                                          letterSpacing: 0.03,
-                                          fontSize: 16.0,
-                                          color: Colors.white),
+                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Colors.white),
                                     ),
                                   ),
                                 ),
@@ -623,8 +573,7 @@ class _AddproductFullState extends State<AddproductFull> {
                                     Container(
                                       margin: EdgeInsets.only(top: 10),
                                       child: Image(
-                                        image: AssetImage(
-                                            "assets/images/rectangle_11.png"),
+                                        image: AssetImage("assets/images/rectangle_11.png"),
                                         height: 34,
                                         width: 150,
                                         fit: BoxFit.cover,
@@ -634,11 +583,7 @@ class _AddproductFullState extends State<AddproductFull> {
                                       margin: EdgeInsets.only(top: 10),
                                       width: 150,
                                       height: 34,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(3.0),
-                                          border: Border.all(
-                                              color: Color(0xFFff5000))),
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
                                     ),
                                   ],
                                 ),
@@ -652,28 +597,20 @@ class _AddproductFullState extends State<AddproductFull> {
                                       margin: EdgeInsets.only(top: 10),
                                       width: 150,
                                       height: 34,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(3.0),
-                                          border: Border.all(
-                                              color: Color(0xFFff5000))),
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
                                     ),
                                     Container(
                                       margin: EdgeInsets.only(top: 10),
                                       width: 150,
                                       height: 34,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(3.0),
-                                          border: Border.all(
-                                              color: Color(0xFFff5000))),
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
                                     ),
                                   ],
                                 ),
                               )
                             ],
                           ),
-                          _ProductLayout()
+                          _BasicLayout()
                         ],
                       ),
                     )
@@ -683,8 +620,7 @@ class _AddproductFullState extends State<AddproductFull> {
             ],
           ),
           onWillPop: () async {
-            return Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => Homescreen()));
+            return Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Homescreen()));
           }),
     );
   }
