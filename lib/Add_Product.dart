@@ -37,6 +37,9 @@ class _AddproductFullState extends State<AddproductFull> {
   String _mySelection;
   String _mySelection2;
 
+  String screenchange = "1";
+  String boxchange = "1";
+
   List<Map<String, dynamic>> snapshotproductlist = List();
   List<Map<String, dynamic>> snapshotplayerlist = List();
 
@@ -74,7 +77,7 @@ class _AddproductFullState extends State<AddproductFull> {
       data2 = resBody["subcategory_list"];
     });
 
-    return "Sucess";
+    return "Success";
   }
 
   Widget _BasicLayout() {
@@ -84,7 +87,53 @@ class _AddproductFullState extends State<AddproductFull> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      child: Image(
+                        image: AssetImage("assets/images/rectangle_11.png"),
+                        height: 34,
+                        width: 150,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      width: 150,
+                      height: 34,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      width: 150,
+                      height: 34,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      width: 150,
+                      height: 34,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
           Container(
+            margin: EdgeInsets.only(top: 20),
             child: Text(
               "Product Basic Details",
               style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 20.0, color: Colors.white),
@@ -281,6 +330,10 @@ class _AddproductFullState extends State<AddproductFull> {
                   apimap["subcategory_id"] = _mySelection2.toString();
                   apimap["description"] = username_controller4.text.toString();
                   print(apimap);
+
+                  setState(() {
+                    screenchange = "2";
+                  });
                 },
                 child: Align(
                   alignment: Alignment.centerRight,
@@ -309,7 +362,53 @@ class _AddproductFullState extends State<AddproductFull> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      width: 150,
+                      height: 34,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      width: 150,
+                      height: 34,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      child: Image(
+                        image: AssetImage("assets/images/rectangle_11.png"),
+                        height: 34,
+                        width: 150,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      width: 150,
+                      height: 34,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
           Container(
+            margin: EdgeInsets.only(top: 20),
             child: Text(
               "Product Price Details",
               style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 20.0, color: Colors.white),
@@ -376,27 +475,236 @@ class _AddproductFullState extends State<AddproductFull> {
           ),
           Stack(
             children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  transform: Matrix4.translationValues(-25, 0, 0),
-                  child: Image(
-                    image: AssetImage("assets/images/group_2_copy_234.png"),
-                    fit: BoxFit.cover,
-                    width: 150,
-                    height: 80,
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    screenchange = "1";
+                  });
+                },
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    transform: Matrix4.translationValues(-25, 0, 0),
+                    child: Image(
+                      image: AssetImage("assets/images/group_2_copy_234.png"),
+                      fit: BoxFit.cover,
+                      width: 150,
+                      height: 80,
+                    ),
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Container(
-                  transform: Matrix4.translationValues(25, 0, 0),
-                  child: Image(
-                    image: AssetImage("assets/images/group_2_copy_2_234.png"),
-                    fit: BoxFit.cover,
-                    width: 150,
-                    height: 80,
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    screenchange = "3";
+                  });
+                },
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Container(
+                    transform: Matrix4.translationValues(25, 0, 0),
+                    child: Image(
+                      image: AssetImage("assets/images/group_2_copy_2_234.png"),
+                      fit: BoxFit.cover,
+                      width: 150,
+                      height: 80,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _DynamicLayout() {
+    print("click" + screenchange);
+    if (screenchange == "1") {
+      return _BasicLayout();
+    } else if (screenchange == "2") {
+      return _PriceLayout();
+    } else if (screenchange == "3") {
+      return _Attributelayout();
+    } else {
+      return _ProductLayout();
+    }
+  }
+
+  Widget _Attributelayout() {
+    return Container(
+      margin: EdgeInsets.only(top: 20, left: 30, right: 30),
+      alignment: Alignment.topLeft,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      width: 150,
+                      height: 34,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      child: Image(
+                        image: AssetImage("assets/images/rectangle_11.png"),
+                        height: 34,
+                        width: 150,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      width: 150,
+                      height: 34,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      width: 150,
+                      height: 34,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 20),
+            child: Text(
+              "Product Attributes Details",
+              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 20.0, color: Colors.white),
+            ),
+          ),
+          ListView.builder(
+            shrinkWrap: true,
+            padding: EdgeInsets.only(right: 20, left: 20, top: 10, bottom: 10),
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: 5,
+            itemBuilder: (context, index) {
+              return Container(
+                child: Column(
+                  children: [
+                    Container(
+                        margin: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
+                        decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(40), border: Border.all(color: Color(0xFF00a99d))),
+                        child: Stack(
+                          alignment: AlignmentDirectional.centerStart,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(right: 20.0),
+                              child: Padding(
+                                padding: EdgeInsets.all(15.0),
+                                child: Text(
+                                  "Please select sub category",
+                                  style: style,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              alignment: Alignment.centerRight,
+                              margin: EdgeInsets.only(right: 20.0),
+                              child: Image(
+                                image: back_1,
+                                height: 20,
+                                width: 20,
+                              ),
+                            ),
+                          ],
+                        )),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      margin: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 30.0),
+                      decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(10), border: Border.all(color: Color(0xFF00a99d))),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.only(right: 20, left: 20, top: 10, bottom: 10),
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              margin: EdgeInsets.only(top: 5, bottom: 5),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.all(10),
+                                    child: Text(
+                                      "name",
+                                      style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 12.0, color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                margin: EdgeInsets.only(top: 20),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Color(0xFF00a99d)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              );
+            },
+          ),
+          Stack(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    screenchange = "2";
+                  });
+                },
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    transform: Matrix4.translationValues(-25, 0, 0),
+                    child: Image(
+                      image: AssetImage("assets/images/group_2_copy_234.png"),
+                      fit: BoxFit.cover,
+                      width: 150,
+                      height: 80,
+                    ),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    screenchange = "4";
+                  });
+                },
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Container(
+                    transform: Matrix4.translationValues(25, 0, 0),
+                    child: Image(
+                      image: AssetImage("assets/images/group_2_copy_2_234.png"),
+                      fit: BoxFit.cover,
+                      width: 150,
+                      height: 80,
+                    ),
                   ),
                 ),
               )
@@ -472,27 +780,41 @@ class _AddproductFullState extends State<AddproductFull> {
           ),
           Stack(
             children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  transform: Matrix4.translationValues(-25, 0, 0),
-                  child: Image(
-                    image: AssetImage("assets/images/group_2_copy_234.png"),
-                    fit: BoxFit.cover,
-                    width: 150,
-                    height: 80,
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    screenchange = "1";
+                  });
+                },
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    transform: Matrix4.translationValues(-25, 0, 0),
+                    child: Image(
+                      image: AssetImage("assets/images/group_2_copy_234.png"),
+                      fit: BoxFit.cover,
+                      width: 150,
+                      height: 80,
+                    ),
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Container(
-                  transform: Matrix4.translationValues(25, 0, 0),
-                  child: Image(
-                    image: AssetImage("assets/images/group_2_copy_2_234.png"),
-                    fit: BoxFit.cover,
-                    width: 150,
-                    height: 80,
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    screenchange = "3";
+                  });
+                },
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Container(
+                    transform: Matrix4.translationValues(25, 0, 0),
+                    child: Image(
+                      image: AssetImage("assets/images/group_2_copy_2_234.png"),
+                      fit: BoxFit.cover,
+                      width: 150,
+                      height: 80,
+                    ),
                   ),
                 ),
               )
@@ -508,7 +830,6 @@ class _AddproductFullState extends State<AddproductFull> {
     // TODO: implement initState
     super.initState();
     this.getSWData();
-    this.getProductList();
   }
 
   @override
@@ -525,98 +846,56 @@ class _AddproductFullState extends State<AddproductFull> {
                   ),
                 ),
               ),
-              SingleChildScrollView(
-                child: Stack(
-                  children: [
-                    Center(
-                      child: Column(
-                        children: [
-                          Container(
-                            child: Stack(
-                              children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Container(
-                                    margin: EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
-                                    child: Image(
-                                      image: AssetImage('assets/images/back_12.png'),
-                                      height: 30,
-                                      width: 30,
-                                    ),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Container(
-                                    margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "Add Products",
-                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                              ],
+              Column(
+                children: [
+                  Container(
+                    child: Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            margin: EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
+                            child: Image(
+                              image: AssetImage('assets/images/back_12.png'),
+                              height: 30,
+                              width: 30,
                             ),
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.all(10.0),
-                            color: Color(0xFF0a0f32),
-                            height: 80,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        ),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Add Products",
+                              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.all(10.0),
+                    color: Color(0xFF0a0f32),
+                    height: 80,
+                  ),
+                  Expanded(
+                      child: SingleChildScrollView(
+                    child: Stack(
+                      children: [
+                        Center(
+                          child: Column(
                             children: [
-                              Container(
-                                margin: EdgeInsets.only(left: 30),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.only(top: 10),
-                                      child: Image(
-                                        image: AssetImage("assets/images/rectangle_11.png"),
-                                        height: 34,
-                                        width: 150,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(top: 10),
-                                      width: 150,
-                                      height: 34,
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(right: 30),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.only(top: 10),
-                                      width: 150,
-                                      height: 34,
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(top: 10),
-                                      width: 150,
-                                      height: 34,
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
-                                    ),
-                                  ],
-                                ),
-                              )
+                              _DynamicLayout(),
                             ],
                           ),
-                          _BasicLayout()
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              )
+                        )
+                      ],
+                    ),
+                  )),
+                ],
+              ),
             ],
           ),
           onWillPop: () async {
