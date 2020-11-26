@@ -56,6 +56,7 @@ class RestDatasource {
   static final category_status_update = BASE_URL + "category/category_status_update";
   static final update_player_local_tax = BASE_URL + "product/update_player_local_tax";
   static final cart_product_qty_update = BASE_URL + "cart/cart_product_qty_update";
+  static final get_attributes = BASE_URL + "attributes/get_attributes";
 
   addStringToSF(String id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

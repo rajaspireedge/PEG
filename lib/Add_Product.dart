@@ -42,6 +42,7 @@ class _AddproductFullState extends State<AddproductFull> {
 
   List<Map<String, dynamic>> snapshotproductlist = List();
   List<Map<String, dynamic>> snapshotplayerlist = List();
+  List<dynamic> attributelist = List();
 
   List data = List(); //edited line
   List data2 = List(); //edited line
@@ -52,6 +53,17 @@ class _AddproductFullState extends State<AddproductFull> {
 
     setState(() {
       data = resBody["category_list"];
+    });
+
+    return "Success";
+  }
+
+  Future<String> getAttribute() async {
+    var res = await http.get(Uri.encodeFull(RestDatasource.get_attributes), headers: {"Accept": "application/json"});
+    var resBody = json.decode(res.body);
+
+    setState(() {
+      attributelist = resBody["attr_list"];
     });
 
     return "Success";
@@ -596,13 +608,13 @@ class _AddproductFullState extends State<AddproductFull> {
             shrinkWrap: true,
             padding: EdgeInsets.only(right: 20, left: 20, top: 10, bottom: 10),
             physics: NeverScrollableScrollPhysics(),
-            itemCount: 5,
+            itemCount: attributelist.length,
             itemBuilder: (context, index) {
               return Container(
                 child: Column(
                   children: [
                     Container(
-                        margin: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
+                        margin: EdgeInsets.only(top: 20 , right: 20 , left: 20),
                         decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(40), border: Border.all(color: Color(0xFF00a99d))),
                         child: Stack(
                           alignment: AlignmentDirectional.centerStart,
@@ -612,7 +624,7 @@ class _AddproductFullState extends State<AddproductFull> {
                               child: Padding(
                                 padding: EdgeInsets.all(15.0),
                                 child: Text(
-                                  "Please select sub category",
+                                  attributelist[index]["title"],
                                   style: style,
                                 ),
                               ),
@@ -629,23 +641,26 @@ class _AddproductFullState extends State<AddproductFull> {
                           ],
                         )),
                     Container(
-                      alignment: Alignment.topLeft,
-                      margin: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 30.0),
                       decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(10), border: Border.all(color: Color(0xFF00a99d))),
-                      child: ListView.builder(
+                      margin: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+                      child: GridView.builder(
                         shrinkWrap: true,
-                        padding: EdgeInsets.only(right: 20, left: 20, top: 10, bottom: 10),
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: 5,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisSpacing: 5,
+                          crossAxisCount: 3,
+                        ),
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {},
                             child: Container(
-                              margin: EdgeInsets.only(top: 5, bottom: 5),
+                              margin: EdgeInsets.only(top: 5),
                               child: Row(
                                 children: [
                                   Container(
-                                    margin: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(color: Color(0xFFff5000), borderRadius: BorderRadius.circular(5)),
+                                    padding: const EdgeInsets.only(top: 5, bottom: 5, right: 10, left: 10),
                                     child: Text(
                                       "name",
                                       style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 12.0, color: Colors.white),
@@ -830,6 +845,7 @@ class _AddproductFullState extends State<AddproductFull> {
     // TODO: implement initState
     super.initState();
     this.getSWData();
+    this.getAttribute();
   }
 
   @override
