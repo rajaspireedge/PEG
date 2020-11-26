@@ -43,6 +43,7 @@ class _AddproductFullState extends State<AddproductFull> {
   List<Map<String, dynamic>> snapshotproductlist = List();
   List<Map<String, dynamic>> snapshotplayerlist = List();
   List<dynamic> attributelist = List();
+  List<dynamic> optionlist = List();
 
   List data = List(); //edited line
   List data2 = List(); //edited line
@@ -606,7 +607,7 @@ class _AddproductFullState extends State<AddproductFull> {
           ),
           ListView.builder(
             shrinkWrap: true,
-            padding: EdgeInsets.only(right: 20, left: 20, top: 10, bottom: 10),
+            padding: EdgeInsets.only( top: 10, bottom: 10),
             physics: NeverScrollableScrollPhysics(),
             itemCount: attributelist.length,
             itemBuilder: (context, index) {
@@ -614,8 +615,8 @@ class _AddproductFullState extends State<AddproductFull> {
                 child: Column(
                   children: [
                     Container(
-                        margin: EdgeInsets.only(top: 20 , right: 20 , left: 20),
-                        decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(40), border: Border.all(color: Color(0xFF00a99d))),
+                        margin: EdgeInsets.only(top: 20, right: 20, left: 20),
+                        decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(20), border: Border.all(color: Color(0xFF00a99d))),
                         child: Stack(
                           alignment: AlignmentDirectional.centerStart,
                           children: [
@@ -640,39 +641,7 @@ class _AddproductFullState extends State<AddproductFull> {
                             ),
                           ],
                         )),
-                    Container(
-                      decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(10), border: Border.all(color: Color(0xFF00a99d))),
-                      margin: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
-                      child: GridView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: 5,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisSpacing: 5,
-                          crossAxisCount: 3,
-                        ),
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              margin: EdgeInsets.only(top: 5),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(color: Color(0xFFff5000), borderRadius: BorderRadius.circular(5)),
-                                    padding: const EdgeInsets.only(top: 5, bottom: 5, right: 10, left: 10),
-                                    child: Text(
-                                      "name",
-                                      style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 12.0, color: Colors.white),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+                    _Optionlist(index),
                   ],
                 ),
                 margin: EdgeInsets.only(top: 20),
@@ -726,6 +695,51 @@ class _AddproductFullState extends State<AddproductFull> {
             ],
           )
         ],
+      ),
+    );
+  }
+
+  Widget _Optionlist(int index){
+
+    optionlist.clear();
+    optionlist = attributelist[index]["option_list"];
+
+    return Container(
+      alignment: Alignment.topCenter,
+      decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(10), border: Border.all(color: Color(0xFF00a99d))),
+      margin: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: optionlist.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          mainAxisSpacing: 0.5,
+          crossAxisSpacing: 0.5,
+          crossAxisCount: 4,
+        ),
+        itemBuilder: (context, index) {
+
+          return GestureDetector(
+            onTap: () {},
+            child: Container(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              alignment: Alignment.topCenter,
+              margin: EdgeInsets.only(left: 2, right: 2),
+              child: Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(color: Color(0xFFff5000), borderRadius: BorderRadius.circular(5)),
+                    padding: const EdgeInsets.only(top: 10, bottom: 10, right: 15, left: 15),
+                    child: Text(
+                      optionlist[index]["option_label"].toString(),
+                      style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'Roboto-Bold', fontSize: 12.0, color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
