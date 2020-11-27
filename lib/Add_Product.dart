@@ -31,6 +31,10 @@ class _AddproductFullState extends State<AddproductFull> {
   final username_controller4 = TextEditingController();
   Map<String, String> apimap = new Map();
 
+
+  String selvertion = "";
+  String extraamount = "";
+
   TextStyle hintstyle = TextStyle(fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white);
   var back_1 = new AssetImage('assets/images/back_1.png');
 
@@ -44,6 +48,7 @@ class _AddproductFullState extends State<AddproductFull> {
   List<Map<String, dynamic>> snapshotplayerlist = List();
   List<dynamic> attributelist = List();
   List<dynamic> optionlist = List();
+  List<Map<int, bool>> dynamicbools = List();
 
   List data = List(); //edited line
   List data2 = List(); //edited line
@@ -59,12 +64,82 @@ class _AddproductFullState extends State<AddproductFull> {
     return "Success";
   }
 
+  void onChanged(bool value, int index, int arrayindex, List<dynamic> list, String attribute_id) {
+    setState(() {
+      if (value == true) {
+        value = false;
+      } else {
+        value = true;
+      }
+
+      for (int i = 0; i < dynamicbools[arrayindex].length; i++) {
+        if (i == index) {
+          dynamicbools[arrayindex][index] = value;
+        } else {
+          dynamicbools[arrayindex][i] = false;
+        }
+      }
+
+      String extra;
+      String selvartion;
+
+      apimap.forEach((key, value) {
+        if (key.contains("[") && key.contains("extra_amount")) {
+          if (key.substring(13, 14) == attribute_id) {
+            extra = key;
+          }
+        }
+        if (key.contains("[") && key.contains("sel_variation")) {
+          print(key);
+          print(key.substring(14, 15));
+          print(arrayindex);
+          print(list);
+          print(attribute_id);
+          if (key.substring(14, 15) == attribute_id) {
+            selvartion = key;
+          }
+        }
+      });
+
+      print(list);
+
+      String optionid = list[index]["opt_order"];
+
+      selvertion = "sel_variation" + "[" + attribute_id + "]" + "[0]";
+
+      apimap[selvertion] = optionid;
+
+      String extraamountt = "";
+
+      for (int i = 0; i < list.length; i++) {
+        if (optionid == list[i]["opt_order"]) {
+          extraamountt = list[i]["extra_amount"];
+        }
+      }
+
+      extraamount = "extra_amount" + "[" + attribute_id + "]" + "[" + optionid + "]";
+
+      apimap[extraamount] = extraamountt;
+
+    });
+  }
+
+
   Future<String> getAttribute() async {
     var res = await http.get(Uri.encodeFull(RestDatasource.get_attributes), headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
 
     setState(() {
       attributelist = resBody["attr_list"];
+
+      for (int i = 0; i < attributelist.length; i++) {
+        List<dynamic> tempsnap = attributelist[i]["option_list"];
+        Map<int, bool> boolvalues = Map();
+        for (int j = 0; j < tempsnap.length; j++) {
+          boolvalues[j] = false;
+        }
+        dynamicbools.add(boolvalues);
+      }
     });
 
     return "Success";
@@ -607,7 +682,7 @@ class _AddproductFullState extends State<AddproductFull> {
           ),
           ListView.builder(
             shrinkWrap: true,
-            padding: EdgeInsets.only( top: 10, bottom: 10),
+            padding: EdgeInsets.only(top: 10, bottom: 10),
             physics: NeverScrollableScrollPhysics(),
             itemCount: attributelist.length,
             itemBuilder: (context, index) {
@@ -616,7 +691,7 @@ class _AddproductFullState extends State<AddproductFull> {
                   children: [
                     Container(
                         margin: EdgeInsets.only(top: 20, right: 20, left: 20),
-                        decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(20), border: Border.all(color: Color(0xFF00a99d))),
+                        decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(40), border: Border.all(color: Color(0xFF00a99d))),
                         child: Stack(
                           alignment: AlignmentDirectional.centerStart,
                           children: [
@@ -641,7 +716,7 @@ class _AddproductFullState extends State<AddproductFull> {
                             ),
                           ],
                         )),
-                    _Optionlist(index),
+                    _Optionlist(index  , attributelist[index]["attr_order"]),
                   ],
                 ),
                 margin: EdgeInsets.only(top: 20),
@@ -699,49 +774,115 @@ class _AddproductFullState extends State<AddproductFull> {
     );
   }
 
-  Widget _Optionlist(int index){
-
-    optionlist.clear();
-    optionlist = attributelist[index]["option_list"];
+  Widget _Optionlist(int arrayindex , String attribute_id) {
+    optionlist = attributelist[arrayindex]["option_list"];
 
     return Container(
-      alignment: Alignment.topCenter,
-      decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(10), border: Border.all(color: Color(0xFF00a99d))),
-      margin: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        itemCount: optionlist.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          mainAxisSpacing: 0.5,
-          crossAxisSpacing: 0.5,
-          crossAxisCount: 4,
-        ),
-        itemBuilder: (context, index) {
-
-          return GestureDetector(
-            onTap: () {},
-            child: Container(
-              padding: const EdgeInsets.only(left: 10, right: 10),
-              alignment: Alignment.topCenter,
-              margin: EdgeInsets.only(left: 2, right: 2),
-              child: Row(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(color: Color(0xFFff5000), borderRadius: BorderRadius.circular(5)),
-                    padding: const EdgeInsets.only(top: 10, bottom: 10, right: 15, left: 15),
-                    child: Text(
-                      optionlist[index]["option_label"].toString(),
-                      style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'Roboto-Bold', fontSize: 12.0, color: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
+        decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(10), border: Border.all(color: Color(0xFF00a99d))),
+        margin: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+        child: Column(
+          children: [
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: optionlist.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    onChanged(dynamicbools[arrayindex][index], index, arrayindex, optionlist, attribute_id);
+                  },
+                  child: dynamicbools[arrayindex][index]
+                      ? Container(
+                          padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                          margin: EdgeInsets.only(left: 2, right: 2),
+                          child: Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.only(top: 2),
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            padding: const EdgeInsets.only(top: 10, bottom: 10, right: 15, left: 15),
+                            child: Text(
+                              optionlist[index]["option_label"].toString(),
+                              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', fontSize: 12.0, color: Colors.white),
+                            ),
+                          ))
+                      : Container(
+                          padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                          margin: EdgeInsets.only(left: 2, right: 2),
+                          child: Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.only(top: 2),
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: Color(0xFFff5000))),
+                            padding: const EdgeInsets.only(top: 10, bottom: 10, right: 15, left: 15),
+                            child: Text(
+                              optionlist[index]["option_label"].toString(),
+                              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', fontSize: 12.0, color: Colors.white),
+                            ),
+                          )),
+                );
+              },
             ),
-          );
-        },
-      ),
-    );
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: 0,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      child: Column(
+                        children: [
+                          Container(
+                            alignment: Alignment.topLeft,
+                            margin: EdgeInsets.only(
+                              left: 20,
+                              bottom: 5,
+                            ),
+                            child: Text(
+                              "Store Banner",
+                              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 18.0, color: Colors.white),
+                            ),
+                          ),
+                          Container(
+                            height: 50,
+                            margin: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                            decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(40), border: Border.all(color: Color(0xFF00a99d))),
+                            child: Row(
+                              children: [
+                                Container(
+                                    alignment: Alignment.center,
+                                    margin: EdgeInsets.only(left: 10),
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xFF101a6f),
+                                      borderRadius: BorderRadius.all(const Radius.circular(20)),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                                      child: Text(
+                                        "Choose File",
+                                        style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 15.0, color: Colors.white),
+                                      ),
+                                    )),
+                                Container(
+                                  margin: EdgeInsets.only(left: 10.0),
+                                  child: Text(
+                                    "No file chosen",
+                                    style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFF3aa2a2a2)),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ));
+              },
+            ),
+          ],
+        ));
   }
 
   Widget _ProductLayout() {
