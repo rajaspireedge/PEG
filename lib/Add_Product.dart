@@ -31,10 +31,6 @@ class _AddproductFullState extends State<AddproductFull> {
   final username_controller4 = TextEditingController();
   Map<String, String> apimap = new Map();
 
-
-  String selvertion = "";
-  String extraamount = "";
-
   TextStyle hintstyle = TextStyle(fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white);
   var back_1 = new AssetImage('assets/images/back_1.png');
 
@@ -47,7 +43,6 @@ class _AddproductFullState extends State<AddproductFull> {
   List<Map<String, dynamic>> snapshotproductlist = List();
   List<Map<String, dynamic>> snapshotplayerlist = List();
   List<dynamic> attributelist = List();
-  List<dynamic> optionlist = List();
   List<Map<int, bool>> dynamicbools = List();
 
   List data = List(); //edited line
@@ -64,7 +59,7 @@ class _AddproductFullState extends State<AddproductFull> {
     return "Success";
   }
 
-  void onChanged(bool value, int index, int arrayindex, List<dynamic> list, String attribute_id) {
+  void onChanged(bool value, int index, int arrayindex, List<dynamic> list, String attribute_id, String imageupload) {
     setState(() {
       if (value == true) {
         value = false;
@@ -72,58 +67,32 @@ class _AddproductFullState extends State<AddproductFull> {
         value = true;
       }
 
-      for (int i = 0; i < dynamicbools[arrayindex].length; i++) {
-        if (i == index) {
-          dynamicbools[arrayindex][index] = value;
-        } else {
-          dynamicbools[arrayindex][i] = false;
-        }
-      }
+      dynamicbools[arrayindex][index] = value;
 
-      String extra;
-      String selvartion;
+      String attr_id;
+      String attr_image;
 
       apimap.forEach((key, value) {
-        if (key.contains("[") && key.contains("extra_amount")) {
-          if (key.substring(13, 14) == attribute_id) {
-            extra = key;
-          }
-        }
-        if (key.contains("[") && key.contains("sel_variation")) {
+        if (key.contains("[") && key.contains("attr_id")) {
           print(key);
-          print(key.substring(14, 15));
-          print(arrayindex);
-          print(list);
-          print(attribute_id);
-          if (key.substring(14, 15) == attribute_id) {
-            selvartion = key;
+          print(key.substring(8, 9));
+          if (key.substring(8, 9) == attribute_id) {
+            attr_id = key;
           }
         }
       });
 
-      print(list);
-
       String optionid = list[index]["opt_order"];
 
-      selvertion = "sel_variation" + "[" + attribute_id + "]" + "[0]";
+      attr_id = "attr_id" + "[" + attribute_id + "]" + "[" + optionid + "]";
+      attr_image = "attr_image" + "[" + attribute_id + "]" + "[" + optionid + "]" + "[]";
 
-      apimap[selvertion] = optionid;
+      apimap[attr_id] = list[index]["option_label"];
+      apimap[attr_image] = "";
 
-      String extraamountt = "";
-
-      for (int i = 0; i < list.length; i++) {
-        if (optionid == list[i]["opt_order"]) {
-          extraamountt = list[i]["extra_amount"];
-        }
-      }
-
-      extraamount = "extra_amount" + "[" + attribute_id + "]" + "[" + optionid + "]";
-
-      apimap[extraamount] = extraamountt;
-
+      print(apimap);
     });
   }
-
 
   Future<String> getAttribute() async {
     var res = await http.get(Uri.encodeFull(RestDatasource.get_attributes), headers: {"Accept": "application/json"});
@@ -585,6 +554,9 @@ class _AddproductFullState extends State<AddproductFull> {
               GestureDetector(
                 onTap: () {
                   setState(() {
+                    apimap["price"] = username_controller2.text;
+                    apimap["qty"] = username_controller3.text;
+
                     screenchange = "3";
                   });
                 },
@@ -716,7 +688,7 @@ class _AddproductFullState extends State<AddproductFull> {
                             ),
                           ],
                         )),
-                    _Optionlist(index  , attributelist[index]["attr_order"]),
+                    _Optionlist(index, attributelist[index]["attr_order"], attributelist[index]["option_list"], attributelist[index]["image_upload"]),
                   ],
                 ),
                 margin: EdgeInsets.only(top: 20),
@@ -774,7 +746,7 @@ class _AddproductFullState extends State<AddproductFull> {
     );
   }
 
-  Widget _Optionlist(int arrayindex , String attribute_id) {
+  Widget _Optionlist(int arrayindex, String attribute_id, List<dynamic> optionlist, String image_upload) {
     optionlist = attributelist[arrayindex]["option_list"];
 
     return Container(
@@ -789,7 +761,7 @@ class _AddproductFullState extends State<AddproductFull> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    onChanged(dynamicbools[arrayindex][index], index, arrayindex, optionlist, attribute_id);
+                    onChanged(dynamicbools[arrayindex][index], index, arrayindex, optionlist, attribute_id, image_upload);
                   },
                   child: dynamicbools[arrayindex][index]
                       ? Container(
@@ -827,58 +799,66 @@ class _AddproductFullState extends State<AddproductFull> {
             ListView.builder(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: 0,
+              itemCount: optionlist.length,
               itemBuilder: (context, index) {
-                return GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Container(
-                            alignment: Alignment.topLeft,
-                            margin: EdgeInsets.only(
-                              left: 20,
-                              bottom: 5,
-                            ),
-                            child: Text(
-                              "Store Banner",
-                              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 18.0, color: Colors.white),
-                            ),
-                          ),
-                          Container(
-                            height: 50,
-                            margin: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-                            decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(40), border: Border.all(color: Color(0xFF00a99d))),
-                            child: Row(
-                              children: [
-                                Container(
-                                    alignment: Alignment.center,
-                                    margin: EdgeInsets.only(left: 10),
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xFF101a6f),
-                                      borderRadius: BorderRadius.all(const Radius.circular(20)),
+                if (image_upload == "1") {
+                  return GestureDetector(
+                      onTap: () {},
+                      child: dynamicbools[arrayindex][index]
+                          ? Container(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    alignment: Alignment.topLeft,
+                                    margin: EdgeInsets.only(
+                                      left: 20,
+                                      bottom: 5,
                                     ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-                                      child: Text(
-                                        "Choose File",
-                                        style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 15.0, color: Colors.white),
-                                      ),
-                                    )),
-                                Container(
-                                  margin: EdgeInsets.only(left: 10.0),
-                                  child: Text(
-                                    "No file chosen",
-                                    style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFF3aa2a2a2)),
+                                    child: Text(
+                                      optionlist[index]["option_label"],
+                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 18.0, color: Colors.white),
+                                    ),
                                   ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ));
+                                  Container(
+                                    height: 50,
+                                    margin: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                                    decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(40), border: Border.all(color: Color(0xFF00a99d))),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                            alignment: Alignment.center,
+                                            margin: EdgeInsets.only(left: 10),
+                                            height: 30,
+                                            decoration: BoxDecoration(
+                                              color: Color(0xFF101a6f),
+                                              borderRadius: BorderRadius.all(const Radius.circular(20)),
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                                              child: Text(
+                                                "Choose File",
+                                                style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 15.0, color: Colors.white),
+                                              ),
+                                            )),
+                                        Container(
+                                          margin: EdgeInsets.only(left: 10.0),
+                                          child: Text(
+                                            "No file chosen",
+                                            style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFF3aa2a2a2)),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : SizedBox(
+                              height: 0,
+                            ));
+                }
+
+                return null;
               },
             ),
           ],
