@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:peg/Test.dart';
 import 'package:peg/homescreen.dart';
 import 'package:peg/login.dart';
@@ -123,3 +124,4 @@ Future<String> getStringValuesSF() async {
   //Return
   return prefs.getString('userID');
 }
+

@@ -123,17 +123,22 @@ class _ItemDetailState extends State<ItemDetail> {
 
       apimap.forEach((key, value) {
         if (key.contains("[") && key.contains("extra_amount")) {
-          if (key.substring(13, 14) == attribute_id) {
+          const start = "[";
+          const end = "]";
+          final startIndex = key.indexOf(start);
+          final endIndex = key.indexOf(end, startIndex + start.length);
+
+          if (key.substring(startIndex + start.length, endIndex) == attribute_id) {
             extra = key;
           }
         }
         if (key.contains("[") && key.contains("sel_variation")) {
-          print(key);
-          print(key.substring(14, 15));
-          print(arrayindex);
-          print(list);
-          print(attribute_id);
-          if (key.substring(14, 15) == attribute_id) {
+          const start = "[";
+          const end = "]";
+          final startIndex = key.indexOf(start);
+          final endIndex = key.indexOf(end, startIndex + start.length);
+
+          if (key.substring(startIndex + start.length, endIndex) == attribute_id) {
             selvartion = key;
           }
         }
@@ -281,12 +286,20 @@ class _ItemDetailState extends State<ItemDetail> {
 
                                   apimap.forEach((key, value) {
                                     if (key.contains("[") && key.contains("extra_amount")) {
-                                      if (key.substring(13, 14) ==attribute_id) {
+                                      const start = "[";
+                                      const end = "]";
+                                      final startIndex = key.indexOf(start);
+                                      final endIndex = key.indexOf(end, startIndex + start.length);
+                                      if (key.substring(startIndex + start.length, endIndex) == attribute_id) {
                                         extra = key;
                                       }
                                     }
                                     if (key.contains("[") && key.contains("sel_variation")) {
-                                      if (key.substring(14, 15) == attribute_id) {
+                                      const start = "[";
+                                      const end = "]";
+                                      final startIndex = key.indexOf(start);
+                                      final endIndex = key.indexOf(end, startIndex + start.length);
+                                      if (key.substring(startIndex + start.length, endIndex) == attribute_id) {
                                         selvartion = key;
                                       }
                                     }

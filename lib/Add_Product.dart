@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:peg/RestDatasource.dart';
 import 'package:peg/homescreen.dart';
 import 'package:http/http.dart' as http;
@@ -74,9 +77,12 @@ class _AddproductFullState extends State<AddproductFull> {
 
       apimap.forEach((key, value) {
         if (key.contains("[") && key.contains("attr_id")) {
-          print(key);
-          print(key.substring(8, 9));
-          if (key.substring(8, 9) == attribute_id) {
+          const start = "[";
+          const end = "]";
+          final startIndex = key.lastIndexOf(start);
+          final endIndex = key.indexOf(end, startIndex + start.length);
+
+          if (key.substring(startIndex + start.length, endIndex) == attribute_id) {
             attr_id = key;
           }
         }
@@ -85,10 +91,23 @@ class _AddproductFullState extends State<AddproductFull> {
       String optionid = list[index]["opt_order"];
 
       attr_id = "attr_id" + "[" + attribute_id + "]" + "[" + optionid + "]";
-      attr_image = "attr_image" + "[" + attribute_id + "]" + "[" + optionid + "]" + "[]";
 
       apimap[attr_id] = list[index]["option_label"];
-      apimap[attr_image] = "";
+    });
+  }
+
+  File uploadimage; //variable for choosed file
+
+  Future<void> chooseImage(String optionid , String attribute_id) async {
+    var choosedimage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    //set source: ImageSource.camera to get image from camera
+    String attr_image;
+
+    setState(() {
+      uploadimage = choosedimage;
+      attr_image = "attr_image" + "[" + attribute_id + "]" + "[" + optionid + "]";
+      apimap[attr_image] = uploadimage.path;
+
 
       print(apimap);
     });
@@ -802,6 +821,24 @@ class _AddproductFullState extends State<AddproductFull> {
               itemCount: optionlist.length,
               itemBuilder: (context, index) {
                 if (image_upload == "1") {
+                  String uploadimageString = "No file Chosen";
+
+                  apimap.forEach((key, value) {
+                    if (key.contains("[") && key.contains("attr_image")) {
+                      const start = "[";
+                      const end = "]";
+                      final startIndex = key.lastIndexOf(start);
+                      final endIndex = key.indexOf(end, startIndex + start.length);
+                      if (key.substring(startIndex + start.length, endIndex) == optionlist[index]["opt_order"]) {
+                        if (value == "") {
+                          uploadimageString = "No file Chosen";
+                        } else {
+                          uploadimageString = value;
+                        }
+                      }
+                    }
+                  });
+
                   return GestureDetector(
                       onTap: () {},
                       child: dynamicbools[arrayindex][index]
@@ -825,25 +862,33 @@ class _AddproductFullState extends State<AddproductFull> {
                                     decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(40), border: Border.all(color: Color(0xFF00a99d))),
                                     child: Row(
                                       children: [
-                                        Container(
-                                            alignment: Alignment.center,
-                                            margin: EdgeInsets.only(left: 10),
-                                            height: 30,
-                                            decoration: BoxDecoration(
-                                              color: Color(0xFF101a6f),
-                                              borderRadius: BorderRadius.all(const Radius.circular(20)),
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-                                              child: Text(
-                                                "Choose File",
-                                                style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 15.0, color: Colors.white),
+                                        GestureDetector(
+                                          onTap: () {
+                                            chooseImage(optionlist[index]["opt_order"] , attribute_id);
+                                          },
+                                          child: Container(
+                                              alignment: Alignment.center,
+                                              margin: EdgeInsets.only(left: 10),
+                                              height: 30,
+                                              decoration: BoxDecoration(
+                                                color: Color(0xFF101a6f),
+                                                borderRadius: BorderRadius.all(const Radius.circular(20)),
                                               ),
-                                            )),
+                                              child: Padding(
+                                                padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                                                child: Text(
+                                                  "Choose File",
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 15.0, color: Colors.white),
+                                                ),
+                                              )),
+                                        ),
                                         Container(
+                                          width: 100,
                                           margin: EdgeInsets.only(left: 10.0),
                                           child: Text(
-                                            "No file chosen",
+                                            uploadimageString,
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFF3aa2a2a2)),
                                           ),
                                         )
@@ -981,6 +1026,44 @@ class _AddproductFullState extends State<AddproductFull> {
     super.initState();
     this.getSWData();
     this.getAttribute();
+  }
+
+  Future<String> uploadProduct(BuildContext context) async {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            alignment: Alignment.center,
+            height: 50,
+            width: 50,
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.cyan,
+              strokeWidth: 5,
+            ),
+          );
+        });
+    var request = http.MultipartRequest('POST', Uri.parse(RestDatasource.update_store_banner));
+
+    apimap.forEach((key, value) async {
+      if (key.contains("[") && key.contains("attr_image")) {
+        String newkey = key + "[]";
+        request.files.add(await http.MultipartFile.fromPath(newkey, value));
+      } else {
+        request.files.add(await http.MultipartFile.fromString(key, value));
+      }
+    });
+
+    var res = await request.send();
+
+    if (res.statusCode == 200) {
+      Navigator.pop(context);
+      Fluttertoast.showToast(msg: "Upload Successfully", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
+    } else {
+      Navigator.pop(context);
+    }
+
+    print(res.statusCode);
+    return res.reasonPhrase;
   }
 
   @override
