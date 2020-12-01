@@ -6,7 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:peg/RestDatasource.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:peg/homescreen.dart';
+import 'package:peg/My_Store.dart';
+
 import 'package:http/http.dart' as http;
 
 class AddProduct extends StatelessWidget {
@@ -97,8 +101,9 @@ class _AddproductFullState extends State<AddproductFull> {
   }
 
   File uploadimage; //variable for choosed file
+  String userid;
 
-  Future<void> chooseImage(String optionid , String attribute_id) async {
+  Future<void> chooseImage(String optionid, String attribute_id) async {
     var choosedimage = await ImagePicker.pickImage(source: ImageSource.gallery);
     //set source: ImageSource.camera to get image from camera
     String attr_image;
@@ -107,9 +112,21 @@ class _AddproductFullState extends State<AddproductFull> {
       uploadimage = choosedimage;
       attr_image = "attr_image" + "[" + attribute_id + "]" + "[" + optionid + "]";
       apimap[attr_image] = uploadimage.path;
-
-
       print(apimap);
+    });
+  }
+
+  Future<void> chooseImage22() async {
+    var choosedimage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    //set source: ImageSource.camera to get image from camera
+    setState(() {
+      if (choosedimage.path == "") {
+        productimage = "No file chosen";
+      } else {
+        String productimagekey = "product_image[]";
+        apimap[productimagekey] = choosedimage.path;
+        productimage = choosedimage.path;
+      }
     });
   }
 
@@ -401,15 +418,25 @@ class _AddproductFullState extends State<AddproductFull> {
               ),
               GestureDetector(
                 onTap: () {
-                  apimap["product_name"] = username_controller.text.toString();
-                  apimap["category_id"] = _mySelection.toString();
-                  apimap["subcategory_id"] = _mySelection2.toString();
-                  apimap["description"] = username_controller4.text.toString();
-                  print(apimap);
+                  if (username_controller.text.toString().trim().length == 0) {
+                    Fluttertoast.showToast(msg: "Select Product Name", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
+                  } else if (_mySelection.toString().trim().length == 0) {
+                    Fluttertoast.showToast(msg: "Select Main Category", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
+                  } else if (_mySelection2.toString().trim().length == 0) {
+                    Fluttertoast.showToast(msg: "Select Sub Category", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
+                  } else if (username_controller4.text.toString().trim().length == 0) {
+                    Fluttertoast.showToast(msg: "Select Description", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
+                  } else {
+                    apimap["product_name"] = username_controller.text.toString();
+                    apimap["category_id"] = _mySelection.toString();
+                    apimap["subcategory_id"] = _mySelection2.toString();
+                    apimap["description"] = username_controller4.text.toString();
+                    print(apimap);
 
-                  setState(() {
-                    screenchange = "2";
-                  });
+                    setState(() {
+                      screenchange = "2";
+                    });
+                  }
                 },
                 child: Align(
                   alignment: Alignment.centerRight,
@@ -505,6 +532,7 @@ class _AddproductFullState extends State<AddproductFull> {
                             padding: EdgeInsets.all(2.0),
                             child: TextField(
                               style: style,
+                              keyboardType: TextInputType.number,
                               controller: username_controller2,
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.all(18),
@@ -529,6 +557,7 @@ class _AddproductFullState extends State<AddproductFull> {
                             padding: EdgeInsets.all(2.0),
                             child: TextField(
                               style: style,
+                              keyboardType: TextInputType.number,
                               controller: username_controller3,
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.all(18),
@@ -864,7 +893,7 @@ class _AddproductFullState extends State<AddproductFull> {
                                       children: [
                                         GestureDetector(
                                           onTap: () {
-                                            chooseImage(optionlist[index]["opt_order"] , attribute_id);
+                                            chooseImage(optionlist[index]["opt_order"], attribute_id);
                                           },
                                           child: Container(
                                               alignment: Alignment.center,
@@ -910,6 +939,8 @@ class _AddproductFullState extends State<AddproductFull> {
         ));
   }
 
+  String productimage = "No file chosen";
+
   Widget _ProductLayout() {
     return Container(
       margin: EdgeInsets.only(top: 20, left: 30, right: 30),
@@ -917,7 +948,53 @@ class _AddproductFullState extends State<AddproductFull> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      width: 150,
+                      height: 34,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      width: 150,
+                      height: 34,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      width: 150,
+                      height: 34,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      child: Image(
+                        image: AssetImage("assets/images/rectangle_11.png"),
+                        height: 34,
+                        width: 150,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
           Container(
+            margin: EdgeInsets.only(top: 20),
             child: Text(
               "Product Images Details",
               style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 20.0, color: Colors.white),
@@ -940,25 +1017,32 @@ class _AddproductFullState extends State<AddproductFull> {
                   decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(40), border: Border.all(color: Color(0xFF00a99d))),
                   child: Row(
                     children: [
-                      Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.only(left: 10),
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: Color(0xFF101a6f),
-                            borderRadius: BorderRadius.all(const Radius.circular(20)),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-                            child: Text(
-                              "Choose File",
-                              style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 15.0, color: Colors.white),
+                      GestureDetector(
+                        onTap: () {
+                          chooseImage22();
+                        },
+                        child: Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.only(left: 10),
+                            height: 30,
+                            decoration: BoxDecoration(
+                              color: Color(0xFF101a6f),
+                              borderRadius: BorderRadius.all(const Radius.circular(20)),
                             ),
-                          )),
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                              child: Text(
+                                "Choose File",
+                                style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 15.0, color: Colors.white),
+                              ),
+                            )),
+                      ),
                       Container(
+                        width: 100,
                         margin: EdgeInsets.only(left: 10.0),
                         child: Text(
-                          "No file chosen",
+                          productimage,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFF3aa2a2a2)),
                         ),
                       )
@@ -978,7 +1062,7 @@ class _AddproductFullState extends State<AddproductFull> {
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    screenchange = "1";
+                    screenchange = "3";
                   });
                 },
                 child: Align(
@@ -996,9 +1080,7 @@ class _AddproductFullState extends State<AddproductFull> {
               ),
               GestureDetector(
                 onTap: () {
-                  setState(() {
-                    screenchange = "3";
-                  });
+                  uploadProduct();
                 },
                 child: Align(
                   alignment: Alignment.centerRight,
@@ -1024,14 +1106,18 @@ class _AddproductFullState extends State<AddproductFull> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getStringValuesSF().then((value) => userid = value);
     this.getSWData();
     this.getAttribute();
   }
 
-  Future<String> uploadProduct(BuildContext context) async {
+  BuildContext dilogcontext;
+
+  Future<String> uploadProduct() async {
     showDialog(
         context: context,
         builder: (BuildContext context) {
+          dilogcontext = context;
           return Container(
             alignment: Alignment.center,
             height: 50,
@@ -1042,27 +1128,34 @@ class _AddproductFullState extends State<AddproductFull> {
             ),
           );
         });
-    var request = http.MultipartRequest('POST', Uri.parse(RestDatasource.update_store_banner));
+    var request = http.MultipartRequest('POST', Uri.parse(RestDatasource.save_product));
 
     apimap.forEach((key, value) async {
       if (key.contains("[") && key.contains("attr_image")) {
         String newkey = key + "[]";
         request.files.add(await http.MultipartFile.fromPath(newkey, value));
+      } else if (key.contains("[") && key.contains("product_image")) {
+        request.files.add(await http.MultipartFile.fromPath(key, value));
       } else {
-        request.files.add(await http.MultipartFile.fromString(key, value));
+        request.fields[key] = value;
       }
     });
-
+    request.fields["user_id"] = userid;
     var res = await request.send();
+    var response = await http.Response.fromStream(res);
 
-    if (res.statusCode == 200) {
-      Navigator.pop(context);
+    if (json.decode(response.body)["status_code"] == 200) {
       Fluttertoast.showToast(msg: "Upload Successfully", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
+      Navigator.pop(dilogcontext);
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => MyStore(),
+      ));
     } else {
-      Navigator.pop(context);
+      Navigator.pop(dilogcontext);
     }
 
-    print(res.statusCode);
+    print(response.body);
+
     return res.reasonPhrase;
   }
 
@@ -1137,4 +1230,10 @@ class _AddproductFullState extends State<AddproductFull> {
           }),
     );
   }
+}
+
+Future<String> getStringValuesSF() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  //Return
+  return prefs.getString('userID');
 }

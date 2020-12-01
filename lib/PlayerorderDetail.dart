@@ -7,9 +7,8 @@ import 'package:loading/loading.dart';
 import 'package:peg/MyOrder.dart';
 import 'package:peg/PlayerOrder.dart';
 import 'package:peg/RestDatasource.dart';
-import 'package:peg/main.dart';
+import 'package:peg/homescreen.dart';
 import 'package:http/http.dart' as http;
-
 import 'PaymentScreen.dart';
 
 class PlayerorderDetail extends StatelessWidget {

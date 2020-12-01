@@ -67,10 +67,13 @@ class _MyStoreState extends State<MyStore> {
   File file;
   var serverReceiverPath = RestDatasource.update_store_banner;
 
+  BuildContext dialogcontext;
+
   Future<String> uploadImage(filename, useris, BuildContext context) async {
     showDialog(
         context: context,
         builder: (BuildContext context) {
+          dialogcontext = context;
           return Container(
             alignment: Alignment.center,
             height: 50,
@@ -91,7 +94,7 @@ class _MyStoreState extends State<MyStore> {
       getSWData(useris);
       Fluttertoast.showToast(msg: "Upload Successfully", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
     } else {
-      Navigator.pop(context);
+      Navigator.pop(dialogcontext);
     }
 
     print(res.statusCode);
@@ -509,6 +512,7 @@ class _MyStoreState extends State<MyStore> {
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
+
                                       return Dialog(
                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                         //this right here
@@ -706,6 +710,7 @@ class _MyStoreState extends State<MyStore> {
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
+
                                     return Container(
                                       alignment: Alignment.center,
                                       height: 50,

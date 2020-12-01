@@ -22,6 +22,8 @@ import 'package:peg/main.dart';
 import 'package:peg/productlist.dart';
 import 'package:http/http.dart' as http;
 import 'package:peg/whishlist.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 /// This Widget is the main application widget.
 
@@ -1242,4 +1244,11 @@ TextStyle dropdownstyle = TextStyle(fontFamily: 'Roboto-Bold', fontSize: 10.0, c
 class DropDown extends State<Homescreen> {
   @override
   Widget build(BuildContext context) {}
+}
+
+
+Future<String> getStringValuesSF() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  //Return
+  return prefs.getString('userID');
 }

@@ -40,6 +40,7 @@ class RestDatasource {
   static final get_store_overview = BASE_URL + "store/get_store_overview/";
   static final get_store_level = BASE_URL + "store/get_store_level/";
   static final update_store_banner = BASE_URL + "store/update_store_banner";
+  static final save_product = BASE_URL + "product/save_product";
   static final update_store_link = BASE_URL + "store/update_store_link";
   static final delete_product = BASE_URL + "product/delete_product/";
   static final delete_categories = BASE_URL + "category/delete_categories/";

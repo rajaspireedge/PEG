@@ -8,6 +8,7 @@ import 'package:loading/loading.dart';
 import 'package:peg/Add_Product.dart';
 import 'package:peg/RestDatasource.dart';
 import 'package:peg/homescreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:peg/main.dart';
 import 'package:http/http.dart' as http;
 
@@ -439,319 +440,324 @@ class _SellProductPAGEState extends State<SellProductPAGE> {
                   ),
                 ),
               ),
-              SingleChildScrollView(
-                child: Stack(
-                  children: [
-                    Center(
-                      child: Column(
-                        children: [
-                          Container(
-                            child: Stack(
-                              children: [
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                          builder: (context) => Homescreen(),
-                                        ));
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
-                                        child: Image(
-                                          image: AssetImage('assets/images/back_12.png'),
-                                          height: 30,
-                                          width: 30,
-                                        ),
+              Stack(
+                children: [
+                  Center(
+                    child: Column(
+                      children: [
+                        Container(
+                          child: Stack(
+                            children: [
+                              Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                        builder: (context) => Homescreen(),
+                                      ));
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
+                                      child: Image(
+                                        image: AssetImage('assets/images/back_12.png'),
+                                        height: 30,
+                                        width: 30,
                                       ),
-                                    )),
-                                Align(
+                                    ),
+                                  )),
+                              Align(
+                                alignment: Alignment.center,
+                                child: Container(
+                                  margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
                                   alignment: Alignment.center,
-                                  child: Container(
-                                    margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "Sell Products",
-                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Colors.white),
-                                    ),
+                                  child: Text(
+                                    "Sell Products",
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Colors.white),
                                   ),
-                                )
-                              ],
-                            ),
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.all(10.0),
-                            color: Color(0xFF0a0f32),
-                            height: 80,
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            margin: EdgeInsets.only(left: 20.0),
-                            child: Text(
-                              "My Selling Products",
-                              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 14.0, color: Colors.white),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: CustomPaint(
-                              painter: _GradientPainter(
-                                strokeWidth: 1,
-                                radius: 10,
-                                gradient: LinearGradient(
-                                  colors: [color2, color3],
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
                                 ),
-                              ),
-                              child: Container(
-                                child: Stack(
-                                  children: [
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                              builder: (context) => AddproductFull(),
-                                            ));
-                                          },
-                                          child: Image(
-                                            image: AssetImage("assets/images/invalid_name.png"),
-                                            height: 80,
-                                            width: 150,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(bottom: 20),
-                                          child: Text(
-                                            "Add product",
-                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Container(
-                                          margin: EdgeInsets.only(right: 20, top: 10),
-                                          child: Column(
-                                            children: [
-                                              InkWell(
-                                                onTap: () {
-                                                  _showDialog(context);
-                                                },
-                                                child: Container(
-                                                  child: Image(
-                                                    image: AssetImage("assets/images/local_tax.png"),
-                                                    height: 50,
-                                                    width: 140,
-                                                    fit: BoxFit.scaleDown,
-                                                  ),
-                                                ),
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  _showDialog22(context);
-                                                },
-                                                child: Container(
-                                                  child: Image(
-                                                    image: AssetImage("assets/images/international_tax.png"),
-                                                    height: 50,
-                                                    width: 140,
-                                                    fit: BoxFit.scaleDown,
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ))
-                                  ],
-                                ),
-                                height: 120,
-                              ),
-                            ),
+                              )
+                            ],
                           ),
-                          GridView.builder(
-                            shrinkWrap: true,
-                            padding: EdgeInsets.all(20),
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10,
-                              crossAxisCount: 2,
-                            ),
-                            itemBuilder: (_, index) => Container(
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.all(10.0),
+                          color: Color(0xFF0a0f32),
+                          height: 80,
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          margin: EdgeInsets.only(left: 20.0),
+                          child: Text(
+                            "My Selling Products",
+                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 14.0, color: Colors.white),
+                          ),
+                        ),
+                        Expanded(
+                            child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: CustomPaint(
+                                painter: _GradientPainter(
+                                  strokeWidth: 1,
+                                  radius: 10,
+                                  gradient: LinearGradient(
+                                    colors: [color2, color3],
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                  ),
+                                ),
+                                child: Container(
+                                  child: Stack(
                                     children: [
-                                      Container(
-                                        margin: EdgeInsets.only(right: 5, top: 5),
-                                        child: Image(
-                                          image: AssetImage("assets/images/edit_2.png"),
-                                          height: 15,
-                                          width: 15,
-                                        ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                                builder: (context) => AddproductFull(),
+                                              ));
+                                            },
+                                            child: Image(
+                                              image: AssetImage("assets/images/invalid_name.png"),
+                                              height: 80,
+                                              width: 150,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(bottom: 20),
+                                            child: Text(
+                                              "Add product",
+                                              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 12.0, color: Colors.white),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      InkWell(
-                                        onTap: () {
-                                          showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return Dialog(
-                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                                                  //this right here
+                                      Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Container(
+                                            margin: EdgeInsets.only(right: 20, top: 10),
+                                            child: Column(
+                                              children: [
+                                                InkWell(
+                                                  onTap: () {
+                                                    _showDialog(context);
+                                                  },
                                                   child: Container(
-                                                    height: 200,
-                                                    decoration: BoxDecoration(color: Color(0xFF0a0f32)),
-                                                    child: Column(
-                                                      children: [
-                                                        InkWell(
-                                                          onTap: () {
-                                                            Navigator.pop(context);
-                                                          },
-                                                          child: Container(
-                                                            alignment: Alignment.centerRight,
-                                                            margin: EdgeInsets.only(right: 30, top: 20),
-                                                            child: Image(
-                                                              image: AssetImage("assets/images/close_1.png"),
-                                                              width: 20,
-                                                              height: 20,
-                                                              fit: BoxFit.cover,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Row(
-                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                          children: [
-                                                            Container(
-                                                              alignment: Alignment.center,
-                                                              margin: EdgeInsets.only(left: 30, top: 20),
-                                                              child: Text(
-                                                                "Do you want to delete product ?",
-                                                                style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Color(0xFFff5000)),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Container(
-                                                          color: Colors.black,
-                                                          margin: EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 0.0),
-                                                        ),
-                                                        InkWell(
-                                                          onTap: () {
-                                                            api.deleteproduct(snapshotproductlist[index]["id"].toString()).then((value) => {Navigator.pop(context), getStringValuesSF().then((value) => getProductList(value))});
-                                                          },
-                                                          child: Container(
-                                                            margin: EdgeInsets.only(bottom: 15),
-                                                            child: Image(
-                                                              image: AssetImage("assets/images/submit.png"),
-                                                              height: 60,
-                                                              width: 150,
-                                                              fit: BoxFit.cover,
-                                                            ),
-                                                          ),
-                                                        )
-                                                      ],
+                                                    child: Image(
+                                                      image: AssetImage("assets/images/local_tax.png"),
+                                                      height: 50,
+                                                      width: 140,
+                                                      fit: BoxFit.scaleDown,
                                                     ),
                                                   ),
-                                                );
-                                              });
-                                        },
-                                        child: Container(
-                                          margin: EdgeInsets.only(right: 5, top: 5),
-                                          child: Image(
-                                            image: AssetImage("assets/images/icons_8_delete_bin_24.png"),
-                                            height: 15,
-                                            width: 15,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                    alignment: Alignment.center,
-                                    margin: EdgeInsets.only(top: 5.0),
-                                    child: Text(
-                                      snapshotproductlist[index]["name"],
-                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 8.0, color: Color(0xFF0a0f32)),
-                                    ),
-                                  ),
-                                  Card(
-                                    elevation: 5.0,
-                                    margin: EdgeInsets.only(top: 5.0, right: 5.0, left: 5.0, bottom: 5.0),
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          alignment: Alignment.centerRight,
-                                          child: Text(
-                                            "Qty-" + snapshotproductlist[index]["qty"],
-                                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 8.0, color: Color(0xFF0a0f32)),
-                                          ),
-                                        ),
-                                        Align(
-                                          child: Container(
-                                            height: 100,
-                                            margin: EdgeInsets.only(bottom: 5.0),
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(snapshotproductlist[index]["image"]))),
-                                          ),
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Container(
-                                                  margin: EdgeInsets.only(left: 5.0),
-                                                  child: Text(
-                                                    "Amount :",
-                                                    style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 8.0, color: Color(0xFF0a0f32)),
-                                                  ),
                                                 ),
-                                                Container(
-                                                  child: Text(
-                                                    new String.fromCharCodes(new Runes('\u0024')) + snapshotproductlist[index]["price"],
-                                                    style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 8.0, color: Color(0xFF8616d3)),
+                                                InkWell(
+                                                  onTap: () {
+                                                    _showDialog22(context);
+                                                  },
+                                                  child: Container(
+                                                    child: Image(
+                                                      image: AssetImage("assets/images/international_tax.png"),
+                                                      height: 50,
+                                                      width: 140,
+                                                      fit: BoxFit.scaleDown,
+                                                    ),
                                                   ),
-                                                ),
+                                                )
                                               ],
                                             ),
+                                          ))
+                                    ],
+                                  ),
+                                  height: 120,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: GridView.builder(
+                                shrinkWrap: true,
+                                padding: EdgeInsets.all(20),
+                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisSpacing: 10,
+                                  mainAxisSpacing: 10,
+                                  crossAxisCount: 2,
+                                ),
+                                itemBuilder: (_, index) => Container(
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                            margin: EdgeInsets.only(right: 5, top: 5),
+                                            child: Image(
+                                              image: AssetImage("assets/images/edit_2.png"),
+                                              height: 15,
+                                              width: 15,
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext context) {
+                                                    return Dialog(
+                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                                                      //this right here
+                                                      child: Container(
+                                                        height: 200,
+                                                        decoration: BoxDecoration(color: Color(0xFF0a0f32)),
+                                                        child: Column(
+                                                          children: [
+                                                            InkWell(
+                                                              onTap: () {
+                                                                Navigator.pop(context);
+                                                              },
+                                                              child: Container(
+                                                                alignment: Alignment.centerRight,
+                                                                margin: EdgeInsets.only(right: 30, top: 20),
+                                                                child: Image(
+                                                                  image: AssetImage("assets/images/close_1.png"),
+                                                                  width: 20,
+                                                                  height: 20,
+                                                                  fit: BoxFit.cover,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Row(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              children: [
+                                                                Container(
+                                                                  alignment: Alignment.center,
+                                                                  margin: EdgeInsets.only(left: 30, top: 20),
+                                                                  child: Text(
+                                                                    "Do you want to delete product ?",
+                                                                    style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Color(0xFFff5000)),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            Container(
+                                                              color: Colors.black,
+                                                              margin: EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 0.0),
+                                                            ),
+                                                            InkWell(
+                                                              onTap: () {
+                                                                api.deleteproduct(snapshotproductlist[index]["id"].toString()).then((value) => {Navigator.pop(context), getStringValuesSF().then((value) => getProductList(value))});
+                                                              },
+                                                              child: Container(
+                                                                margin: EdgeInsets.only(bottom: 15),
+                                                                child: Image(
+                                                                  image: AssetImage("assets/images/submit.png"),
+                                                                  height: 60,
+                                                                  width: 150,
+                                                                  fit: BoxFit.cover,
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    );
+                                                  });
+                                            },
+                                            child: Container(
+                                              margin: EdgeInsets.only(right: 5, top: 5),
+                                              child: Image(
+                                                image: AssetImage("assets/images/icons_8_delete_bin_24.png"),
+                                                height: 15,
+                                                width: 15,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Container(
+                                        alignment: Alignment.center,
+                                        margin: EdgeInsets.only(top: 5.0),
+                                        child: Text(
+                                          snapshotproductlist[index]["name"],
+                                          style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 8.0, color: Color(0xFF0a0f32)),
+                                        ),
+                                      ),
+                                      Card(
+                                        elevation: 5.0,
+                                        margin: EdgeInsets.only(top: 5.0, right: 5.0, left: 5.0, bottom: 5.0),
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              alignment: Alignment.centerRight,
+                                              child: Text(
+                                                "Qty-" + snapshotproductlist[index]["qty"],
+                                                style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 8.0, color: Color(0xFF0a0f32)),
+                                              ),
+                                            ),
+                                            Align(
+                                              child: Container(
+                                                height: 100,
+                                                margin: EdgeInsets.only(bottom: 5.0),
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(snapshotproductlist[index]["image"]))),
+                                              ),
+                                            ),
                                             Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
-                                                Container(
-                                                  child: Text(
-                                                    "Fee :",
-                                                    style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 8.0, color: Color(0xFF0a0f32)),
-                                                  ),
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                      margin: EdgeInsets.only(left: 5.0),
+                                                      child: Text(
+                                                        "Amount :",
+                                                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 8.0, color: Color(0xFF0a0f32)),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      child: Text(
+                                                        new String.fromCharCodes(new Runes('\u0024')) + snapshotproductlist[index]["price"],
+                                                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 8.0, color: Color(0xFF8616d3)),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                                Container(
-                                                  margin: EdgeInsets.only(right: 5.0),
-                                                  child: Text(
-                                                    new String.fromCharCodes(new Runes('\u0024')) + snapshotproductlist[index]["fee"],
-                                                    style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 8.0, color: Color(0xFF8616d3)),
-                                                  ),
-                                                ),
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                      child: Text(
+                                                        "Fee :",
+                                                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 8.0, color: Color(0xFF0a0f32)),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin: EdgeInsets.only(right: 5.0),
+                                                      child: Text(
+                                                        new String.fromCharCodes(new Runes('\u0024')) + snapshotproductlist[index]["fee"],
+                                                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 8.0, color: Color(0xFF8616d3)),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
                                               ],
                                             )
                                           ],
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
+                                ),
+                                itemCount: snapshotproductlist.length,
                               ),
-                              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
                             ),
-                            itemCount: snapshotproductlist.length,
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              )
+                          ],
+                        )),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ],
           ),
           onWillPop: () async {
@@ -795,3 +801,11 @@ class _GradientPainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => oldDelegate != this;
 }
+
+Future<String> getStringValuesSF() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  //Return
+  return prefs.getString('userID');
+}
+
+

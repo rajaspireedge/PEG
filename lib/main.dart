@@ -119,9 +119,3 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-Future<String> getStringValuesSF() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  //Return
-  return prefs.getString('userID');
-}
-
