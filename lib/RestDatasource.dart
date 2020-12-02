@@ -26,6 +26,7 @@ class RestDatasource {
   static final get_all_players = BASE_URL + "user/get_all_players";
   static final view_product = BASE_URL + "product/view_product/";
   static final add_to_cart_product = BASE_URL + "product/add_to_cart_product";
+  static final update_profile_img = BASE_URL + "user/update_profile_img";
   static final add_to_wishlist_product = BASE_URL + "product/add_to_wishlist_product";
   static final get_all_cart_products = BASE_URL + "cart/get_all_cart_products/";
   static final get_profile_info = BASE_URL + "user/get_profile_info/";

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:peg/RestDatasource.dart';
+import 'package:peg/Sell_Product_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:peg/homescreen.dart';
@@ -38,7 +39,8 @@ class _AddproductFullState extends State<AddproductFull> {
   final username_controller4 = TextEditingController();
   Map<String, String> apimap = new Map();
 
-  TextStyle hintstyle = TextStyle(fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white);
+  TextStyle hintstyle =
+      TextStyle(fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white);
   var back_1 = new AssetImage('assets/images/back_1.png');
 
   String _mySelection;
@@ -56,7 +58,8 @@ class _AddproductFullState extends State<AddproductFull> {
   List data2 = List(); //edited line
 
   Future<String> getSWData() async {
-    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_categories), headers: {"Accept": "application/json"});
+    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_categories),
+        headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
 
     setState(() {
@@ -66,7 +69,8 @@ class _AddproductFullState extends State<AddproductFull> {
     return "Success";
   }
 
-  void onChanged(bool value, int index, int arrayindex, List<dynamic> list, String attribute_id, String imageupload) {
+  void onChanged(bool value, int index, int arrayindex, List<dynamic> list,
+      String attribute_id, String imageupload) {
     setState(() {
       if (value == true) {
         value = false;
@@ -86,13 +90,14 @@ class _AddproductFullState extends State<AddproductFull> {
           final startIndex = key.lastIndexOf(start);
           final endIndex = key.indexOf(end, startIndex + start.length);
 
-          if (key.substring(startIndex + start.length, endIndex) == attribute_id) {
+          if (key.substring(startIndex + start.length, endIndex) ==
+              attribute_id) {
             attr_id = key;
           }
         }
       });
 
-      String optionid = list[index]["opt_order"];
+      String optionid = list[index]["id"];
 
       attr_id = "attr_id" + "[" + attribute_id + "]" + "[" + optionid + "]";
 
@@ -110,7 +115,8 @@ class _AddproductFullState extends State<AddproductFull> {
 
     setState(() {
       uploadimage = choosedimage;
-      attr_image = "attr_image" + "[" + attribute_id + "]" + "[" + optionid + "]";
+      attr_image =
+          "attr_image" + "[" + attribute_id + "]" + "[" + optionid + "]";
       apimap[attr_image] = uploadimage.path;
       print(apimap);
     });
@@ -131,7 +137,8 @@ class _AddproductFullState extends State<AddproductFull> {
   }
 
   Future<String> getAttribute() async {
-    var res = await http.get(Uri.encodeFull(RestDatasource.get_attributes), headers: {"Accept": "application/json"});
+    var res = await http.get(Uri.encodeFull(RestDatasource.get_attributes),
+        headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
 
     setState(() {
@@ -151,7 +158,11 @@ class _AddproductFullState extends State<AddproductFull> {
   }
 
   Future<String> getProductList() async {
-    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_products), headers: {"Accept": "application/json", "content-type": "application/json"});
+    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_products),
+        headers: {
+          "Accept": "application/json",
+          "content-type": "application/json"
+        });
     var resBody = json.decode(res.body);
     print(res.body);
 
@@ -163,7 +174,9 @@ class _AddproductFullState extends State<AddproductFull> {
   }
 
   Future<String> getsubData(String id) async {
-    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_subcategories + id), headers: {"Accept": "application/json"});
+    var res = await http.get(
+        Uri.encodeFull(RestDatasource.get_all_subcategories + id),
+        headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
 
     setState(() {
@@ -187,19 +200,41 @@ class _AddproductFullState extends State<AddproductFull> {
                 child: Column(
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 10),
-                      child: Image(
-                        image: AssetImage("assets/images/rectangle_11.png"),
-                        height: 34,
-                        width: 150,
-                        fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Basic",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Roboto-Medium',
+                            letterSpacing: 0.03,
+                            fontSize: 15.0,
+                            color: Colors.white),
                       ),
-                    ),
-                    Container(
                       margin: EdgeInsets.only(top: 10),
                       width: 150,
                       height: 34,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                      decoration: BoxDecoration(
+                          color: Color(0xFFff5000),
+                          borderRadius: BorderRadius.circular(3.0),
+                          border: Border.all(color: Color(0xFFff5000))),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Attributes",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Roboto-Medium',
+                            letterSpacing: 0.03,
+                            fontSize: 15.0,
+                            color: Colors.white),
+                      ),
+                      margin: EdgeInsets.only(top: 10),
+                      width: 150,
+                      height: 34,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3.0),
+                          border: Border.all(color: Color(0xFFff5000))),
                     ),
                   ],
                 ),
@@ -209,16 +244,40 @@ class _AddproductFullState extends State<AddproductFull> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Price",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Roboto-Medium',
+                            letterSpacing: 0.03,
+                            fontSize: 15.0,
+                            color: Colors.white),
+                      ),
                       margin: EdgeInsets.only(top: 10),
                       width: 150,
                       height: 34,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3.0),
+                          border: Border.all(color: Color(0xFFff5000))),
                     ),
                     Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Images",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Roboto-Medium',
+                            letterSpacing: 0.03,
+                            fontSize: 15.0,
+                            color: Colors.white),
+                      ),
                       margin: EdgeInsets.only(top: 10),
                       width: 150,
                       height: 34,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3.0),
+                          border: Border.all(color: Color(0xFFff5000))),
                     ),
                   ],
                 ),
@@ -229,7 +288,12 @@ class _AddproductFullState extends State<AddproductFull> {
             margin: EdgeInsets.only(top: 20),
             child: Text(
               "Product Basic Details",
-              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 20.0, color: Colors.white),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Roboto-Medium',
+                  letterSpacing: 0.03,
+                  fontSize: 20.0,
+                  color: Colors.white),
             ),
           ),
           Container(
@@ -237,7 +301,10 @@ class _AddproductFullState extends State<AddproductFull> {
               children: [
                 Container(
                     margin: EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 0.0),
-                    decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(40), border: Border.all(color: Color(0xFF00a99d))),
+                    decoration: new BoxDecoration(
+                        color: Color(0xFF0a0f32),
+                        borderRadius: BorderRadius.circular(40),
+                        border: Border.all(color: Color(0xFF00a99d))),
                     child: Stack(
                       alignment: AlignmentDirectional.center,
                       children: [
@@ -262,7 +329,10 @@ class _AddproductFullState extends State<AddproductFull> {
                   children: <Widget>[
                     Container(
                         margin: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
-                        decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(40), border: Border.all(color: Color(0xFF00a99d))),
+                        decoration: new BoxDecoration(
+                            color: Color(0xFF0a0f32),
+                            borderRadius: BorderRadius.circular(40),
+                            border: Border.all(color: Color(0xFF00a99d))),
                         child: Stack(
                           alignment: AlignmentDirectional.center,
                           children: [
@@ -318,7 +388,10 @@ class _AddproductFullState extends State<AddproductFull> {
                   children: <Widget>[
                     Container(
                         margin: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 0.0),
-                        decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(40), border: Border.all(color: Color(0xFF00a99d))),
+                        decoration: new BoxDecoration(
+                            color: Color(0xFF0a0f32),
+                            borderRadius: BorderRadius.circular(40),
+                            border: Border.all(color: Color(0xFF00a99d))),
                         child: Stack(
                           alignment: AlignmentDirectional.center,
                           children: [
@@ -372,7 +445,10 @@ class _AddproductFullState extends State<AddproductFull> {
                     height: 200,
                     alignment: Alignment.topLeft,
                     margin: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 30.0),
-                    decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(10), border: Border.all(color: Color(0xFF00a99d))),
+                    decoration: new BoxDecoration(
+                        color: Color(0xFF0a0f32),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Color(0xFF00a99d))),
                     child: Stack(
                       alignment: AlignmentDirectional.center,
                       children: [
@@ -419,18 +495,52 @@ class _AddproductFullState extends State<AddproductFull> {
               GestureDetector(
                 onTap: () {
                   if (username_controller.text.toString().trim().length == 0) {
-                    Fluttertoast.showToast(msg: "Select Product Name", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
-                  } else if (_mySelection.toString().trim().length == 0) {
-                    Fluttertoast.showToast(msg: "Select Main Category", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
-                  } else if (_mySelection2.toString().trim().length == 0) {
-                    Fluttertoast.showToast(msg: "Select Sub Category", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
-                  } else if (username_controller4.text.toString().trim().length == 0) {
-                    Fluttertoast.showToast(msg: "Select Description", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
+                    Fluttertoast.showToast(
+                        msg: "Select Product Name",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        fontSize: 15,
+                        timeInSecForIos: 1,
+                        backgroundColor: Colors.blue,
+                        textColor: Colors.white);
+                  } else if (_mySelection == null) {
+                    Fluttertoast.showToast(
+                        msg: "Select Main Category",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        fontSize: 15,
+                        timeInSecForIos: 1,
+                        backgroundColor: Colors.blue,
+                        textColor: Colors.white);
+                  } else if (_mySelection2 == null) {
+                    Fluttertoast.showToast(
+                        msg: "Select Sub Category",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        fontSize: 15,
+                        timeInSecForIos: 1,
+                        backgroundColor: Colors.blue,
+                        textColor: Colors.white);
+                  } else if (username_controller4.text
+                          .toString()
+                          .trim()
+                          .length ==
+                      0) {
+                    Fluttertoast.showToast(
+                        msg: "Select Description",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        fontSize: 15,
+                        timeInSecForIos: 1,
+                        backgroundColor: Colors.blue,
+                        textColor: Colors.white);
                   } else {
-                    apimap["product_name"] = username_controller.text.toString();
+                    apimap["product_name"] =
+                        username_controller.text.toString();
                     apimap["category_id"] = _mySelection.toString();
                     apimap["subcategory_id"] = _mySelection2.toString();
-                    apimap["description"] = username_controller4.text.toString();
+                    apimap["description"] =
+                        username_controller4.text.toString();
                     print(apimap);
 
                     setState(() {
@@ -472,16 +582,40 @@ class _AddproductFullState extends State<AddproductFull> {
                 child: Column(
                   children: [
                     Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Basic",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Roboto-Medium',
+                            letterSpacing: 0.03,
+                            fontSize: 15.0,
+                            color: Colors.white),
+                      ),
                       margin: EdgeInsets.only(top: 10),
                       width: 150,
                       height: 34,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3.0),
+                          border: Border.all(color: Color(0xFFff5000))),
                     ),
                     Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Attributes",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Roboto-Medium',
+                            letterSpacing: 0.03,
+                            fontSize: 15.0,
+                            color: Colors.white),
+                      ),
                       margin: EdgeInsets.only(top: 10),
                       width: 150,
                       height: 34,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3.0),
+                          border: Border.all(color: Color(0xFFff5000))),
                     ),
                   ],
                 ),
@@ -491,19 +625,41 @@ class _AddproductFullState extends State<AddproductFull> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 10),
-                      child: Image(
-                        image: AssetImage("assets/images/rectangle_11.png"),
-                        height: 34,
-                        width: 150,
-                        fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Price",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Roboto-Medium',
+                            letterSpacing: 0.03,
+                            fontSize: 15.0,
+                            color: Colors.white),
                       ),
-                    ),
-                    Container(
                       margin: EdgeInsets.only(top: 10),
                       width: 150,
                       height: 34,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                      decoration: BoxDecoration(
+                          color: Color(0xFFff5000),
+                          borderRadius: BorderRadius.circular(3.0),
+                          border: Border.all(color: Color(0xFFff5000))),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Images",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Roboto-Medium',
+                            letterSpacing: 0.03,
+                            fontSize: 15.0,
+                            color: Colors.white),
+                      ),
+                      margin: EdgeInsets.only(top: 10),
+                      width: 150,
+                      height: 34,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3.0),
+                          border: Border.all(color: Color(0xFFff5000))),
                     ),
                   ],
                 ),
@@ -514,7 +670,12 @@ class _AddproductFullState extends State<AddproductFull> {
             margin: EdgeInsets.only(top: 20),
             child: Text(
               "Product Price Details",
-              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 20.0, color: Colors.white),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Roboto-Medium',
+                  letterSpacing: 0.03,
+                  fontSize: 20.0,
+                  color: Colors.white),
             ),
           ),
           Container(
@@ -522,7 +683,10 @@ class _AddproductFullState extends State<AddproductFull> {
               children: [
                 Container(
                     margin: EdgeInsets.fromLTRB(30.0, 30.0, 30.0, 0.0),
-                    decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(40), border: Border.all(color: Color(0xFF00a99d))),
+                    decoration: new BoxDecoration(
+                        color: Color(0xFF0a0f32),
+                        borderRadius: BorderRadius.circular(40),
+                        border: Border.all(color: Color(0xFF00a99d))),
                     child: Stack(
                       alignment: AlignmentDirectional.center,
                       children: [
@@ -547,7 +711,10 @@ class _AddproductFullState extends State<AddproductFull> {
                     )),
                 Container(
                     margin: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 30.0),
-                    decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(40), border: Border.all(color: Color(0xFF00a99d))),
+                    decoration: new BoxDecoration(
+                        color: Color(0xFF0a0f32),
+                        borderRadius: BorderRadius.circular(40),
+                        border: Border.all(color: Color(0xFF00a99d))),
                     child: Stack(
                       alignment: AlignmentDirectional.center,
                       children: [
@@ -602,10 +769,29 @@ class _AddproductFullState extends State<AddproductFull> {
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    apimap["price"] = username_controller2.text;
-                    apimap["qty"] = username_controller3.text;
-
-                    screenchange = "3";
+                    if (username_controller2.text.trim().length == 0) {
+                      Fluttertoast.showToast(
+                          msg: "Please Select Price",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          fontSize: 15,
+                          timeInSecForIos: 1,
+                          backgroundColor: Colors.blue,
+                          textColor: Colors.white);
+                    } else if (username_controller3.text.trim().length == 0) {
+                      Fluttertoast.showToast(
+                          msg: "Please Select Quantity",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          fontSize: 15,
+                          timeInSecForIos: 1,
+                          backgroundColor: Colors.blue,
+                          textColor: Colors.white);
+                    } else {
+                      apimap["price"] = username_controller2.text;
+                      apimap["qty"] = username_controller3.text;
+                      screenchange = "3";
+                    }
                   });
                 },
                 child: Align(
@@ -655,19 +841,41 @@ class _AddproductFullState extends State<AddproductFull> {
                 child: Column(
                   children: [
                     Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Basic",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Roboto-Medium',
+                            letterSpacing: 0.03,
+                            fontSize: 15.0,
+                            color: Colors.white),
+                      ),
                       margin: EdgeInsets.only(top: 10),
                       width: 150,
                       height: 34,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3.0),
+                          border: Border.all(color: Color(0xFFff5000))),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 10),
-                      child: Image(
-                        image: AssetImage("assets/images/rectangle_11.png"),
-                        height: 34,
-                        width: 150,
-                        fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Attributes",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Roboto-Medium',
+                            letterSpacing: 0.03,
+                            fontSize: 15.0,
+                            color: Colors.white),
                       ),
+                      margin: EdgeInsets.only(top: 10),
+                      width: 150,
+                      height: 34,
+                      decoration: BoxDecoration(
+                          color: Color(0xFFff5000),
+                          borderRadius: BorderRadius.circular(3.0),
+                          border: Border.all(color: Color(0xFFff5000))),
                     ),
                   ],
                 ),
@@ -677,16 +885,40 @@ class _AddproductFullState extends State<AddproductFull> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Price",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Roboto-Medium',
+                            letterSpacing: 0.03,
+                            fontSize: 15.0,
+                            color: Colors.white),
+                      ),
                       margin: EdgeInsets.only(top: 10),
                       width: 150,
                       height: 34,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3.0),
+                          border: Border.all(color: Color(0xFFff5000))),
                     ),
                     Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Images",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Roboto-Medium',
+                            letterSpacing: 0.03,
+                            fontSize: 15.0,
+                            color: Colors.white),
+                      ),
                       margin: EdgeInsets.only(top: 10),
                       width: 150,
                       height: 34,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3.0),
+                          border: Border.all(color: Color(0xFFff5000))),
                     ),
                   ],
                 ),
@@ -697,7 +929,12 @@ class _AddproductFullState extends State<AddproductFull> {
             margin: EdgeInsets.only(top: 20),
             child: Text(
               "Product Attributes Details",
-              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 20.0, color: Colors.white),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Roboto-Medium',
+                  letterSpacing: 0.03,
+                  fontSize: 20.0,
+                  color: Colors.white),
             ),
           ),
           ListView.builder(
@@ -711,7 +948,10 @@ class _AddproductFullState extends State<AddproductFull> {
                   children: [
                     Container(
                         margin: EdgeInsets.only(top: 20, right: 20, left: 20),
-                        decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(40), border: Border.all(color: Color(0xFF00a99d))),
+                        decoration: new BoxDecoration(
+                            color: Color(0xFF0a0f32),
+                            borderRadius: BorderRadius.circular(40),
+                            border: Border.all(color: Color(0xFF00a99d))),
                         child: Stack(
                           alignment: AlignmentDirectional.centerStart,
                           children: [
@@ -736,7 +976,11 @@ class _AddproductFullState extends State<AddproductFull> {
                             ),
                           ],
                         )),
-                    _Optionlist(index, attributelist[index]["attr_order"], attributelist[index]["option_list"], attributelist[index]["image_upload"]),
+                    _Optionlist(
+                        index,
+                        attributelist[index]["id"],
+                        attributelist[index]["option_list"],
+                        attributelist[index]["image_upload"]),
                   ],
                 ),
                 margin: EdgeInsets.only(top: 20),
@@ -794,11 +1038,15 @@ class _AddproductFullState extends State<AddproductFull> {
     );
   }
 
-  Widget _Optionlist(int arrayindex, String attribute_id, List<dynamic> optionlist, String image_upload) {
+  Widget _Optionlist(int arrayindex, String attribute_id,
+      List<dynamic> optionlist, String image_upload) {
     optionlist = attributelist[arrayindex]["option_list"];
 
     return Container(
-        decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(10), border: Border.all(color: Color(0xFF00a99d))),
+        decoration: new BoxDecoration(
+            color: Color(0xFF0a0f32),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Color(0xFF00a99d))),
         margin: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
         child: Column(
           children: [
@@ -809,11 +1057,13 @@ class _AddproductFullState extends State<AddproductFull> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    onChanged(dynamicbools[arrayindex][index], index, arrayindex, optionlist, attribute_id, image_upload);
+                    onChanged(dynamicbools[arrayindex][index], index,
+                        arrayindex, optionlist, attribute_id, image_upload);
                   },
                   child: dynamicbools[arrayindex][index]
                       ? Container(
-                          padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                          padding: const EdgeInsets.only(
+                              left: 10, right: 10, bottom: 10),
                           margin: EdgeInsets.only(left: 2, right: 2),
                           child: Container(
                             alignment: Alignment.center,
@@ -822,23 +1072,36 @@ class _AddproductFullState extends State<AddproductFull> {
                               color: Colors.green,
                               borderRadius: BorderRadius.circular(5),
                             ),
-                            padding: const EdgeInsets.only(top: 10, bottom: 10, right: 15, left: 15),
+                            padding: const EdgeInsets.only(
+                                top: 10, bottom: 10, right: 15, left: 15),
                             child: Text(
                               optionlist[index]["option_label"].toString(),
-                              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', fontSize: 12.0, color: Colors.white),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Roboto-Bold',
+                                  fontSize: 12.0,
+                                  color: Colors.white),
                             ),
                           ))
                       : Container(
-                          padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                          padding: const EdgeInsets.only(
+                              left: 10, right: 10, bottom: 10),
                           margin: EdgeInsets.only(left: 2, right: 2),
                           child: Container(
                             alignment: Alignment.center,
                             margin: EdgeInsets.only(top: 2),
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), border: Border.all(color: Color(0xFFff5000))),
-                            padding: const EdgeInsets.only(top: 10, bottom: 10, right: 15, left: 15),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(color: Color(0xFFff5000))),
+                            padding: const EdgeInsets.only(
+                                top: 10, bottom: 10, right: 15, left: 15),
                             child: Text(
                               optionlist[index]["option_label"].toString(),
-                              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', fontSize: 12.0, color: Colors.white),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Roboto-Bold',
+                                  fontSize: 12.0,
+                                  color: Colors.white),
                             ),
                           )),
                 );
@@ -857,8 +1120,10 @@ class _AddproductFullState extends State<AddproductFull> {
                       const start = "[";
                       const end = "]";
                       final startIndex = key.lastIndexOf(start);
-                      final endIndex = key.indexOf(end, startIndex + start.length);
-                      if (key.substring(startIndex + start.length, endIndex) == optionlist[index]["opt_order"]) {
+                      final endIndex =
+                          key.indexOf(end, startIndex + start.length);
+                      if (key.substring(startIndex + start.length, endIndex) ==
+                          optionlist[index]["opt_order"]) {
                         if (value == "") {
                           uploadimageString = "No file Chosen";
                         } else {
@@ -882,18 +1147,30 @@ class _AddproductFullState extends State<AddproductFull> {
                                     ),
                                     child: Text(
                                       optionlist[index]["option_label"],
-                                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 18.0, color: Colors.white),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Roboto-Bold',
+                                          letterSpacing: 0.03,
+                                          fontSize: 18.0,
+                                          color: Colors.white),
                                     ),
                                   ),
                                   Container(
                                     height: 50,
-                                    margin: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-                                    decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(40), border: Border.all(color: Color(0xFF00a99d))),
+                                    margin: EdgeInsets.fromLTRB(
+                                        10.0, 5.0, 10.0, 5.0),
+                                    decoration: new BoxDecoration(
+                                        color: Color(0xFF0a0f32),
+                                        borderRadius: BorderRadius.circular(40),
+                                        border: Border.all(
+                                            color: Color(0xFF00a99d))),
                                     child: Row(
                                       children: [
                                         GestureDetector(
                                           onTap: () {
-                                            chooseImage(optionlist[index]["opt_order"], attribute_id);
+                                            chooseImage(
+                                                optionlist[index]["opt_order"],
+                                                attribute_id);
                                           },
                                           child: Container(
                                               alignment: Alignment.center,
@@ -901,14 +1178,22 @@ class _AddproductFullState extends State<AddproductFull> {
                                               height: 30,
                                               decoration: BoxDecoration(
                                                 color: Color(0xFF101a6f),
-                                                borderRadius: BorderRadius.all(const Radius.circular(20)),
+                                                borderRadius: BorderRadius.all(
+                                                    const Radius.circular(20)),
                                               ),
                                               child: Padding(
-                                                padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        10.0, 5.0, 10.0, 5.0),
                                                 child: Text(
                                                   "Choose File",
-                                                  overflow: TextOverflow.ellipsis,
-                                                  style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 15.0, color: Colors.white),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                      fontFamily: 'Roboto-Bold',
+                                                      letterSpacing: 0.03,
+                                                      fontSize: 15.0,
+                                                      color: Colors.white),
                                                 ),
                                               )),
                                         ),
@@ -918,7 +1203,11 @@ class _AddproductFullState extends State<AddproductFull> {
                                           child: Text(
                                             uploadimageString,
                                             overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFF3aa2a2a2)),
+                                            style: TextStyle(
+                                                fontFamily: 'Roboto-Bold',
+                                                letterSpacing: 0.03,
+                                                fontSize: 10.0,
+                                                color: Color(0xFF3aa2a2a2)),
                                           ),
                                         )
                                       ],
@@ -955,16 +1244,40 @@ class _AddproductFullState extends State<AddproductFull> {
                 child: Column(
                   children: [
                     Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Basic",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Roboto-Medium',
+                            letterSpacing: 0.03,
+                            fontSize: 15.0,
+                            color: Colors.white),
+                      ),
                       margin: EdgeInsets.only(top: 10),
                       width: 150,
                       height: 34,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3.0),
+                          border: Border.all(color: Color(0xFFff5000))),
                     ),
                     Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Attributes",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Roboto-Medium',
+                            letterSpacing: 0.03,
+                            fontSize: 15.0,
+                            color: Colors.white),
+                      ),
                       margin: EdgeInsets.only(top: 10),
                       width: 150,
                       height: 34,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3.0),
+                          border: Border.all(color: Color(0xFFff5000))),
                     ),
                   ],
                 ),
@@ -974,19 +1287,41 @@ class _AddproductFullState extends State<AddproductFull> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Price",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Roboto-Medium',
+                            letterSpacing: 0.03,
+                            fontSize: 15.0,
+                            color: Colors.white),
+                      ),
                       margin: EdgeInsets.only(top: 10),
                       width: 150,
                       height: 34,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(3.0), border: Border.all(color: Color(0xFFff5000))),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3.0),
+                          border: Border.all(color: Color(0xFFff5000))),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 10),
-                      child: Image(
-                        image: AssetImage("assets/images/rectangle_11.png"),
-                        height: 34,
-                        width: 150,
-                        fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Images",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Roboto-Medium',
+                            letterSpacing: 0.03,
+                            fontSize: 15.0,
+                            color: Colors.white),
                       ),
+                      margin: EdgeInsets.only(top: 10),
+                      width: 150,
+                      height: 34,
+                      decoration: BoxDecoration(
+                          color: Color(0xFFff5000),
+                          borderRadius: BorderRadius.circular(3.0),
+                          border: Border.all(color: Color(0xFFff5000))),
                     ),
                   ],
                 ),
@@ -997,7 +1332,12 @@ class _AddproductFullState extends State<AddproductFull> {
             margin: EdgeInsets.only(top: 20),
             child: Text(
               "Product Images Details",
-              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Medium', letterSpacing: 0.03, fontSize: 20.0, color: Colors.white),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Roboto-Medium',
+                  letterSpacing: 0.03,
+                  fontSize: 20.0,
+                  color: Colors.white),
             ),
           ),
           Container(
@@ -1007,14 +1347,21 @@ class _AddproductFullState extends State<AddproductFull> {
                   alignment: Alignment.topLeft,
                   margin: EdgeInsets.only(left: 30, top: 20),
                   child: Text(
-                    "Store Banner",
-                    style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 18.0, color: Colors.white),
+                    "Upload Product Image",
+                    style: TextStyle(
+                        fontFamily: 'Roboto-Bold',
+                        letterSpacing: 0.03,
+                        fontSize: 18.0,
+                        color: Colors.white),
                   ),
                 ),
                 Container(
                   height: 50,
                   margin: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 30.0),
-                  decoration: new BoxDecoration(color: Color(0xFF0a0f32), borderRadius: BorderRadius.circular(40), border: Border.all(color: Color(0xFF00a99d))),
+                  decoration: new BoxDecoration(
+                      color: Color(0xFF0a0f32),
+                      borderRadius: BorderRadius.circular(40),
+                      border: Border.all(color: Color(0xFF00a99d))),
                   child: Row(
                     children: [
                       GestureDetector(
@@ -1027,13 +1374,19 @@ class _AddproductFullState extends State<AddproductFull> {
                             height: 30,
                             decoration: BoxDecoration(
                               color: Color(0xFF101a6f),
-                              borderRadius: BorderRadius.all(const Radius.circular(20)),
+                              borderRadius:
+                                  BorderRadius.all(const Radius.circular(20)),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                              padding: const EdgeInsets.fromLTRB(
+                                  10.0, 5.0, 10.0, 5.0),
                               child: Text(
                                 "Choose File",
-                                style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 15.0, color: Colors.white),
+                                style: TextStyle(
+                                    fontFamily: 'Roboto-Bold',
+                                    letterSpacing: 0.03,
+                                    fontSize: 15.0,
+                                    color: Colors.white),
                               ),
                             )),
                       ),
@@ -1043,7 +1396,11 @@ class _AddproductFullState extends State<AddproductFull> {
                         child: Text(
                           productimage,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 10.0, color: Color(0xFF3aa2a2a2)),
+                          style: TextStyle(
+                              fontFamily: 'Roboto-Bold',
+                              letterSpacing: 0.03,
+                              fontSize: 10.0,
+                              color: Color(0xFF3aa2a2a2)),
                         ),
                       )
                     ],
@@ -1080,7 +1437,18 @@ class _AddproductFullState extends State<AddproductFull> {
               ),
               GestureDetector(
                 onTap: () {
-                  uploadProduct();
+                  if (productimage == "No file chosen" || productimage == "") {
+                    Fluttertoast.showToast(
+                        msg: "Please Select Product Image",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        fontSize: 15,
+                        timeInSecForIos: 1,
+                        backgroundColor: Colors.blue,
+                        textColor: Colors.white);
+                  } else {
+                    uploadProduct();
+                  }
                 },
                 child: Align(
                   alignment: Alignment.centerRight,
@@ -1128,7 +1496,10 @@ class _AddproductFullState extends State<AddproductFull> {
             ),
           );
         });
-    var request = http.MultipartRequest('POST', Uri.parse(RestDatasource.save_product));
+    var request =
+        http.MultipartRequest('POST', Uri.parse(RestDatasource.save_product));
+
+    print(apimap);
 
     apimap.forEach((key, value) async {
       if (key.contains("[") && key.contains("attr_image")) {
@@ -1145,10 +1516,17 @@ class _AddproductFullState extends State<AddproductFull> {
     var response = await http.Response.fromStream(res);
 
     if (json.decode(response.body)["status_code"] == 200) {
-      Fluttertoast.showToast(msg: "Upload Successfully", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, fontSize: 15, timeInSecForIos: 1, backgroundColor: Colors.blue, textColor: Colors.white);
+      Fluttertoast.showToast(
+          msg: "Upload Successfully",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          fontSize: 15,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.blue,
+          textColor: Colors.white);
       Navigator.pop(dilogcontext);
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => MyStore(),
+        builder: (context) => SellProduct(),
       ));
     } else {
       Navigator.pop(dilogcontext);
@@ -1196,7 +1574,12 @@ class _AddproductFullState extends State<AddproductFull> {
                             alignment: Alignment.center,
                             child: Text(
                               "Add Products",
-                              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto-Bold', letterSpacing: 0.03, fontSize: 16.0, color: Colors.white),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Roboto-Bold',
+                                  letterSpacing: 0.03,
+                                  fontSize: 16.0,
+                                  color: Colors.white),
                             ),
                           ),
                         ),
@@ -1226,7 +1609,8 @@ class _AddproductFullState extends State<AddproductFull> {
             ],
           ),
           onWillPop: () async {
-            return Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Homescreen()));
+            return Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (BuildContext context) => Homescreen()));
           }),
     );
   }

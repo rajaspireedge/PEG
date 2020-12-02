@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:loading/indicator/ball_pulse_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:peg/Add_to_cart.dart';
@@ -23,7 +25,6 @@ import 'package:peg/productlist.dart';
 import 'package:http/http.dart' as http;
 import 'package:peg/whishlist.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 /// This Widget is the main application widget.
 
@@ -51,7 +52,8 @@ class Homescreen extends StatefulWidget {
 }
 
 RestDatasource api = new RestDatasource();
-TextStyle style = TextStyle(fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white);
+TextStyle style =
+    TextStyle(fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white);
 bool product_list = true;
 
 class _HomescreenState extends State<Homescreen> {
@@ -69,7 +71,11 @@ class _HomescreenState extends State<Homescreen> {
   List data2 = List(); //edited line
 
   Future<String> getSWData() async {
-    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_categories), headers: {"Accept": "application/json", "content-type": "application/json"});
+    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_categories),
+        headers: {
+          "Accept": "application/json",
+          "content-type": "application/json"
+        });
     var resBody = json.decode(res.body);
     print(res.body);
 
@@ -81,19 +87,29 @@ class _HomescreenState extends State<Homescreen> {
   }
 
   Future<String> getUserdetail(String userid) async {
-    var res = await http.get(Uri.encodeFull(RestDatasource.get_profile_info + userid), headers: {"Accept": "application/json", "content-type": "application/json"});
+    var res = await http.get(
+        Uri.encodeFull(RestDatasource.get_profile_info + userid),
+        headers: {
+          "Accept": "application/json",
+          "content-type": "application/json"
+        });
     var resBody = json.decode(res.body);
     print(res.body);
 
     setState(() {
-      userdata.addAll(Map<String, dynamic>.from(json.decode(res.body)["user_profile"]));
+      userdata.addAll(
+          Map<String, dynamic>.from(json.decode(res.body)["user_profile"]));
     });
 
     return "Success";
   }
 
   Future<String> getProductList() async {
-    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_products), headers: {"Accept": "application/json", "content-type": "application/json"});
+    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_products),
+        headers: {
+          "Accept": "application/json",
+          "content-type": "application/json"
+        });
     var resBody = json.decode(res.body);
     print(res.body);
 
@@ -104,10 +120,13 @@ class _HomescreenState extends State<Homescreen> {
     return "Success";
   }
 
-  Future<String> getProductListBySearch(String category_id, String sub_category_id, String product_name, BuildContext context) async {
-    api.productbysearch(_mySelection, _mySelection2, product_name, context).then((value) => {
-          onChange(value),
-        });
+  Future<String> getProductListBySearch(String category_id,
+      String sub_category_id, String product_name, BuildContext context) async {
+    api
+        .productbysearch(_mySelection, _mySelection2, product_name, context)
+        .then((value) => {
+              onChange(value),
+            });
   }
 
   void onChange(dynamic res) {
@@ -117,7 +136,11 @@ class _HomescreenState extends State<Homescreen> {
   }
 
   Future<String> getPlayer() async {
-    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_players), headers: {"Accept": "application/json", "content-type": "application/json"});
+    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_players),
+        headers: {
+          "Accept": "application/json",
+          "content-type": "application/json"
+        });
     var resBody = json.decode(res.body);
     print(res.body);
 
@@ -165,7 +188,9 @@ class _HomescreenState extends State<Homescreen> {
   }
 
   Future<String> getsubData(String id) async {
-    var res = await http.get(Uri.encodeFull(RestDatasource.get_all_subcategories + id), headers: {"Accept": "application/json"});
+    var res = await http.get(
+        Uri.encodeFull(RestDatasource.get_all_subcategories + id),
+        headers: {"Accept": "application/json"});
     var resBody = json.decode(res.body);
 
     setState(() {
@@ -186,6 +211,62 @@ class _HomescreenState extends State<Homescreen> {
   }
 
   String userid;
+  String uploadimage;
+
+  BuildContext dialogcontext;
+
+  Future<String> uploadImage(filename, useris, BuildContext context) async {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          dialogcontext = context;
+          return Container(
+            alignment: Alignment.center,
+            height: 50,
+            width: 50,
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.cyan,
+              strokeWidth: 5,
+            ),
+          );
+        });
+
+    var request = http.MultipartRequest(
+        'POST', Uri.parse(RestDatasource.update_profile_img));
+    request.files.add(await http.MultipartFile.fromString('user_id', useris));
+    request.files.add(await http.MultipartFile.fromPath('image', filename));
+    var res = await request.send();
+
+    if (res.statusCode == 200) {
+      getStringValuesSF().then((value) => getUserdetail(value));
+
+      Fluttertoast.showToast(
+          msg: "Upload Successfully",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          fontSize: 15,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.blue,
+          textColor: Colors.white);
+      Navigator.pop(dialogcontext);
+
+    } else {
+      Navigator.pop(dialogcontext);
+    }
+
+    print(res.statusCode);
+    return res.reasonPhrase;
+  }
+
+  Future<void> chooseImage() async {
+    var choosedimage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    //set source: ImageSource.camera to get image from camera
+
+    setState(() {
+      uploadimage = choosedimage.path;
+      uploadImage(uploadimage, userid, context);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -203,7 +284,8 @@ class _HomescreenState extends State<Homescreen> {
     Color color2 = Color(0xFF000001);
     Color color3 = Color(0xFFfc4d00);
 
-    TextStyle hintstyle = TextStyle(fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white);
+    TextStyle hintstyle = TextStyle(
+        fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.white);
 
     final playerusername_controller = TextEditingController();
 
@@ -211,7 +293,8 @@ class _HomescreenState extends State<Homescreen> {
 
     final searchproduct = TextField(
       onChanged: (value) {
-        getProductListBySearch(_mySelection, _mySelection2, username_controllerhome.text, context);
+        getProductListBySearch(
+            _mySelection, _mySelection2, username_controllerhome.text, context);
       },
       style: style,
       controller: username_controllerhome,
@@ -238,7 +321,8 @@ class _HomescreenState extends State<Homescreen> {
       return Container(
         color: Color(0xFF0a0f32),
         child: Center(
-          child: Loading(indicator: BallPulseIndicator(), size: 100.0, color: color3),
+          child: Loading(
+              indicator: BallPulseIndicator(), size: 100.0, color: color3),
         ),
       );
     }
@@ -246,7 +330,8 @@ class _HomescreenState extends State<Homescreen> {
     if (product_list) {
       return MaterialApp(
         theme: Theme.of(context).copyWith(
-          canvasColor: Color(0xFF0a0f32), //This will change the drawer background to blue.
+          canvasColor: Color(
+              0xFF0a0f32), //This will change the drawer background to blue.
           //other styles
         ),
         home: Scaffold(
@@ -263,33 +348,45 @@ class _HomescreenState extends State<Homescreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Container(
-                          width: 70.0,
-                          height: 70.0,
-                          decoration: new BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: NetworkImage(userdata["image"]),
-                              )
-                          )),
-                      Container(
-                        transform: Matrix4.translationValues(0.0, -20.0, 0.0),
-                        width: 100,
-                        alignment: Alignment.bottomRight,
-                        child: Image(
-                          image: edit,
-                          height: 20,
-                          width: 20,
+                      GestureDetector(
+                        onTap: () {
+                          chooseImage();
+                        },
+                        child: Container(
+                            width: 70.0,
+                            height: 70.0,
+                            decoration: new BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: new DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: NetworkImage(userdata["image"]),
+                                ))),
+                      ),
+                      GestureDetector(
+                        child: Container(
+                          transform: Matrix4.translationValues(0.0, -20.0, 0.0),
+                          width: 100,
+                          alignment: Alignment.bottomRight,
+                          child: Image(
+                            image: edit,
+                            height: 20,
+                            width: 20,
+                          ),
                         ),
                       ),
                       Text(
                         userdata["name"],
-                        style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 16.0, color: Colors.white),
+                        style: TextStyle(
+                            fontFamily: 'Roboto-Bold',
+                            fontSize: 16.0,
+                            color: Colors.white),
                       ),
                       Text(
                         'Account # ' + userdata["account_no"],
-                        style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 13.0, color: Colors.white),
+                        style: TextStyle(
+                            fontFamily: 'Roboto-Bold',
+                            fontSize: 13.0,
+                            color: Colors.white),
                       ),
                     ],
                   ),
@@ -454,13 +551,17 @@ class _HomescreenState extends State<Homescreen> {
                       Container(
                         margin: EdgeInsets.fromLTRB(0.0, 30.0, 2.0, 0.0),
                         decoration: new BoxDecoration(
-                          image: new DecorationImage(image: borderimg, fit: BoxFit.fill),
+                          image: new DecorationImage(
+                              image: borderimg, fit: BoxFit.fill),
                         ),
                         child: Container(
                           margin: EdgeInsets.all(6.0),
                           child: Text(
                             "Available balance : 0.00",
-                            style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 15.0, color: color1),
+                            style: TextStyle(
+                                fontFamily: 'Roboto-Bold',
+                                fontSize: 15.0,
+                                color: color1),
                           ),
                         ),
                       )
@@ -511,10 +612,12 @@ class _HomescreenState extends State<Homescreen> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                      builder: (BuildContext context) => Addtocart(
-                                            id: userid,
-                                          )));
+                                  Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              Addtocart(
+                                                id: userid,
+                                              )));
                                 },
                                 child: Container(
                                   child: Image(
@@ -530,7 +633,8 @@ class _HomescreenState extends State<Homescreen> {
                                 },
                                 child: Container(
                                   child: Image(
-                                    image: AssetImage("assets/images/more1.png"),
+                                    image:
+                                        AssetImage("assets/images/more1.png"),
                                     height: 20,
                                     width: 30,
                                   ),
@@ -703,7 +807,9 @@ class _HomescreenState extends State<Homescreen> {
                         crossAxisCount: 2,
                       ),
                       itemBuilder: (_, index) => Container(
-                        decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(10.0)),
+                        decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(10.0)),
                         child: Stack(
                           children: <Widget>[
                             CustomPaint(
@@ -720,41 +826,79 @@ class _HomescreenState extends State<Homescreen> {
                                   child: Stack(
                                     children: <Widget>[
                                       Align(
-                                        alignment: AlignmentDirectional.topStart,
+                                        alignment:
+                                            AlignmentDirectional.topStart,
                                         child: Material(
                                             color: Colors.white,
-                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0)),
-                                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                                            borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(10.0)),
+                                            clipBehavior:
+                                                Clip.antiAliasWithSaveLayer,
                                             type: MaterialType.transparency,
                                             child: Container(
-                                                margin: EdgeInsets.only(right: 30),
+                                                margin:
+                                                    EdgeInsets.only(right: 30),
                                                 height: 25,
                                                 child: Stack(
                                                   children: [
                                                     Image(
-                                                      image: shape_1, fit: BoxFit.cover,color: Color(0xFFfc4d00),
+                                                      image: shape_1,
+                                                      fit: BoxFit.cover,
+                                                      color: Color(0xFFfc4d00),
                                                     ),
                                                     Container(
-                                                      alignment: Alignment.centerLeft,
-                                                      child: Text(snapshotproductlist[index]["name"] ?? 'Name', overflow: TextOverflow.ellipsis, style: TextStyle(fontFamily: 'Roboto-Bold',fontWeight: FontWeight.bold ,fontSize: 10.0, color: Colors.black)),
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: Text(
+                                                          snapshotproductlist[
+                                                                      index]
+                                                                  ["name"] ??
+                                                              'Name',
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'Roboto-Bold',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 10.0,
+                                                              color: Colors
+                                                                  .black)),
                                                       width: 140,
-                                                      margin: EdgeInsets.only(left: 1),
+                                                      margin: EdgeInsets.only(
+                                                          left: 1),
                                                     ),
                                                   ],
                                                 ))),
                                       ),
                                       Align(
                                         child: Container(
-                                          margin: EdgeInsets.only(top: 30, bottom: 45 , left: 10 , right: 10),
+                                          margin: EdgeInsets.only(
+                                              top: 30,
+                                              bottom: 45,
+                                              left: 10,
+                                              right: 10),
                                           alignment: Alignment.center,
-                                          decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(snapshotproductlist[index]["image"]), fit: BoxFit.cover)),
+                                          decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      snapshotproductlist[index]
+                                                          ["image"]),
+                                                  fit: BoxFit.cover)),
                                         ),
                                       ),
                                       Align(
                                         alignment: Alignment.bottomCenter,
                                         child: InkWell(
                                           onTap: () {
-                                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => ItemFull(id: snapshotproductlist[index]["id"])));
+                                            Navigator.of(context).pushReplacement(
+                                                MaterialPageRoute(
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        ItemFull(
+                                                            id: snapshotproductlist[
+                                                                index]["id"])));
                                           },
                                           child: Image(
                                             image: viewmore,
@@ -781,7 +925,8 @@ class _HomescreenState extends State<Homescreen> {
     } else {
       return MaterialApp(
         theme: Theme.of(context).copyWith(
-          canvasColor: Color(0xFF0a0f32), //This will change the drawer background to blue.
+          canvasColor: Color(
+              0xFF0a0f32), //This will change the drawer background to blue.
           //other styles
         ),
         home: Scaffold(
@@ -797,16 +942,15 @@ class _HomescreenState extends State<Homescreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                       Container(
+                      Container(
                           width: 70.0,
                           height: 70.0,
                           decoration: new BoxDecoration(
                               shape: BoxShape.circle,
                               image: new DecorationImage(
-                                  fit: BoxFit.fill,
+                                fit: BoxFit.fill,
                                 image: NetworkImage(userdata["image"]),
-                              )
-                          )),
+                              ))),
                       Container(
                         transform: Matrix4.translationValues(0.0, -20.0, 0.0),
                         width: 100,
@@ -819,11 +963,17 @@ class _HomescreenState extends State<Homescreen> {
                       ),
                       Text(
                         userdata["name"],
-                        style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 16.0, color: Colors.white),
+                        style: TextStyle(
+                            fontFamily: 'Roboto-Bold',
+                            fontSize: 16.0,
+                            color: Colors.white),
                       ),
                       Text(
                         'Account # ' + userdata["account_no"],
-                        style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 13.0, color: Colors.white),
+                        style: TextStyle(
+                            fontFamily: 'Roboto-Bold',
+                            fontSize: 13.0,
+                            color: Colors.white),
                       ),
                     ],
                   ),
@@ -983,13 +1133,17 @@ class _HomescreenState extends State<Homescreen> {
                       Container(
                         margin: EdgeInsets.fromLTRB(0.0, 30.0, 2.0, 0.0),
                         decoration: new BoxDecoration(
-                          image: new DecorationImage(image: borderimg, fit: BoxFit.fill),
+                          image: new DecorationImage(
+                              image: borderimg, fit: BoxFit.fill),
                         ),
                         child: Container(
                           margin: EdgeInsets.all(6.0),
                           child: Text(
                             "Available balance : 0.00",
-                            style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 10.0, color: color1),
+                            style: TextStyle(
+                                fontFamily: 'Roboto-Bold',
+                                fontSize: 10.0,
+                                color: color1),
                           ),
                         ),
                       )
@@ -1105,7 +1259,10 @@ class _HomescreenState extends State<Homescreen> {
                           return Container(
                             color: Colors.lightBlue,
                             child: Center(
-                              child: Loading(indicator: BallPulseIndicator(), size: 100.0, color: color3),
+                              child: Loading(
+                                  indicator: BallPulseIndicator(),
+                                  size: 100.0,
+                                  color: color3),
                             ),
                           );
                         }
@@ -1125,14 +1282,24 @@ class _HomescreenState extends State<Homescreen> {
                               Container(
                                 margin: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
                                 child: Text(
-                                  "Account # " + snapshotplayerlist[index]["id"] ?? 'id',
-                                  style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 15.0, color: Colors.deepOrange),
+                                  "Account # " +
+                                          snapshotplayerlist[index]["id"] ??
+                                      'id',
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto-Bold',
+                                      fontSize: 15.0,
+                                      color: Colors.deepOrange),
                                 ),
                               ),
                               Container(
                                 child: Text(
-                                  snapshotplayerlist[index]["display_name"] ?? 'Name',
-                                  style: TextStyle(fontFamily: 'Roboto-Bold', fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.white),
+                                  snapshotplayerlist[index]["display_name"] ??
+                                      'Name',
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto-Bold',
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
                                 ),
                               ),
                               Container(
@@ -1146,7 +1313,10 @@ class _HomescreenState extends State<Homescreen> {
                               )
                             ],
                           ),
-                          decoration: BoxDecoration(color: Color(0xFF0a0f32), border: Border.all(color: color3), borderRadius: BorderRadius.circular(10.0)),
+                          decoration: BoxDecoration(
+                              color: Color(0xFF0a0f32),
+                              border: Border.all(color: color3),
+                              borderRadius: BorderRadius.circular(10.0)),
                         );
                       },
                       itemCount: snapshotplayerlist.length,
@@ -1174,7 +1344,8 @@ class UnicornOutlineButton extends StatelessWidget {
     @required Gradient gradient,
     @required Widget child,
     @required VoidCallback onPressed,
-  })  : this._painter = _GradientPainter(strokeWidth: strokeWidth, radius: radius, gradient: gradient),
+  })  : this._painter = _GradientPainter(
+            strokeWidth: strokeWidth, radius: radius, gradient: gradient),
         this._child = child,
         this._callback = onPressed,
         this._radius = radius;
@@ -1210,7 +1381,10 @@ class _GradientPainter extends CustomPainter {
   final double strokeWidth;
   final Gradient gradient;
 
-  _GradientPainter({@required double strokeWidth, @required double radius, @required Gradient gradient})
+  _GradientPainter(
+      {@required double strokeWidth,
+      @required double radius,
+      @required Gradient gradient})
       : this.strokeWidth = strokeWidth,
         this.radius = radius,
         this.gradient = gradient;
@@ -1219,11 +1393,14 @@ class _GradientPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // create outer rectangle equals size
     Rect outerRect = Offset.zero & size;
-    var outerRRect = RRect.fromRectAndRadius(outerRect, Radius.circular(radius));
+    var outerRRect =
+        RRect.fromRectAndRadius(outerRect, Radius.circular(radius));
 
     // create inner rectangle smaller by strokeWidth
-    Rect innerRect = Rect.fromLTWH(strokeWidth, strokeWidth, size.width - strokeWidth * 2, size.height - strokeWidth * 2);
-    var innerRRect = RRect.fromRectAndRadius(innerRect, Radius.circular(radius - strokeWidth));
+    Rect innerRect = Rect.fromLTWH(strokeWidth, strokeWidth,
+        size.width - strokeWidth * 2, size.height - strokeWidth * 2);
+    var innerRRect = RRect.fromRectAndRadius(
+        innerRect, Radius.circular(radius - strokeWidth));
 
     // apply gradient shader
     _paint.shader = gradient.createShader(outerRect);
@@ -1239,13 +1416,13 @@ class _GradientPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => oldDelegate != this;
 }
 
-TextStyle dropdownstyle = TextStyle(fontFamily: 'Roboto-Bold', fontSize: 10.0, color: Color(0xFF06cdff));
+TextStyle dropdownstyle = TextStyle(
+    fontFamily: 'Roboto-Bold', fontSize: 10.0, color: Color(0xFF06cdff));
 
 class DropDown extends State<Homescreen> {
   @override
   Widget build(BuildContext context) {}
 }
-
 
 Future<String> getStringValuesSF() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
