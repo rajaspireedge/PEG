@@ -249,7 +249,6 @@ class _HomescreenState extends State<Homescreen> {
           backgroundColor: Colors.blue,
           textColor: Colors.white);
       Navigator.pop(dialogcontext);
-
     } else {
       Navigator.pop(dialogcontext);
     }
@@ -322,7 +321,10 @@ class _HomescreenState extends State<Homescreen> {
         color: Color(0xFF0a0f32),
         child: Center(
           child: Loading(
-              indicator: BallPulseIndicator(), size: 100.0, color: color3),
+            indicator: BallPulseIndicator(),
+            size: 100.0,
+            color: Colors.cyan,
+          ),
         ),
       );
     }
@@ -557,11 +559,11 @@ class _HomescreenState extends State<Homescreen> {
                         child: Container(
                           margin: EdgeInsets.all(6.0),
                           child: Text(
-                            "Available balance : 0.00",
+                            "Available balance :" + userdata["total_balance"],
                             style: TextStyle(
                                 fontFamily: 'Roboto-Bold',
                                 fontSize: 15.0,
-                                color: color1),
+                                color: Color(0xFF6ae7e0)),
                           ),
                         ),
                       )
@@ -1139,11 +1141,11 @@ class _HomescreenState extends State<Homescreen> {
                         child: Container(
                           margin: EdgeInsets.all(6.0),
                           child: Text(
-                            "Available balance : 0.00",
+                            "Available balance :" + userdata["total_balance"],
                             style: TextStyle(
                                 fontFamily: 'Roboto-Bold',
                                 fontSize: 10.0,
-                                color: color1),
+                                color: Color(0xFF6ae7e0)),
                           ),
                         ),
                       )
